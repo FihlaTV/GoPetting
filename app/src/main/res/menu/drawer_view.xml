@@ -2,29 +2,27 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_first_fragment"
+            android:id="@+id/location"
             android:icon="@drawable/ic_one"
-            android:title="First" />
+            android:title="@string/location" />
         <item
-            android:id="@+id/nav_second_fragment"
+            android:id="@+id/orders"
             android:icon="@drawable/ic_two"
-            android:title="Second" />
+            android:title="@string/orders" />
         <item
-            android:id="@+id/nav_third_fragment"
+            android:id="@+id/ContactUs"
             android:icon="@drawable/ic_three"
-            android:title="Third" />
+            android:title="@string/ContactUs" />
 
-        <item android:title="Sub items">
-            <menu>
-                <item
-                    android:icon="@drawable/ic_one"
-                    android:title="Sub item 1" />
-                <item
-                    android:icon="@drawable/ic_two"
-                    android:title="Sub item 2" />
-            </menu>
-        </item>
+        <item
+            android:id="@+id/TC"
+            android:icon="@drawable/ic_one"
+            android:title="@string/TC" />
 
+        <item
+            android:id="@+id/AboutUs"
+            android:icon="@drawable/ic_three"
+            android:title="@string/AboutUs" />
     </group>
 </menu>
 

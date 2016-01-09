@@ -9,8 +9,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
         // Find our drawer view
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         nvDrawer = (NavigationView) findViewById(R.id.nvView);
+
+        //Adding Navigation Header to NavigationView
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.navigation_header,null,false);
+        nvDrawer.addHeaderView(view);
+
         // Setup drawer view
         setupDrawerContent(nvDrawer);
     }
