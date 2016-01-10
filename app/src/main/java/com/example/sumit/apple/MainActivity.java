@@ -1,5 +1,6 @@
 package com.example.sumit.apple;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -21,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
+    private CharSequence mTitle;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +35,11 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Setting Home button
-        ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-//        actionbar.setHomeButtonEnabled(true);
+        //TODO: Remove these comments once not in use
+//        //Setting Home button
+//        ActionBar actionbar = getSupportActionBar();
+//        actionbar.setDisplayHomeAsUpEnabled(true);
+////        actionbar.setHomeButtonEnabled(true);
 
         // Find our drawer view
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -45,19 +50,51 @@ public class MainActivity extends AppCompatActivity {
         View view = inflater.inflate(R.layout.navigation_header,null,false);
         nvDrawer.addHeaderView(view);
 
-        // Setup drawer view
-        setupDrawerContent(nvDrawer);
+        // Setup drawer view ; Set Navigation Item Selection Listener
+        nvDrawer.setNavigationItemSelectedListener(new NavigationItemSelectedListener());
+
+        //Setting listener for Drawer open/close events
+
+        final CharSequence mDrawerTitle;
+        mTitle = mDrawerTitle = getTitle();
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer,
+                toolbar, R.string.drawer_open, R.string.drawer_close) {
+
+            /**
+             * Called when a drawer has settled in a completely closed state.
+             */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getSupportActionBar().setTitle(mTitle);
+                supportInvalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /**
+             * Called when a drawer has settled in a completely open state.
+             */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle(mDrawerTitle);
+                supportInvalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+
+        // Set the drawer toggle as the DrawerListener
+        mDrawer.setDrawerListener(mDrawerToggle);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
-    private void setupDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
-                        return true;
-                    }
-                });
+
+    private class NavigationItemSelectedListener implements NavigationView.OnNavigationItemSelectedListener {
+
+        @Override
+        public boolean onNavigationItemSelected(MenuItem menuItem) {
+            selectDrawerItem(menuItem);
+            return true;
+        }
+
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
@@ -76,13 +113,19 @@ public class MainActivity extends AppCompatActivity {
         //set toolbar title to checked item
 //        setTitle(menuItem.getItemId()); Returns false
         setTitle(menuItem.getTitle());
-        Toast.makeText(this,String.valueOf(menuItem.getItemId()), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,menuItem.getItemId(), Toast.LENGTH_SHORT).show();
 
 
         //Close the drawer - NavigationView
         mDrawer.closeDrawer(nvDrawer);
 
     }
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getSupportActionBar().setTitle(title);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -91,13 +134,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // The action bar home/up action should open or close the drawer.
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mDrawer.openDrawer(GravityCompat.START);
-                return true;
+        // Pass the event to ActionBarDrawerToggle, if it returns
+        // true, then it has handled the app icon touch event
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
         }
+
+        //TODO : Add/Handle Action bar options item
+        // Handle your other action bar items...
 
         return super.onOptionsItemSelected(item);
     }
@@ -106,6 +157,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
     }
 
 }
