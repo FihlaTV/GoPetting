@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +30,11 @@ public class MainActivity extends AppCompatActivity {
         // Set a Toolbar to replace the ActionBar.
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //Setting Home button
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+//        actionbar.setHomeButtonEnabled(true);
 
         // Find our drawer view
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -62,10 +69,16 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentmanager = getSupportFragmentManager();
         //swapping fragments
         fragmentmanager.beginTransaction().replace(R.id.flContent,fragment).commit();
+
         //set selected drawer item as checked
         menuItem.setChecked(true);
+
         //set toolbar title to checked item
-        setTitle(menuItem.getItemId());
+//        setTitle(menuItem.getItemId()); Returns false
+        setTitle(menuItem.getTitle());
+        Toast.makeText(this,String.valueOf(menuItem.getItemId()), Toast.LENGTH_SHORT).show();
+
+
         //Close the drawer - NavigationView
         mDrawer.closeDrawer(nvDrawer);
 
