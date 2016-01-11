@@ -35,12 +35,6 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //TODO: Remove these comments once not in use
-//        //Setting Home button
-//        ActionBar actionbar = getSupportActionBar();
-//        actionbar.setDisplayHomeAsUpEnabled(true);
-////        actionbar.setHomeButtonEnabled(true);
-
         // Find our drawer view
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         nvDrawer = (NavigationView) findViewById(R.id.nvView);
@@ -58,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         final CharSequence mDrawerTitle;
         mTitle = mDrawerTitle = getTitle();
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer,
-                toolbar, R.string.drawer_open, R.string.drawer_close) {
+                 R.string.drawer_open, R.string.drawer_close) {
 
             /**
              * Called when a drawer has settled in a completely closed state.
@@ -109,11 +103,13 @@ public class MainActivity extends AppCompatActivity {
 
         //set selected drawer item as checked
         menuItem.setChecked(true);
+//        nvDrawer.getMenu().getItem(menuItem.getItemId()).setChecked(true);
+
 
         //set toolbar title to checked item
 //        setTitle(menuItem.getItemId()); Returns false
         setTitle(menuItem.getTitle());
-        Toast.makeText(this,menuItem.getItemId(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this,menuItem.getItemId(), Toast.LENGTH_SHORT).show();
 
 
         //Close the drawer - NavigationView
