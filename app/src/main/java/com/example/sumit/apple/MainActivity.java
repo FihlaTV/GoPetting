@@ -7,22 +7,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private DrawerLayout mDrawer;
-    private Toolbar toolbar;
-    private NavigationView nvDrawer;
+    private DrawerLayout mDrawerLayout;
+    private Toolbar mToolbar;
+    private NavigationView mNavDrawer;
     private CharSequence mTitle;
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -32,26 +29,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Set a Toolbar to replace the ActionBar.
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
         // Find our drawer view
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        nvDrawer = (NavigationView) findViewById(R.id.nvView);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mNavDrawer = (NavigationView) findViewById(R.id.nvView);
 
         //Adding Navigation Header to NavigationView
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.navigation_header,null,false);
-        nvDrawer.addHeaderView(view);
+        mNavDrawer.addHeaderView(view);
 
         // Setup drawer view ; Set Navigation Item Selection Listener
-        nvDrawer.setNavigationItemSelectedListener(new NavigationItemSelectedListener());
+        mNavDrawer.setNavigationItemSelectedListener(new NavigationItemSelectedListener());
 
         //Setting listener for Drawer open/close events
 
         final CharSequence mDrawerTitle;
         mTitle = mDrawerTitle = getTitle();
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer,
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                  R.string.drawer_open, R.string.drawer_close) {
 
             /**
@@ -74,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         // Set the drawer toggle as the DrawerListener
-        mDrawer.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -103,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
         //set selected drawer item as checked
         menuItem.setChecked(true);
-//        nvDrawer.getMenu().getItem(menuItem.getItemId()).setChecked(true);
+//        mNavDrawer.getMenu().getItem(menuItem.getItemId()).setChecked(true);
 
 
         //set toolbar title to checked item
@@ -113,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Close the drawer - NavigationView
-        mDrawer.closeDrawer(nvDrawer);
+        mDrawerLayout.closeDrawer(mNavDrawer);
 
     }
     @Override
@@ -159,8 +156,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
-            mDrawer.closeDrawer(GravityCompat.START);
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
