@@ -10,10 +10,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView mNavDrawer;
     private CharSequence mTitle;
     private ActionBarDrawerToggle mDrawerToggle;
+    private FragmentManager mFragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,28 +92,61 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
-        Fragment fragment = new ContactFragment();
-        Bundle args = new Bundle();
-        //Passing selected item id
-        args.putInt(ContactFragment.ARG_QUOTE_NUMBER, menuItem.getItemId());
-        fragment.setArguments(args);
-        FragmentManager fragmentmanager = getSupportFragmentManager();
-        //swapping fragments
-        fragmentmanager.beginTransaction().replace(R.id.flContent,fragment).commit();
 
-        //set selected drawer item as checked
+        Fragment fragment = null;
+
+        Class FragmentClass;
+
+        switch(menuItem.getItemId()) {
+            case R.id.home:
+                FragmentClass = HomeFragment.class;
+                break;
+            case R.id.location:
+                FragmentClass = LocationFragment.class;
+                break;
+            case R.id.orders:
+                FragmentClass = OrdersFragment.class;
+                break;
+            case R.id.ContactUs:
+                FragmentClass = ContactUsFragment.class;
+                break;
+            case R.id.TC:
+                FragmentClass = TermsConditionsFragment.class;
+                break;
+            case R.id.AboutUs:
+                FragmentClass = AboutUsFragment.class;
+                break;
+            default:
+                FragmentClass = HomeFragment.class;
+        }
+
+        try {
+            fragment = (Fragment) FragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Insert the fragment by replacing any existing fragment
+        mFragmentManager = getSupportFragmentManager();
+
+//        Log.e("Count in Fragment", "" + mFragmentManager.getBackStackEntryCount());
+        mFragmentManager.beginTransaction().replace(R.id.flContent,fragment).addToBackStack(null).commit();
+//
+//        if (mFragmentManager.getBackStackEntryCount()>0){
+//            mFragmentManager.popBackStack();
+//        }
+//        else {
+//            mFragmentManager.beginTransaction().replace(R.id.flContent,fragment).addToBackStack(null).commit();
+//
+//        }
+
+
+        // Highlight the selected item, update the toolbar title, and close the drawer
         menuItem.setChecked(true);
-//        mNavDrawer.getMenu().getItem(menuItem.getItemId()).setChecked(true);
-
-
-        //set toolbar title to checked item
-//        setTitle(menuItem.getItemId()); Returns false
         setTitle(menuItem.getTitle());
-//        Toast.makeText(this,menuItem.getItemId(), Toast.LENGTH_SHORT).show();
-
-
-        //Close the drawer - NavigationView
+//        Toast.makeText(this, menuItem.getItemId(), Toast.LENGTH_SHORT).show();  //temp toast
         mDrawerLayout.closeDrawer(mNavDrawer);
+
 
     }
     @Override
@@ -156,10 +192,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
+//        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+//            mDrawerLayout.closeDrawer(GravityCompat.START);
+//        } else {
+//            super.onBackPressed();
+//        }
+
+        if (mFragmentManager.getBackStackEntryCount() == 0) {
             super.onBackPressed();
+            //additional code
+        } else {
+            mFragmentManager.popBackStack();
         }
 
     }

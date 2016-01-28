@@ -12,5 +12,12 @@
     <string name="AboutUs">About Us</string>
     <string name="drawer_open">Drawer Opened</string>
     <string name="drawer_close">Drawer Closed</string>
+    <string name="home">Home</string>
+    <string name="home_text">Home Text</string>
+    <string name="location_text">Location Text</string>
+    <string name="orders_text">Orders Text</string>
+    <string name="contact_us_text">Contact Us Text</string>
+    <string name="terms_conditon_text">Terms Condition Text</string>
+    <string name="about_us_text">About Us Text</string>
 
 </resources>

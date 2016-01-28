@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Home Screen -->
+    <item name="parentScrollView" type="id" />
+    <item name="mainContainerFrameLayout" type="id" />
+    <item name="offerSectionView" type="id" />
+    <item name="offerSectionViewPager" type="id" />
+    <item name="pagerDotsLinearLayout" type="id" />
+    <item name="home_grid_view" type="id" />
+
+    <!-- -->
+    <item name="fragment_text" type="id" />
+
+    <!-- Drawer View-->
+    <item name="home" type="id" />
+    <item name="location" type="id" />
+    <item name="orders" type="id" />
+    <item name="ContactUs" type="id" />
+    <item name="TC" type="id" />
+    <item name="AboutUs" type="id" />
+
+</resources>
+
+
