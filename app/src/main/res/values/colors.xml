@@ -4,6 +4,12 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <!-- TODO: Change these names to Blue-Grey when u're fine with color; Check these color codes again, they may be incorrect; These color codes are available at the bottom also-->
+    <!-- Name is Blue, but it's 'Blue-Grey'; Just a temp check-->
+    <color name="blue_colorPrimary">#607D8B</color>
+    <color name="blue_colorPrimaryDark">#455A64</color>
+    <color name="blue_colorAccent">#B0BEC5</color>
+    <!--<color name="blue_alpha_colorPrimaryDark">#801976D2</color>-->
 
     <color name="white">#ffffff</color>
     <color name="gray">#e0e0e0</color>
@@ -11,10 +17,11 @@
     <color name="black_light">#222222</color>
     <color name="transparent">#00000000</color>
 
-    <color name="blue_colorPrimary">#2196F3</color>
-    <color name="blue_colorPrimaryDark">#1976D2</color>
-    <color name="blue_colorAccent">#03A9F4</color>
-    <color name="blue_alpha_colorPrimaryDark">#801976D2</color>
+    <!-- Commented to change color to 'Blue-Grey' as per Google Color Pallete; -->
+    <!--<color name="blue_colorPrimary">#2196F3</color>-->
+    <!--<color name="blue_colorPrimaryDark">#1976D2</color>-->
+    <!--<color name="blue_colorAccent">#03A9F4</color>-->
+    <!--<color name="blue_alpha_colorPrimaryDark">#801976D2</color>-->
 
     <color name="green_colorPrimary">#4CAF50</color>
     <color name="green_colorPrimaryDark">#388E3C</color>

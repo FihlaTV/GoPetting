@@ -19,5 +19,8 @@
     <string name="contact_us_text">Contact Us Text</string>
     <string name="terms_conditon_text">Terms Condition Text</string>
     <string name="about_us_text">About Us Text</string>
+    <string name="product_1">Dog</string>
+    <string name="product_2">Cat</string>
+    <string name="product_3">Fish</string>
 
 </resources>

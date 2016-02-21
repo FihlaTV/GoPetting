@@ -7,11 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.sumit.apple.bus.UpdateActionBarTitleEvent;
+import com.example.sumit.apple.fragments.BaseFragment;
+
+import de.greenrobot.event.EventBus;
+
 /**
  * Created by Sumit on 1/24/2016.
  */
-public class ContactUsFragment extends Fragment {
-    public static final String ARG_QUOTE_NUMBER = "quote_number";
+public class ContactUsFragment extends BaseFragment {
+//    public static final String ARG_QUOTE_NUMBER = "quote_number";
 
     /**
      * Create a new instance of Fragment that will be initialized
@@ -28,8 +33,10 @@ public class ContactUsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        //Inflate Contact Us menu
-        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        /* Update fragment's title.*/
+        EventBus.getDefault().post(new UpdateActionBarTitleEvent(getString(R.string.ContactUs)));
+        //Inflate menu
+        View rootView = inflater.inflate(R.layout.fragment_contact, container, false);
         TextView text = (TextView) rootView.findViewById(R.id.fragment_text);
         text.setText(R.string.contact_us_text);
         return rootView;

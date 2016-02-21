@@ -18,6 +18,8 @@
     <item name="ContactUs" type="id" />
     <item name="TC" type="id" />
     <item name="AboutUs" type="id" />
+    <item name="offers_image" type="id" />
+    <item name="layout_fragment_home_pager" type="id" />
 
 </resources>
 
