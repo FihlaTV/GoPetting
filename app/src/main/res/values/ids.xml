@@ -20,6 +20,7 @@
     <item name="AboutUs" type="id" />
     <item name="offers_image" type="id" />
     <item name="layout_fragment_home_pager" type="id" />
+    <item name="fastadapter_product_item_id" type="id" />
 
 </resources>
 

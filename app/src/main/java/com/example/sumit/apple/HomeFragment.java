@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.example.sumit.apple.bus.CheckMenuItemEvent;
 import com.example.sumit.apple.bus.UpdateActionBarTitleEvent;
 import com.example.sumit.apple.fragments.BaseFragment;
 import com.example.sumit.apple.fragments.OffersScreenFragment;
+import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 
 import java.util.List;
 
@@ -31,7 +33,8 @@ public class HomeFragment extends BaseFragment {
     private static final String ARG_QUOTE_NUMBER = "quote_number";
     private ViewPager mHomePager;
     private TextView mHomeText;
-    private List<Card> cards;     //TODO: Cards Recycler View: Check whether it should be ArrayList<Card> contacts;
+//    private List<Card> cards;     //TODO: Cards Recycler View: Check whether it should be ArrayList<Card> contacts;
+    private List<ProductItem> mProducts;
 
 
     /**
@@ -70,18 +73,42 @@ public class HomeFragment extends BaseFragment {
 
         //TODO: RecyclerView Cards; Need to update this for 3 Cards.
 
-        // Lookup the recyclerview in activity layout
-        RecyclerView rvCards = (RecyclerView) rootView.findViewById(R.id.cards_recycler_view);
 
-        // Initialize contacts
-        cards = Card.createCardsList();
-        // Create adapter passing in the sample user data
-        CardsAdapter adapter = new CardsAdapter(cards);
-        // Attach the adapter to the recyclerview to populate items
-        rvCards.setAdapter(adapter);
+        //Commented. Below code is for Cards
+
+//        // Lookup the recyclerview in activity layout
+//        RecyclerView rvCards = (RecyclerView) rootView.findViewById(R.id.cards_recycler_view);
+//        // Initialize contacts
+//        cards = Card.createCardsList();
+//        // Create adapter passing in the sample user data
+//        CardsAdapter adapter = new CardsAdapter(cards);
+//        // Attach the adapter to the recyclerview to populate items
+//        rvCards.setAdapter(adapter);
+//        // Set layout manager to position the items
+//        rvCards.setLayoutManager(new LinearLayoutManager(getContext()));     //TODO: Cards Recycler View: changed 'this' to 'getContext()'
+//        // That's all!
+
+
+        // Lookup the recyclerview in activity layout
+        RecyclerView rvProducts = (RecyclerView) rootView.findViewById(R.id.products_recycler_view);
+
+        //create our FastAdapter which will manage everything
+        FastItemAdapter fastAdapter = new FastItemAdapter();
+
+        //set our adapters to the RecyclerView
+        //we wrap our FastAdapter inside the ItemAdapter -> This allows us to chain adapters for more complex useCases
+        rvProducts.setAdapter(fastAdapter);
+
+        //set the items to your ItemAdapter
+
+        // Initialize ProductItems
+        mProducts= ProductData.getProductItems();
+        fastAdapter.add(mProducts);
+
         // Set layout manager to position the items
-        rvCards.setLayoutManager(new LinearLayoutManager(getContext()));     //TODO: Cards Recycler View: changed 'this' to 'getContext()'
+        rvProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));     //TODO: Cards Recycler View: changed 'this' to 'getContext()'
         // That's all!
+
 
 
 

@@ -1,14 +1,18 @@
 package com.example.sumit.apple.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sumit.apple.Card;
+import com.example.sumit.apple.DogShoppingActivity;
 import com.example.sumit.apple.R;
 
 import java.util.List;
@@ -39,7 +43,24 @@ public class CardsAdapter extends
 
             photoImageView = (ImageView) itemView.findViewById(R.id.product_photo);
             nameTextView = (TextView) itemView.findViewById(R.id.product_name);
+
+
+            //Start Another activity
+/*            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("CardsAdapter", "Element clicked.");
+                    Toast.makeText(view.getContext(), "os version is: ", Toast.LENGTH_SHORT).show();
+                    view.getContext().startActivity(new Intent(view.getContext(), DogShoppingActivity.class));
+
+                }
+            });*/
+
+
+
         }
+
+
     }
 
     // Store a member variable for the contacts
@@ -58,6 +79,16 @@ public class CardsAdapter extends
 
         // Inflate the custom layout
         View cardView = inflater.inflate(R.layout.item_card, parent, false);
+
+        cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+//                    Log.d("CardsAdapter", "Element clicked.");
+                    Toast.makeText(view.getContext(), "os version is: ", Toast.LENGTH_SHORT).show();
+//                    view.getContext().startActivity(new Intent(view.getContext(), DogShoppingActivity.class));
+
+                }
+            });
 
         // Return a new holder instance
         ViewHolder viewHolder = new ViewHolder(cardView);

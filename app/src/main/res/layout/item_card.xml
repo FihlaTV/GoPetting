@@ -74,6 +74,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/product_photo"
                 android:scaleType="fitXY"
+                android:clickable = "true"
                 />
 
             <TextView

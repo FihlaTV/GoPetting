@@ -22,5 +22,6 @@
     <string name="product_1">Dog</string>
     <string name="product_2">Cat</string>
     <string name="product_3">Fish</string>
+    <string name="title_activity_dog_shopping">DogShoppingActivity</string>
 
 </resources>
