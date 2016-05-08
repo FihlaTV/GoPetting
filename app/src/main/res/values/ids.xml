@@ -22,6 +22,16 @@
     <item name="layout_fragment_home_pager" type="id" />
     <item name="fastadapter_product_item_id" type="id" />
 
+
+    <item name="ll_filter_sort_container" type="id" />
+    <item name="ll_product_list_sort" type="id" />
+    <item name="iv_product_list_sort_icon" type="id" />
+    <item name="tv_product_list_sort_label" type="id" />
+    <item name="ll_product_list_filter" type="id" />
+    <item name="iv_product_list_filter_icon" type="id" />
+    <item name="tv_product_list_filter_label" type="id" />
+
+
 </resources>
 
 

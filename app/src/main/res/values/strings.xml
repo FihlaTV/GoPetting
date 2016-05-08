@@ -19,9 +19,22 @@
     <string name="contact_us_text">Contact Us Text</string>
     <string name="terms_conditon_text">Terms Condition Text</string>
     <string name="about_us_text">About Us Text</string>
+
     <string name="product_1">Dog</string>
     <string name="product_2">Cat</string>
     <string name="product_3">Fish</string>
     <string name="title_activity_dog_shopping">DogShoppingActivity</string>
+
+    <string name="menu_sort">Sort</string>
+    <string name="menu_filter">Filter</string>
+
+    <!--fonts-->
+    <string name="typeface_bold">fonts/Whitney-Semibold-Bas.otf</string>
+    <string name="typeface_light">fonts/Whitney-Book-Bas.otf</string>
+    <string name="typeface_light_italics">fonts/Whitney-BookItal-Bas.otf</string>
+    <string name="typeface_regular">fonts/Whitney-Book-Bas.otf</string>
+    <string name="typeface_stylish">fonts/Leitura-Display-Swashes.otf</string>
+
+
 
 </resources>

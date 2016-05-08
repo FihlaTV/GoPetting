@@ -17,6 +17,9 @@
     <color name="black_light">#222222</color>
     <color name="transparent">#00000000</color>
 
+
+    <color name="separator_light_gray">#EEEEEE</color>
+
     <!-- Commented to change color to 'Blue-Grey' as per Google Color Pallete; -->
     <!--<color name="blue_colorPrimary">#2196F3</color>-->
     <!--<color name="blue_colorPrimaryDark">#1976D2</color>-->

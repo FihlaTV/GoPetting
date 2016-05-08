@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:amdroid="http://schemas.android.com/tools"
+    android:id="@id/ll_filter_sort_container"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_top_bar_height"
+    android:background="@android:color/white"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@id/ll_product_list_sort"
+        android:layout_width="0.0dip"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:background="?selectableItemBackground"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@id/iv_product_list_sort_icon"
+            android:layout_width="@dimen/top_bar_image_size"
+            android:layout_height="@dimen/top_bar_image_size"
+            android:layout_gravity="center_vertical"
+            android:clickable="false"
+            android:contentDescription="@string/menu_sort"
+            android:src="@drawable/ic_sort" />
+
+        <TextView
+            android:id="@id/tv_product_list_sort_label"
+            amdroid:typeface="@string/typeface_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:paddingLeft="@dimen/text_view_half_margin"
+            android:text="@string/menu_sort"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_tiny" />
+    </LinearLayout>
+
+    <View style="@style/HorizontalSeparator" />
+
+    <LinearLayout
+        android:id="@id/ll_product_list_filter"
+        android:layout_width="0.0dip"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:background="?selectableItemBackground"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@id/iv_product_list_filter_icon"
+            android:layout_width="@dimen/top_bar_image_size"
+            android:layout_height="@dimen/top_bar_image_size"
+            android:layout_gravity="center_vertical"
+            android:clickable="false"
+            android:contentDescription="@string/menu_filter"
+            android:src="@drawable/ic_filter" />
+
+        <TextView
+            android:id="@id/tv_product_list_filter_label"
+            android:typeface="@string/typeface_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:paddingLeft="@dimen/text_view_half_margin"
+            android:text="@string/menu_filter"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_tiny" />
+    </LinearLayout>
+</LinearLayout>

@@ -5,4 +5,8 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="home_offer_view_pager_height">220dp</dimen>
 
+    <dimen name="list_top_bar_height">44.0dip</dimen>
+    <dimen name="top_bar_image_size">24.0dip</dimen>
+    <dimen name="text_view_half_margin">4.0dip</dimen>
+    <dimen name="text_tiny">12.0sp</dimen>
 </resources>
