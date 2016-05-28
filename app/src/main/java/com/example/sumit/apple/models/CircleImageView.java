@@ -1,4 +1,4 @@
-package com.example.sumit.apple;
+package com.example.sumit.apple.models;
 
 //Ref: CircleImageView-master_hdodenhof
 
@@ -26,6 +26,8 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+
+import com.example.sumit.apple.R;
 
 public class CircleImageView extends ImageView {
 

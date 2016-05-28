@@ -1,4 +1,4 @@
-package com.example.sumit.apple;
+package com.example.sumit.apple.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,18 +6,17 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.sumit.apple.adapters.CardsAdapter;
+import com.example.sumit.apple.models.ProductData;
+import com.example.sumit.apple.models.ProductItem;
+import com.example.sumit.apple.R;
 import com.example.sumit.apple.bus.CheckMenuItemEvent;
 import com.example.sumit.apple.bus.UpdateActionBarTitleEvent;
-import com.example.sumit.apple.fragments.BaseFragment;
-import com.example.sumit.apple.fragments.OffersScreenFragment;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 
 import java.util.List;
@@ -41,7 +40,7 @@ public class HomeFragment extends BaseFragment {
      * Create a new instance of Fragment that will be initialized
      * with the given arguments.
      */
-    static HomeFragment newInstance() {
+   public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_QUOTE_NUMBER, "Home Argument Text");

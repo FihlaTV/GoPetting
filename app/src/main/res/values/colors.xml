@@ -19,6 +19,8 @@
 
 
     <color name="separator_light_gray">#EEEEEE</color>
+    <color name="product_list_item_separator_color">#ffd6dbe3</color>
+    <color name="ultra_dark">#ff29303f</color>
 
     <!-- Commented to change color to 'Blue-Grey' as per Google Color Pallete; -->
     <!--<color name="blue_colorPrimary">#2196F3</color>-->

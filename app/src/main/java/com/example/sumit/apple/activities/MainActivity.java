@@ -1,4 +1,4 @@
-package com.example.sumit.apple;
+package com.example.sumit.apple.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -13,7 +13,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.sumit.apple.bus.CheckMenuItemEvent;
+import com.example.sumit.apple.fragments.AboutUsFragment;
+import com.example.sumit.apple.fragments.ContactUsFragment;
+import com.example.sumit.apple.fragments.HomeFragment;
+import com.example.sumit.apple.fragments.LocationFragment;
+import com.example.sumit.apple.fragments.OrdersFragment;
+import com.example.sumit.apple.R;
+import com.example.sumit.apple.fragments.TermsConditionsFragment;
 import com.example.sumit.apple.bus.MoveToFragmentEvent;
 import com.example.sumit.apple.bus.UpdateActionBarTitleEvent;
 

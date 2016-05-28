@@ -1,4 +1,6 @@
-package com.example.sumit.apple;
+package com.example.sumit.apple.models;
+
+import com.example.sumit.apple.R;
 
 import java.util.ArrayList;
 import java.util.List;
