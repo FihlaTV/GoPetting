@@ -2,16 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@id/product_list_item_container"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/product_list_item_background">
 
     <ImageView
         android:id="@id/iv_product_list_item"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/item_dog_image_height"
+        android:scaleType="fitXY"
 
-        android:padding="0.5dip" />
+         />
 
     <TextView
         android:id="@id/tv_item_name"

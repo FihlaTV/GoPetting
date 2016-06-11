@@ -117,8 +117,9 @@ public class RetrofitServiceGenerator {
 
 //                viewHolder.mItemImageView.setImageResource(imageResource);
 
-//                Glide.with(ctx).load(imageUrl).placeholder(R.drawable.ic_shopping_placeholder).into(viewHolder.mItemImageView);
-                Glide.with(ctx).load(imageUrl).into(viewHolder.mItemImageView);
+
+//                Glide.with(ctx).load(imageUrl).placeholder(R.drawable.ic_shopping_placeholder).override(350,448).into(viewHolder.mItemImageView);
+                Glide.with(ctx).load(imageUrl).placeholder(R.drawable.ic_shopping_placeholder).into(viewHolder.mItemImageView);
 
 
 //                Picasso.with(ctx).load(imageUrl).into(viewHolder.mItemImageView);
