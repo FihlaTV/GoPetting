@@ -1,12 +1,14 @@
 package com.example.sumit.apple.network;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.StringLoader;
 import com.example.sumit.apple.R;
 import com.google.gson.annotations.SerializedName;
 import com.mikepenz.fastadapter.items.AbstractItem;
@@ -78,9 +80,11 @@ public class RetrofitServiceGenerator {
         private String name;
 
         @SerializedName("unit_price")
-        private int unitPrice;
+        private String unitPrice;
 
-        private int discount;
+        private String mrp;
+
+        private String discount;
 
         private int likes;
 
@@ -113,20 +117,17 @@ public class RetrofitServiceGenerator {
                 //get the context
                 Context ctx = viewHolder.itemView.getContext();
 
-                //bind our data4
-
-//                viewHolder.mItemImageView.setImageResource(imageResource);
-
-
-//                Glide.with(ctx).load(imageUrl).placeholder(R.drawable.ic_shopping_placeholder).override(350,448).into(viewHolder.mItemImageView);
                 Glide.with(ctx).load(imageUrl).placeholder(R.drawable.ic_shopping_placeholder).into(viewHolder.mItemImageView);
 
-
-//                Picasso.with(ctx).load(imageUrl).into(viewHolder.mItemImageView);
-//                viewHolder.mItemImageView.setImageResource(R.drawable.hugh);
                 viewHolder.mItemName.setText(name);
-                viewHolder.mItemPrice.setText(String.valueOf(unitPrice));
-                viewHolder.mItemlikes.setText(String.valueOf(likes));
+                viewHolder.mItemPrice.setText(unitPrice);
+
+                viewHolder.mItemMRP.setText(mrp);
+                viewHolder.mItemMRP.setPaintFlags(viewHolder.mItemMRP.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG); // To strike through text
+
+                viewHolder.mItemDiscount.setText(discount);
+
+//                viewHolder.mItemlikes.setText(String.valueOf(likes));
 
 
             }
@@ -136,7 +137,9 @@ public class RetrofitServiceGenerator {
                 protected ImageView mItemImageView;
                 protected TextView mItemName;
                 protected TextView mItemPrice;
-                protected TextView mItemlikes;
+                protected TextView mItemMRP;
+                protected TextView mItemDiscount;
+//                protected TextView mItemlikes;
 
 
                 public ViewHolder(View view) {
@@ -144,7 +147,9 @@ public class RetrofitServiceGenerator {
                     this.mItemImageView = (ImageView) view.findViewById(R.id.iv_product_list_item);
                     this.mItemName = (TextView) view.findViewById(R.id.tv_item_name);
                     this.mItemPrice = (TextView) view.findViewById(R.id.tv_item_unit_price);
-                    this.mItemlikes = (TextView) view.findViewById(R.id.tv_item_likes);
+                    this.mItemMRP = (TextView) view.findViewById(R.id.tv_item_mrp);
+                    this.mItemDiscount = (TextView) view.findViewById(R.id.tv_item_discount);
+//                    this.mItemlikes = (TextView) view.findViewById(R.id.tv_item_likes);
 
                 }
             }

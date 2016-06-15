@@ -1,18 +1,13 @@
 package com.example.sumit.apple.activities;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import com.example.sumit.apple.R;
-import com.example.sumit.apple.models.ProductData;
 import com.example.sumit.apple.network.RetrofitServiceGenerator;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 
@@ -32,6 +27,7 @@ public class DogShoppingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dog_shopping);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);     //TODO: Check if ButterKnife should be used for whole app
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.dogActivityTitle);
 
 
 
@@ -40,6 +36,8 @@ public class DogShoppingActivity extends AppCompatActivity {
         RecyclerView rvDogs = (RecyclerView) findViewById(R.id.dogs_recycler_view);
 
         fastAdapterDogs = new FastItemAdapter();
+
+
 
         //we wrap our FastAdapter inside the ItemAdapter -> This allows us to chain adapters for more complex useCases
         rvDogs.setAdapter(fastAdapterDogs);

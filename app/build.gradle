@@ -18,7 +18,7 @@ android {
         }
     }
 }
-//TODO: Change Fastadapter version to latest one; Check and add proguard configuration details for all all libraries from their respective sites
+//TODO: Change Fastadapter(and other libraries also) version to latest one; Check and add proguard configuration details for all all libraries from their respective sites
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
@@ -26,7 +26,7 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.0'
     compile 'de.greenrobot:eventbus:2.4.1'
-    compile('com.mikepenz:fastadapter:1.2.4@aar') {
+    compile('com.mikepenz:fastadapter:1.5.2@aar') {
         transitive = true
     }
     // Retrofit, OkHttp & Glide

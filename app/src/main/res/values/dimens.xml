@@ -12,4 +12,9 @@
 
     <dimen name="item_text_size">13.0sp</dimen>
     <dimen name="item_dog_image_height">230dp</dimen>
+
+    <!--DogShoppingActivity-->
+    <dimen name="item_mrp_text_size">11.0sp</dimen>
+    <dimen name="item_discount_text_size">10.0sp</dimen>
+
 </resources>

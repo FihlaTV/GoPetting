@@ -34,8 +34,11 @@
     <item name="iv_product_list_item" type="id" />
     <item name="tv_item_name" type="id" />
     <item name="tv_item_unit_price" type="id" />
+    <item name="tv_item_discount" type="id" />
     <item name="tv_item_likes" type="id" />
     <item name="fastadapter_dog_item_id" type="id" />
+    <item name="tv_item_mrp" type="id" />
+    <item name="iv_item_likes" type="id" />
 
 
 </resources>

@@ -10,11 +10,10 @@
         android:id="@id/iv_product_list_item"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/item_dog_image_height"
-        android:scaleType="fitXY"
+        android:layout_margin="0.1dp"
+        android:scaleType="fitXY" />
 
-         />
-
-    <TextView
+    <com.example.sumit.apple.views.TypefaceTextView
         android:id="@id/tv_item_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -26,9 +25,10 @@
         android:paddingTop="8.0dip"
         android:singleLine="true"
         android:textColor="@color/ultra_dark"
-        android:textSize="@dimen/item_text_size" />
+        android:textSize="@dimen/item_text_size"
+        app:customTypeface="@string/typeface_regular" />
 
-    <TextView
+    <com.example.sumit.apple.views.TypefaceTextView
         android:id="@id/tv_item_unit_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,10 +37,42 @@
         android:lines="1"
         android:paddingLeft="10.0dip"
         android:textColor="@color/ultra_dark"
-        android:textSize="@dimen/item_text_size" />
+        android:textSize="@dimen/item_text_size"
+        app:customTypeface="@string/typeface_bold" />
 
-    <TextView
-        android:id="@id/tv_item_likes"
+
+    <com.example.sumit.apple.views.TypefaceTextView
+        android:id="@id/tv_item_mrp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tv_item_unit_price"
+        android:layout_below="@id/tv_item_name"
+        android:layout_marginLeft="4.0dip"
+        android:layout_toRightOf="@id/tv_item_unit_price"
+        android:lines="1"
+        android:paddingTop="2.0dip"
+        android:textColor="@color/item_mrp_color"
+        android:textSize="@dimen/item_mrp_text_size"
+        app:customTypeface="@string/typeface_bold" />
+
+    <com.example.sumit.apple.views.TypefaceTextView
+        android:id="@id/tv_item_discount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tv_item_unit_price"
+        android:layout_below="@id/tv_item_name"
+        android:layout_marginLeft="4.0dip"
+        android:layout_toRightOf="@id/tv_item_mrp"
+        android:lines="1"
+        android:paddingTop="2.0dip"
+        android:textColor="@color/red"
+        android:textSize="@dimen/item_discount_text_size"
+        app:customTypeface="@string/typeface_regular"
+        />
+
+
+    <ImageView
+        android:id="@id/iv_item_likes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -49,6 +81,6 @@
         android:paddingLeft="10.0dip"
         android:paddingRight="5.0dip"
         android:paddingTop="10.0dip"
-        android:textColor="@color/ultra_dark"
-        android:textSize="@dimen/item_text_size" />
+        android:src="@drawable/ic_heart" />
+
 </RelativeLayout>

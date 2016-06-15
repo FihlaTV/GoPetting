@@ -28,49 +28,13 @@
     <!--<color name="blue_colorAccent">#03A9F4</color>-->
     <!--<color name="blue_alpha_colorPrimaryDark">#801976D2</color>-->
 
-    <color name="green_colorPrimary">#4CAF50</color>
-    <color name="green_colorPrimaryDark">#388E3C</color>
-    <color name="green_colorAccent">#8BC34A</color>
-    <color name="green_alpha_colorPrimaryDark">#80388E3C</color>
-
-    <color name="red_colorPrimary">#F44336</color>
-    <color name="red_colorPrimaryDark">#D32F2F</color>
-    <color name="red_alpha_colorPrimaryDark">#80D32F2F</color>
-
-    <color name="indigo_colorPrimary">#3F51B5</color>
-    <color name="indigo_colorPrimaryDark">#30379F</color>
-    <color name="indigo_alpha_colorPrimaryDark">#8030379F</color>
-
-    <color name="orange_colorPrimary">#FF9800</color>
-    <color name="orange_colorPrimaryDark">#F57C00</color>
-    <color name="orange_alpha_colorPrimaryDark">#80F57C00</color>
-
-    <color name="lime_colorPrimary">#CDDC39</color>
-    <color name="lime_colorPrimaryDark">#AFB42B</color>
-    <color name="lime_alpha_colorPrimaryDark">#80AFB42B</color>
-
-    <color name="cyan_colorPrimary">#00BCD4</color>
-    <color name="cyan_colorPrimaryDark">#0097A7</color>
-    <color name="cyan_alpha_colorPrimaryDark">#800097A7</color>
-
-    <color name="brown_colorPrimary">#795548</color>
-    <color name="brown_colorPrimaryDark">#5D4037</color>
-    <color name="brown_alpha_colorPrimaryDark">#805D4037</color>
-
-    <color name="teal_colorPrimary">#009688</color>
-    <color name="teal_colorPrimaryDark">#00796B</color>
-    <color name="teal_alpha_colorPrimaryDark">#8000796B</color>
-
-    <color name="blue_gray_colorPrimary">#607D8B</color>
-    <color name="blue_gray_colorPrimaryDark">#80455A64</color>
-    <color name="blue_gray_alpha_colorPrimaryDark">#80455A64</color>
-
-    <color name="purple_colorPrimary">#673AB7</color>
-    <color name="purple_colorPrimaryDark">#512DA8</color>
-    <color name="purple_alpha_colorPrimaryDark">#80512DA8</color>
-
 
 
     <color name="dark">#FF222222</color>
     <color name="light">#FFEEEEEE</color>
+
+    <!--DogShoppingActivity-->
+    <color name="item_mrp_color">#8829303f</color>
+    <color name="red">#fff16565</color>
+
 </resources>

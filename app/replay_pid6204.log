@@ -1,0 +1,37 @@
+JvmtiExport can_access_local_variables 0
+JvmtiExport can_hotswap_or_post_breakpoint 0
+JvmtiExport can_post_on_exceptions 0
+# 292 ciObject found
+ciMethod java/lang/Object <init> ()V 4097 1 76271 0 0
+ciMethod java/lang/Object getClass ()Ljava/lang/Class; 2049 1 256 0 -1
+ciMethod java/lang/Object hashCode ()I 2049 1 256 0 -1
+ciMethod java/lang/Object equals (Ljava/lang/Object;)Z 4097 1 749 0 0
+ciMethod java/lang/String equals (Ljava/lang/Object;)Z 2881 13065 2222 0 -1
+ciMethod java/lang/String compareTo (Ljava/lang/String;)I 1761 40961 1362 0 -1
+ciMethod java/lang/String hashCode ()I 2761 32769 1647 0 304
+ciMethod java/lang/Class getName ()Ljava/lang/String; 177 1 22 0 -1
+ciMethod java/util/ArrayList size ()I 1321 1 165 0 0
+ciMethod java/util/ArrayList elementData (I)Ljava/lang/Object; 3121 1 27439 0 0
+ciMethod java/util/ArrayList get (I)Ljava/lang/Object; 3121 1 22067 0 112
+ciMethod java/util/ArrayList rangeCheck (I)V 3121 1 27438 0 0
+ciMethod java/util/HashMap hash (Ljava/lang/Object;)I 3265 1 17999 0 0
+ciMethod java/util/HashMap get (Ljava/lang/Object;)Ljava/lang/Object; 3201 1 8985 0 944
+ciMethod java/util/HashMap getNode (ILjava/lang/Object;)Ljava/util/HashMap$Node; 2737 97 5763 0 848
+ciMethod java/util/HashMap put (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object; 2049 1 2632 0 0
+ciMethod java/util/HashMap putVal (ILjava/lang/Object;Ljava/lang/Object;ZZ)Ljava/lang/Object; 2049 249 2632 0 0
+ciMethod java/util/HashMap resize ()[Ljava/util/HashMap$Node; 153 2481 277 0 0
+ciMethod java/util/HashMap treeifyBin ([Ljava/util/HashMap$Node;I)V 0 0 1 0 0
+ciMethod java/util/HashMap newNode (ILjava/lang/Object;Ljava/lang/Object;Ljava/util/HashMap$Node;)Ljava/util/HashMap$Node; 2577 1 2819 0 0
+ciMethod java/util/HashMap replacementTreeNode (Ljava/util/HashMap$Node;Ljava/util/HashMap$Node;)Ljava/util/HashMap$TreeNode; 0 0 1 0 -1
+ciMethod java/util/HashMap afterNodeAccess (Ljava/util/HashMap$Node;)V 2633 1 260 0 0
+ciMethod java/util/HashMap afterNodeInsertion (Z)V 3073 1 1412 0 0
+ciMethod java/util/HashMap$Node <init> (ILjava/lang/Object;Ljava/lang/Object;Ljava/util/HashMap$Node;)V 2721 1 2843 0 0
+ciMethodData java/lang/Object <init> ()V 2 76337 orig 264 184 158 56 106 0 0 0 0 136 4 169 5 0 0 0 0 32 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 0 137 65 9 0 1 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 3 0 3 0 0 0 0 0 0 0 255 255 255 255 0 0 0 0 0 0 0 0 data 0 oops 0
+ciMethod java/util/HashMap$TreeNode getTreeNode (ILjava/lang/Object;)Ljava/util/HashMap$TreeNode; 0 0 1 0 -1
+ciMethod java/util/HashMap$TreeNode treeify ([Ljava/util/HashMap$Node;)V 0 0 1 0 -1
+ciMethod java/util/HashMap$TreeNode putTreeVal (Ljava/util/HashMap;[Ljava/util/HashMap$Node;ILjava/lang/Object;Ljava/lang/Object;)Ljava/util/HashMap$TreeNode; 0 0 1 0 -1
+ciMethod java/util/HashMap$TreeNode split (Ljava/util/HashMap;[Ljava/util/HashMap$Node;II)V 0 0 1 0 -1
+ciMethodData java/lang/String hashCode ()I 2 23280 orig 264 184 158 56 106 0 0 0 0 128 79 169 5 0 0 0 0 152 1 0 0 32 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 16 0 0 177 40 0 0 129 87 2 0 0 0 0 0 0 0 0 0 2 0 0 0 1 0 11 0 4 0 1 0 120 0 0 0 255 255 255 255 7 0 6 0 0 0 0 0 data 15 0x60007 0x1e0 0x78 0x336 0xe0007 0x1 0x58 0x335 0x1e0007 0x335 0x38 0x4ab6 0x2d0003 0x4ab6 0xffffffffffffffe0 oops 0
+ciMethod java/util/HashSet add (Ljava/lang/Object;)Z 4097 1 467 0 0
+ciMethodData java/util/HashMap hash (Ljava/lang/Object;)I 2 17999 orig 264 184 158 56 106 0 0 0 0 184 127 183 5 0 0 0 0 176 1 0 0 32 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 152 1 0 0 185 37 2 0 1 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 6 0 3 0 1 0 104 0 0 0 255 255 255 255 7 0 1 0 0 0 0 0 data 13 0x10007 0x44b6 0x38 0x0 0x50003 0x0 0x48 0x90005 0x283d 0x205ff50 0x3d 0x205f890 0xc77 oops 2 9 java/security/ProtectionDomain 11 java/lang/String
+ciMethodData java/util/HashMap putVal (ILjava/lang/Object;Ljava/lang/Object;ZZ)Ljava/lang/Object; 2 3099 orig 264 184 158 56 106 0 0 0 0 136 140 183 5 0 0 0 0 176 6 0 0 224 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 217 88 0 0 145 4 0 0 0 0 0 0 0 0 0 0 2 0 0 0 1 0 50 0 3 0 1 0 64 5 0 0 255 255 255 255 7 0 7 0 0 0 0 0 data 168 0x70007 0xfa 0x40 0xa21 0x100007 0xa21 0x50 0x0 0x140005 0x0 0x967f600 0xfa 0x0 0x0 0x2c0007 0x36c 0x98 0x7ae 0x380005 0x0 0x967f600 0x7ae 0x0 0x0 0x3b0004 0x0 0x9620970 0x7af 0x0 0x0 0x3c0003 0x7af 0x3d0 0x450007 0x279 0xc8 0xf3 0x510007 0xde 0x90 0x15 0x550007 0x0 0x88 0x15 0x5b0005 0x0 0x9768560 0x1 0x96792d0 0x14 0x5e0007 0x15 0x38 0x0 0x650003 0xde 0x278 0x6a0004 0xfffffffffffffd72 0x0 0x0 0x0 0x0 0x6d0007 0x28e 0x98 0x0 0x720004 0x0 0x0 0x0 0x0 0x0 0x7b0005 0x0 0x0 0x0 0x0 0x0 0x800003 0x0 0x1b0 0x8e0007 0xa4 0xb8 0x27c 0x980005 0x0 0x967f600 0x27c 0x0 0x0 0xa20007 0x27c 0x148 0x0 0xa90005 0x0 0x0 0x0 0x0 0x0 0xac0003 0x0 0xf8 0xb50007 0x8e 0xc8 0x16 0xc10007 0x12 0xc0 0x4 0xc50007 0x0 0x88 0x4 0xcb0005 0x0 0x96792d0 0x4 0x0 0x0 0xce0007 0x4 0x38 0x0 0xd10003 0x0 0x30 0xdb0003 0x92 0xfffffffffffffe80 0xe00007 0x27c 0x90 0xf0 0xec0007 0xf0 0x40 0x0 0xf10007 0x0 0x20 0x0 0xfd0005 0x0 0x967f600 0xf0 0x0 0x0 0x11c0007 0xa22 0x50 0x8 0x1200005 0x0 0x967f600 0x8 0x0 0x0 0x1270005 0x0 0x967f600 0xa2a 0x0 0x0 oops 10 10 java/util/HashMap 20 java/util/HashMap 26 java/util/HashMap$Node 47 com/android/dx/rop/code/Rop 49 com/android/dx/rop/code/RegisterSpec 89 java/util/HashMap 120 com/android/dx/rop/code/RegisterSpec

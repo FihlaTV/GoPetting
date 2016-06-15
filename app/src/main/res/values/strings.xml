@@ -35,6 +35,9 @@
     <string name="typeface_regular">fonts/Whitney-Book-Bas.otf</string>
     <string name="typeface_stylish">fonts/Leitura-Display-Swashes.otf</string>
 
+<!--DogShoppingActivity-->
+
+    <string name="dogActivityTitle">Dogs</string>
 
 
 </resources>
