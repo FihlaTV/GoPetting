@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.sumit.apple.R;
 import com.example.sumit.apple.network.RetrofitServiceGenerator;
@@ -20,6 +21,8 @@ import retrofit2.Response;
 public class DogShoppingActivity extends AppCompatActivity {
 
     public static FastItemAdapter fastAdapterDogs;
+    private boolean loading = true;
+    int pastVisibleItems, visibleItemCount, totalItemCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +50,9 @@ public class DogShoppingActivity extends AppCompatActivity {
 
         initAdapterData();
 
+        GridLayoutManager gridLayoutManager=new GridLayoutManager(this, 2);
         // Set layout manager to position the items
-        rvDogs.setLayoutManager(new GridLayoutManager(this, 2));
+        rvDogs.setLayoutManager(gridLayoutManager);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -56,7 +60,6 @@ public class DogShoppingActivity extends AppCompatActivity {
 //    public static void addAdapterData(List<RetrofitServiceGenerator.Dog> dogs){
 //        fastAdapterDogs.add(dogs);
 //    }
-
 
     public void initAdapterData() {
 

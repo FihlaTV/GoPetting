@@ -2,6 +2,7 @@ package com.example.sumit.apple.network;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -80,16 +81,20 @@ public class RetrofitServiceGenerator {
         private String name;
 
         @SerializedName("unit_price")
-        private String unitPrice;
+        private int unitPrice;
 
-        private String mrp;
+        private int mrp;
 
-        private String discount;
+        private int discount;
 
         private int likes;
 
         @SerializedName("image_url")
         private String imageUrl;
+
+        private int gender;
+
+        private int age;
 
 
         //Adding and Modifying code as required for FastAdapter
@@ -120,26 +125,50 @@ public class RetrofitServiceGenerator {
                 Glide.with(ctx).load(imageUrl).placeholder(R.drawable.ic_shopping_placeholder).into(viewHolder.mItemImageView);
 
                 viewHolder.mItemName.setText(name);
-                viewHolder.mItemPrice.setText(unitPrice);
+                viewHolder.mItemPrice.setText("Rs."+ unitPrice);
 
-                viewHolder.mItemMRP.setText(mrp);
-                viewHolder.mItemMRP.setPaintFlags(viewHolder.mItemMRP.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG); // To strike through text
 
-                viewHolder.mItemDiscount.setText(discount);
+                if(discount > 0){
+
+                    viewHolder.mItemMRP.setText("Rs." + mrp);
+                    viewHolder.mItemMRP.setPaintFlags(viewHolder.mItemMRP.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG); // To strike through text
+                    viewHolder.mItemDiscount.setText(discount + "% Off");
+
+                }
+
+                viewHolder.mItemDescription.setText(setItemDescription(gender,age));
+
+//                viewHolder.mItemLikes.setImageResource(R.drawable.ic_heart);
+
+
+                viewHolder.mItemLikes.setColorFilter(ContextCompat.getColor(ctx, R.color.black)); //TODO: To dynamically change color of icon
 
 //                viewHolder.mItemlikes.setText(String.valueOf(likes));
 
 
             }
 
-            //The viewHolder used for this item. This viewHolder is always reused by the RecyclerView so scrolling is blazing fast
+
+        private String setItemDescription(int gender,int age) {
+            if(gender==0){
+                return "MALE/"+age+" MONTHS";
+            }
+            else {
+                return "FEMALE/"+age+" MONTHS";
+            }
+
+        }
+
+
+        //The viewHolder used for this item. This viewHolder is always reused by the RecyclerView so scrolling is blazing fast
             protected static class ViewHolder extends RecyclerView.ViewHolder {
                 protected ImageView mItemImageView;
                 protected TextView mItemName;
                 protected TextView mItemPrice;
                 protected TextView mItemMRP;
                 protected TextView mItemDiscount;
-//                protected TextView mItemlikes;
+                protected TextView mItemDescription;
+                protected ImageView mItemLikes;
 
 
                 public ViewHolder(View view) {
@@ -149,7 +178,8 @@ public class RetrofitServiceGenerator {
                     this.mItemPrice = (TextView) view.findViewById(R.id.tv_item_unit_price);
                     this.mItemMRP = (TextView) view.findViewById(R.id.tv_item_mrp);
                     this.mItemDiscount = (TextView) view.findViewById(R.id.tv_item_discount);
-//                    this.mItemlikes = (TextView) view.findViewById(R.id.tv_item_likes);
+                    this.mItemDescription = (TextView) view.findViewById(R.id.tv_item_description);
+                    this.mItemLikes = (ImageView) view.findViewById(R.id.iv_item_likes);
 
                 }
             }

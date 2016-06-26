@@ -12,13 +12,13 @@
     <!--<color name="blue_alpha_colorPrimaryDark">#801976D2</color>-->
 
     <color name="white">#ffffff</color>
-    <color name="gray">#e0e0e0</color>
+    <color name="grey">#e0e0e0</color>
     <color name="black">#000000</color>
     <color name="black_light">#222222</color>
     <color name="transparent">#00000000</color>
 
 
-    <color name="separator_light_gray">#EEEEEE</color>
+    <color name="separator_light_grey">#EEEEEE</color>
     <color name="product_list_item_separator_color">#ffd6dbe3</color>
     <color name="ultra_dark">#ff29303f</color>
 
@@ -36,5 +36,11 @@
     <!--DogShoppingActivity-->
     <color name="item_mrp_color">#8829303f</color>
     <color name="red">#fff16565</color>
+    <color name="heart_pink">#EC407A</color>
+    <color name="item_description_color">#8829303f</color>
+    <color name="heart_grey">#9E9E9E</color>
+
+
+
 
 </resources>

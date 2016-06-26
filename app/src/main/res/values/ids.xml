@@ -39,6 +39,7 @@
     <item name="fastadapter_dog_item_id" type="id" />
     <item name="tv_item_mrp" type="id" />
     <item name="iv_item_likes" type="id" />
+    <item name="tv_item_description" type="id" />
 
 
 </resources>

@@ -13,6 +13,43 @@
         android:layout_margin="0.1dp"
         android:scaleType="fitXY" />
 
+
+    <ImageView
+        android:id="@id/iv_item_likes"
+        android:layout_width="24.0dp"
+        android:layout_height="24.0dp"
+        android:layout_alignParentRight="true"
+
+        android:src="@drawable/ic_heart_outline" />
+
+
+    <com.example.sumit.apple.views.TypefaceTextView
+        android:id="@id/tv_item_likes"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:paddingTop="16.0dip"
+        android:paddingRight="4.0dip"
+        android:textColor="@color/black"
+        android:textSize="10.0sp"
+        android:text="1.3k"
+        app:customTypeface="@string/typeface_regular" />
+
+    <!--android:layout_below="@id/iv_product_list_item"-->
+    <!--android:paddingBottom="10.0dip"-->
+    <!--android:paddingLeft="10.0dip"-->
+
+    <!--android:layout_below="@id/iv_item_likes-->
+    <!--android:layout_marginRight="10.0dip"-->
+    <!--android:gravity="right"-->
+    <!--android:paddingLeft="10.0dip"-->
+
+
+    <!--android:singleLine="true"-->
+
     <com.example.sumit.apple.views.TypefaceTextView
         android:id="@id/tv_item_name"
         android:layout_width="fill_parent"
@@ -71,16 +108,20 @@
         />
 
 
-    <ImageView
-        android:id="@id/iv_item_likes"
+
+
+    <com.example.sumit.apple.views.TypefaceTextView
+        android:id="@id/tv_item_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/iv_product_list_item"
-        android:paddingBottom="10.0dip"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/tv_item_unit_price"
         android:paddingLeft="10.0dip"
-        android:paddingRight="5.0dip"
-        android:paddingTop="10.0dip"
-        android:src="@drawable/ic_heart" />
+        android:paddingBottom="8.0dip"
+        android:textSize="@dimen/item_description_text_size"
+        android:textColor="@color/item_description_color"
+        app:customTypeface="@string/typeface_light" />
 
+
+    <!--android:text="FEMALE/4 MONTHS"-->
 </RelativeLayout>

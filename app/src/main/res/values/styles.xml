@@ -16,7 +16,7 @@
 
     <style name="HorizontalSeparator">
         <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:background">@color/separator_light_gray</item>
+        <item name="android:background">@color/separator_light_grey</item>
         <item name="android:layout_width">1.0dip</item>
         <item name="android:layout_height">32.0dip</item>
     </style>

@@ -16,5 +16,6 @@
     <!--DogShoppingActivity-->
     <dimen name="item_mrp_text_size">11.0sp</dimen>
     <dimen name="item_discount_text_size">10.0sp</dimen>
+    <dimen name="item_description_text_size">10.0sp</dimen>
 
 </resources>
