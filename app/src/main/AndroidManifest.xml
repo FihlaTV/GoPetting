@@ -18,8 +18,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--<activity-->
+            <!--android:name=".activities.DogShoppingActivity"-->
+            <!--android:label="@string/title_activity_dog_shopping"-->
+            <!--android:parentActivityName=".activities.MainActivity"-->
+            <!--android:theme="@style/AppTheme">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value=".activities.MainActivity" />-->
+        <!--</activity>-->
+
         <activity
-            android:name=".activities.DogShoppingActivity"
+            android:name=".activities.DogActivity"
             android:label="@string/title_activity_dog_shopping"
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme">

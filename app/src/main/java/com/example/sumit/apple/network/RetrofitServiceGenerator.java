@@ -69,7 +69,8 @@ public class RetrofitServiceGenerator {
 
 
     public interface RetrofitService {
-        @GET("/dog_select.php")
+//        @GET("/dog_select.php")
+        @GET("/withoutauth/v1")
         Call<List<Dog>> getJsonData();
     }
 
