@@ -1,7 +1,9 @@
 package com.example.sumit.apple.network;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.example.sumit.apple.activities.DogActivity;
 import com.example.sumit.apple.models.Dog;
 
 import java.util.List;
@@ -15,9 +17,9 @@ import retrofit2.Response;
  */
 public class DogService {
 
-    public static void getData( final Controller.MethodsCallback callback) {
+    public static void getData( String token, final Controller.MethodsCallback callback) {
         Controller.GetDogData retrofitGetDogData = RetrofitSingleton.getInstance().create(Controller.GetDogData.class);
-        Call<List<Dog>> call = retrofitGetDogData.getDogData();
+        Call<List<Dog>> call = retrofitGetDogData.getDogData("Bearer " + token);
         call.enqueue(new Callback<List<Dog>>() {
             @Override
             public void onResponse(Call<List<Dog>> call, Response<List<Dog>> response) {

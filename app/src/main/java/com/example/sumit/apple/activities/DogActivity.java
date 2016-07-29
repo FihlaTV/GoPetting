@@ -9,9 +9,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.sumit.apple.R;
+import com.example.sumit.apple.models.Credential;
 import com.example.sumit.apple.models.Dog;
 import com.example.sumit.apple.network.Controller;
 import com.example.sumit.apple.network.DogService;
+import com.example.sumit.apple.network.OAuthTokenService;
 import com.example.sumit.apple.network.RetrofitServiceGenerator;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 
@@ -70,21 +72,56 @@ public class DogActivity extends AppCompatActivity {
 
     public void initAdapterData() {
 
-        DogService.getData(new Controller.MethodsCallback<List<Dog>>()
-        {
-            @Override public void failure(Throwable throwable)
-            {
-                Toast.makeText(DogActivity.this, throwable.getMessage(),Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
-            }
-            @Override public void success(List<Dog> dogs)
-            {
-                fastAdapterDogs.add(dogs);
-            }
-            @Override public void responseBody(Call<List<Dog>> call)    //Check if this method can be used for any meaningful purpose.
-            {
+        final OAuthTokenService oAuthTokenService = OAuthTokenService.getInstance(this);
 
-            }
-        });
+//        oAuthTokenService.deleteTokenWithId("default");
+//          oAuthTokenService.deleteAllToken();
+        Credential credential = oAuthTokenService.getAccessTokenWithID("default");
+
+        if(credential == null || credential.getAccess_token()==null || oAuthTokenService.isExpired("default"))
+        {
+            oAuthTokenService.authenticateUsingOAuth( new Controller.MethodsCallback<Credential>()
+                    {
+                        @Override public void failure(Throwable throwable)
+                        {
+                            Toast.makeText(DogActivity.this, throwable.getMessage(),Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+                        }
+                        @Override public void success(Credential credential)
+                        {
+                            if(credential != null)
+                            {
+                                oAuthTokenService.saveTokenWithID(credential, "default");
+
+                            }
+                        }
+                        @Override public void responseBody(Call<Credential> call)
+                        {
+
+                        }
+                    });
+        }
+
+
+
+            DogService.getData(credential.getAccess_token(), new Controller.MethodsCallback<List<Dog>>() {
+                @Override
+                public void failure(Throwable throwable) {
+                    Toast.makeText(DogActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+                }
+
+                @Override
+                public void success(List<Dog> dogs) {
+                    fastAdapterDogs.add(dogs);
+                }
+
+                @Override
+                public void responseBody(Call<List<Dog>> call)    //Check if this method can be used for any meaningful purpose.
+                {
+
+                }
+            });
+
+
     }
 
 }

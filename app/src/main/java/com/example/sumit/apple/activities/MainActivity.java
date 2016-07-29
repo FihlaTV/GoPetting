@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.sumit.apple.fragments.AboutUsFragment;
 import com.example.sumit.apple.fragments.ContactUsFragment;
@@ -22,8 +23,12 @@ import com.example.sumit.apple.R;
 import com.example.sumit.apple.fragments.TermsConditionsFragment;
 import com.example.sumit.apple.bus.MoveToFragmentEvent;
 import com.example.sumit.apple.bus.UpdateActionBarTitleEvent;
+import com.example.sumit.apple.models.Credential;
+import com.example.sumit.apple.network.Controller;
+import com.example.sumit.apple.network.OAuthTokenService;
 
 import de.greenrobot.event.EventBus;
+import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initializeToken();
 
         // Set a Toolbar to replace the ActionBar.
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -93,6 +100,39 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    private void initializeToken() {
+
+        final OAuthTokenService oAuthTokenService = OAuthTokenService.getInstance(this);
+
+//        oAuthTokenService.deleteTokenWithId("default");
+//          oAuthTokenService.deleteAllToken();
+        Credential credential = oAuthTokenService.getAccessTokenWithID("default");
+
+        if(credential == null || credential.getAccess_token()==null || oAuthTokenService.isExpired("default"))
+        {
+            oAuthTokenService.authenticateUsingOAuth( new Controller.MethodsCallback<Credential>()
+            {
+                @Override public void failure(Throwable throwable)
+                {
+                    Toast.makeText(MainActivity.this, throwable.getMessage(),Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+                }
+                @Override public void success(Credential credential)
+                {
+                    if(credential != null)
+                    {
+                        oAuthTokenService.saveTokenWithID(credential, "default");
+
+                    }
+                }
+                @Override public void responseBody(Call<Credential> call)
+                {
+
+                }
+            });
+        }
+
     }
 
 
