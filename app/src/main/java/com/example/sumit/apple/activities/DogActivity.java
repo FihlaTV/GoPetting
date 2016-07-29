@@ -92,6 +92,24 @@ public class DogActivity extends AppCompatActivity {
                             {
                                 oAuthTokenService.saveTokenWithID(credential, "default");
 
+                                DogService.getData(credential.getAccess_token(), new Controller.MethodsCallback<List<Dog>>() {
+                                    @Override
+                                    public void failure(Throwable throwable) {
+                                        Toast.makeText(DogActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+                                    }
+
+                                    @Override
+                                    public void success(List<Dog> dogs) {
+                                        fastAdapterDogs.add(dogs);
+                                    }
+
+                                    @Override
+                                    public void responseBody(Call<List<Dog>> call)    //Check if this method can be used for any meaningful purpose.
+                                    {
+
+                                    }
+                                });
+
                             }
                         }
                         @Override public void responseBody(Call<Credential> call)
@@ -99,9 +117,7 @@ public class DogActivity extends AppCompatActivity {
 
                         }
                     });
-        }
-
-
+        }else {
 
             DogService.getData(credential.getAccess_token(), new Controller.MethodsCallback<List<Dog>>() {
                 @Override
@@ -121,7 +137,7 @@ public class DogActivity extends AppCompatActivity {
                 }
             });
 
-
+        }
     }
 
 }
