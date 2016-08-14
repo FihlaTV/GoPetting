@@ -1,4 +1,7 @@
 <resources>
+
+    <!--TODO: Need to streamline/standardize text sizes-->
+
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
@@ -17,5 +20,20 @@
     <dimen name="item_mrp_text_size">11.0sp</dimen>
     <dimen name="item_discount_text_size">10.0sp</dimen>
     <dimen name="item_description_text_size">10.0sp</dimen>
+
+    <!--DogDetailsActivity-->
+    <dimen name="product_gallery_height">342.0dip</dimen>
+    <dimen name="text_size_12">12.0sp</dimen>
+    <dimen name="text_size_13">13.0sp</dimen>
+    <dimen name="text_size_14">14.0sp</dimen>
+    <dimen name="text_size_15">15.0sp</dimen>
+    <dimen name="text_size_17">17.0sp</dimen>
+    <dimen name="text_size_18">18.0sp</dimen>
+    <dimen name="text_size_19">19.0sp</dimen>
+    <dimen name="text_size_20">20.0sp</dimen>
+    <dimen name="textview_horizontal_spacing">4.0dp</dimen>
+    <dimen name="footer_height">50.0dip</dimen>
+    <dimen name="margin_12">12.0dip</dimen>
+    <dimen name="margin_20">20.0dip</dimen>
 
 </resources>

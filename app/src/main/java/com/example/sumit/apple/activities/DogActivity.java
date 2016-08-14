@@ -1,11 +1,12 @@
 package com.example.sumit.apple.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.sumit.apple.R;
@@ -14,14 +15,13 @@ import com.example.sumit.apple.models.Dog;
 import com.example.sumit.apple.network.Controller;
 import com.example.sumit.apple.network.DogService;
 import com.example.sumit.apple.network.OAuthTokenService;
-import com.example.sumit.apple.network.RetrofitServiceGenerator;
+import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by Sumit on 7/26/2016.
@@ -48,14 +48,26 @@ public class DogActivity extends AppCompatActivity {
         RecyclerView rvDogs = (RecyclerView) findViewById(R.id.dogs_recycler_view);
 
         fastAdapterDogs = new FastItemAdapter();
+        fastAdapterDogs.withSelectable(true);
 
+        fastAdapterDogs.withOnClickListener(new FastAdapter.OnClickListener<Dog>() {
+            @Override
+            public boolean onClick(View v, IAdapter<Dog> adapter, Dog item, int position) {
+//                Toast.makeText(v.getContext(), item.getItemId(), Toast.LENGTH_SHORT).show();
 
+                Intent intent = new Intent(DogActivity.this,DogDetailsActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("id", item.getItemId());
+                intent.putExtras(b);
+                startActivity(intent);
+                return false;
+            }
+        });
 
         //we wrap our FastAdapter inside the ItemAdapter -> This allows us to chain adapters for more complex useCases
         rvDogs.setAdapter(fastAdapterDogs);
 
-//        // Initialize ProductItems
-//        RetrofitServiceGenerator.initAdapterData();
+
 
         initAdapterData();
 
@@ -65,10 +77,6 @@ public class DogActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-//
-//    public static void addAdapterData(List<RetrofitServiceGenerator.Dog> dogs){
-//        fastAdapterDogs.add(dogs);
-//    }
 
     public void initAdapterData() {
 

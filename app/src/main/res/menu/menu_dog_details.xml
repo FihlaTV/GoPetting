@@ -1,10 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/shopping_cart"
-        android:icon="@drawable/shopping_cart"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.DogDetailsActivity">
+
+    <item android:id="@+id/cart"
+        android:icon="@drawable/cart"
         android:title="@string/cart"
-        android:showAsAction="always">
-    <item android:id="@+id/help"
-        android:icon="@drawable/ic_help"
-        android:title="@string/help" />
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
 </menu>

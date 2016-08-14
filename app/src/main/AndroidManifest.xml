@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sumit.apple">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -18,25 +19,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity-->
-            <!--android:name=".activities.DogShoppingActivity"-->
-            <!--android:label="@string/title_activity_dog_shopping"-->
-            <!--android:parentActivityName=".activities.MainActivity"-->
-            <!--android:theme="@style/AppTheme">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.PARENT_ACTIVITY"-->
-                <!--android:value=".activities.MainActivity" />-->
-        <!--</activity>-->
-
         <activity
             android:name=".activities.DogActivity"
-            android:label="@string/title_activity_dog_shopping"
+            android:label="@string/title_activity_dog"
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
+
+        <activity
+            android:name=".activities.DogDetailsActivity"
+            android:label="@string/title_activity_dog_details"
+            android:parentActivityName=".activities.DogActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.DogActivity" />
+        </activity>
+
     </application>
 
 </manifest>

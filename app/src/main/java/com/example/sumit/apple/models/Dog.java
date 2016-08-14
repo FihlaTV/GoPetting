@@ -40,10 +40,6 @@ import com.mikepenz.fastadapter.items.AbstractItem;
         private int age;
 
 
-        //Adding and Modifying code as required for FastAdapter
-
-
-
         //The unique ID for this type of item
         @Override
         public int getType() {
@@ -56,7 +52,11 @@ import com.mikepenz.fastadapter.items.AbstractItem;
             return R.layout.item_dog;
         }
 
-        //The logic to bind your data to the view
+        public int getItemId() {
+            return itemId;
+        }
+
+            //The logic to bind your data to the view
         @Override
         public void bindView(ViewHolder viewHolder) {
             //call super so the selection is already handled for you

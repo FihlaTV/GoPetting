@@ -32,7 +32,6 @@ public class HomeFragment extends BaseFragment {
     private static final String ARG_QUOTE_NUMBER = "quote_number";
     private ViewPager mHomePager;
     private TextView mHomeText;
-//    private List<Card> cards;     //TODO: Cards Recycler View: Check whether it should be ArrayList<Card> contacts;
     private List<ProductItem> mProducts;
 
 
@@ -40,7 +39,7 @@ public class HomeFragment extends BaseFragment {
      * Create a new instance of Fragment that will be initialized
      * with the given arguments.
      */
-   public static HomeFragment newInstance() {
+   public static HomeFragment newInstance() {                       //TODO: This logic is creating new fragment every time. Change the logic like 'if(fragment==NULL)'
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_QUOTE_NUMBER, "Home Argument Text");
@@ -69,23 +68,6 @@ public class HomeFragment extends BaseFragment {
 /*        //Inflate Home Text View
         mHomeText=(TextView) rootView.findViewById(R.id.home_text);
         mHomeText.setText(R.string.home_text);*/
-
-        //TODO: RecyclerView Cards; Need to update this for 3 Cards.
-
-
-        //Commented. Below code is for Cards
-
-//        // Lookup the recyclerview in activity layout
-//        RecyclerView rvCards = (RecyclerView) rootView.findViewById(R.id.cards_recycler_view);
-//        // Initialize contacts
-//        cards = Card.createCardsList();
-//        // Create adapter passing in the sample user data
-//        CardsAdapter adapter = new CardsAdapter(cards);
-//        // Attach the adapter to the recyclerview to populate items
-//        rvCards.setAdapter(adapter);
-//        // Set layout manager to position the items
-//        rvCards.setLayoutManager(new LinearLayoutManager(getContext()));     //TODO: Cards Recycler View: changed 'this' to 'getContext()'
-//        // That's all!
 
 
         // Lookup the recyclerview in activity layout

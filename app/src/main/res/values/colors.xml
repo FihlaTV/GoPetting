@@ -40,7 +40,18 @@
     <color name="item_description_color">#8829303f</color>
     <color name="heart_grey">#9E9E9E</color>
 
+    <!--DogDetailsActivity-->
+    <color name="orange_500">#FF5722</color>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="grey_500">#9E9E9E</color>
+    <color name="grey_600">#757575</color>
+    <color name="blue_500">#2196F3</color>
+    <color name="light_blue_500">#03A9F4</color>
 
 
+
+<!--temp delete and streamline this-->
+    <color name="text_color_w1">#fff7f7f7</color>
+    <color name="color_da_grey">#ff666666</color>
 
 </resources>

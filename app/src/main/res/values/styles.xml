@@ -21,4 +21,15 @@
         <item name="android:layout_height">32.0dip</item>
     </style>
 
+    <!--Button Style-->
+    <style name="Button">
+        <item name="android:textSize">@dimen/text_size_15</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:paddingLeft">10.0dip</item>
+        <item name="android:paddingRight">10.0dip</item>
+        <item name="android:minHeight">30.0dip</item>
+        <item name="android:textAllCaps">true</item>
+        <!--<item name="app:customTypeface">@string/typeface_bold</item>-->
+    </style>
+
 </resources>

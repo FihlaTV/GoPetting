@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.example.sumit.apple.R;
 import com.example.sumit.apple.activities.DogActivity;
-import com.example.sumit.apple.activities.DogShoppingActivity;
 import com.example.sumit.apple.bus.UpdateActionBarTitleEvent;
 
 import de.greenrobot.event.EventBus;
@@ -42,8 +41,7 @@ public class AboutUsFragment extends BaseFragment {
         TextView text = (TextView) rootView.findViewById(R.id.fragment_text);
         text.setText(R.string.about_us_text);
 
-        //TODO: Temporary code for DogShoppingActivity
-//        Intent intent = new Intent(getContext(), DogShoppingActivity.class);
+        //TODO: Temporary code for DogActivity
         Intent intent = new Intent(getContext(), DogActivity.class);
 
         startActivity(intent);

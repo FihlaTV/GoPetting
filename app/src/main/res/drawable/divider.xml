@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<!--<shape android:shape="rectangle"-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android">-->
+    <!--<size android:height="0.5dip"/>-->
+    <!--<solid android:color="@color/grey_normal"/>-->
+<!--</shape>-->
 
-</selector>
+
+<shape android:shape="rectangle"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <size
+        android:height="1.0dip"
+        android:width="0.0dip"
+        />
+    <solid android:color="@color/grey_300" />
+
+
+</shape>
