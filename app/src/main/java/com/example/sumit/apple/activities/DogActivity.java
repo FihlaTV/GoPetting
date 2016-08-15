@@ -58,6 +58,12 @@ public class DogActivity extends AppCompatActivity {
                 Intent intent = new Intent(DogActivity.this,DogDetailsActivity.class);
                 Bundle b = new Bundle();
                 b.putInt("id", item.getItemId());
+                b.putString("name",item.getName());
+                b.putInt("unitPrice",item.getUnitPrice());
+                b.putInt("mrp",item.getMrp());
+                b.putInt("discount",item.getDiscount());
+                b.putInt("likes",item.getLikes());
+                b.putString("imageUrl",item.getImageUrl());
                 intent.putExtras(b);
                 startActivity(intent);
                 return false;

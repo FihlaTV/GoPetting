@@ -39,7 +39,6 @@ import com.mikepenz.fastadapter.items.AbstractItem;
 
         private int age;
 
-
         //The unique ID for this type of item
         @Override
         public int getType() {
@@ -55,6 +54,30 @@ import com.mikepenz.fastadapter.items.AbstractItem;
         public int getItemId() {
             return itemId;
         }
+
+        public String getName() {
+        return name;
+    }
+
+        public int getUnitPrice() {
+        return unitPrice;
+    }
+
+        public int getMrp() {
+        return mrp;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+        public String getImageUrl() {
+        return imageUrl;
+    }
 
             //The logic to bind your data to the view
         @Override
@@ -72,11 +95,16 @@ import com.mikepenz.fastadapter.items.AbstractItem;
 
 
             if(discount > 0){
+                viewHolder.mItemMRP.setVisibility(View.VISIBLE);
+                viewHolder.mItemDiscount.setVisibility(View.VISIBLE);
 
                 viewHolder.mItemMRP.setText("Rs." + mrp);
                 viewHolder.mItemMRP.setPaintFlags(viewHolder.mItemMRP.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG); // To strike through text
                 viewHolder.mItemDiscount.setText(discount + "% Off");
 
+            }else {
+                viewHolder.mItemMRP.setVisibility(View.GONE);
+                viewHolder.mItemDiscount.setVisibility(View.GONE);
             }
 
             viewHolder.mItemDescription.setText(setItemDescription(gender,age));

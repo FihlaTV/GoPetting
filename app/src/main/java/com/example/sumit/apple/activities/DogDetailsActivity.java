@@ -1,5 +1,7 @@
 package com.example.sumit.apple.activities;
 
+import android.content.Intent;
+import android.graphics.Paint;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -9,7 +11,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.sumit.apple.R;
 import com.example.sumit.apple.fragments.DogDetailsFragment;
@@ -20,15 +24,36 @@ import me.relex.circleindicator.CircleIndicator;
 
 public class DogDetailsActivity extends AppCompatActivity {
 
-    private Toolbar mToolbar;
-    private ViewPager mProductGalleryPager;
-    private ProductGalleryPagerAdapter mProductGalleryPagerAdapter;
+    private static Toolbar mToolbar;
+    private static ViewPager mProductGalleryPager;
+    private static ProductGalleryPagerAdapter mProductGalleryPagerAdapter;
+    private static Intent intent;
+    private static Bundle extras;
+    private static int id;
+    private static String name;
+    private static int unitPrice;
+    private static int mrp;
+    private static int discount;
+    private static int likes;
+    private static String imageUrl;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dog_details);
+
+         intent = getIntent();
+         extras = intent.getExtras();
+         id = extras.getInt("id");
+         name = extras.getString("name");
+         unitPrice = extras.getInt("unitPrice");
+         mrp = extras.getInt("mrp");
+         discount = extras.getInt("discount");
+         likes = extras.getInt("likes");
+         imageUrl = extras.getString("imageUrl");
+
+
 
         // Set a Toolbar to replace the ActionBar.
         mToolbar = (Toolbar) findViewById(R.id.toolbar_transparent);
@@ -46,19 +71,30 @@ public class DogDetailsActivity extends AppCompatActivity {
         circleIndicator.setViewPager(mProductGalleryPager);
 
         TypefaceTextView mBrandName = (TypefaceTextView) findViewById(R.id.tv_brand_name);
-        mBrandName.setText("Bulldog");
+        mBrandName.setText(name);
         TypefaceTextView mUnitPrice = (TypefaceTextView) findViewById(R.id.tv_item_unit_price);
-        mUnitPrice.setText("Rs."+ 40050);
+        mUnitPrice.setText("Rs."+ unitPrice);
+
+
         TypefaceTextView mItemMrp = (TypefaceTextView) findViewById(R.id.tv_item_mrp);
-        mItemMrp.setText("Rs."+ 45000);
+
         TypefaceTextView mItemDiscount = (TypefaceTextView) findViewById(R.id.tv_item_discount);
-        mItemDiscount.setText(11 + "% Off");
 
-        Button mAddToCart = (Button) findViewById(R.id.add_to_cart);
-        Button mBuyNow = (Button) findViewById(R.id.buy_now);
 
-//        ExpandableTextView mDeliveryOptions = (ExpandableTextView) findViewById(R.id.expand_text_view);
-//        mDeliveryOptions.setText(getString(R.string.dummy_text));
+        if(discount > 0){
+            mItemMrp.setVisibility(View.VISIBLE);
+            mItemDiscount.setVisibility(View.VISIBLE);
+
+            mItemMrp.setText("Rs." + mrp);
+            mItemMrp.setPaintFlags(mItemMrp.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG); // To strike through text
+            mItemDiscount.setText(discount + "% Off");
+
+        }else {
+            mItemMrp.setVisibility(View.GONE);
+            mItemDiscount.setVisibility(View.GONE);
+        }
+
+
 
         ExpandableTextView mDeliveryOptions = (ExpandableTextView) findViewById(R.id.delivery_options).findViewById(R.id.expand_text_view);
         mDeliveryOptions.setText(getString(R.string.dummy_text));
@@ -68,11 +104,6 @@ public class DogDetailsActivity extends AppCompatActivity {
 
         ExpandableTextView mLifeSize = (ExpandableTextView) findViewById(R.id.life_size).findViewById(R.id.expand_text_view);
         mLifeSize.setText(getString(R.string.dummy_text));
-
-
-
-
-
 
 
     }
@@ -95,15 +126,15 @@ public class DogDetailsActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return DogDetailsFragment.newInstance(R.drawable.dog1, "Page # 1");
+                    return DogDetailsFragment.newInstance(imageUrl, "Page # 1");
                 case 1:
-                    return DogDetailsFragment.newInstance(R.drawable.dog2, "Page # 2");
+                    return DogDetailsFragment.newInstance(imageUrl, "Page # 2");
                 case 2:
-                    return DogDetailsFragment.newInstance(R.drawable.dog3, "Page # 3");
+                    return DogDetailsFragment.newInstance(imageUrl, "Page # 3");
                 case 3:
-                    return DogDetailsFragment.newInstance(R.drawable.dog4, "Page # 4");
+                    return DogDetailsFragment.newInstance(imageUrl, "Page # 4");
                 case 4:
-                    return DogDetailsFragment.newInstance(R.drawable.dog5, "Page # 5");
+                    return DogDetailsFragment.newInstance(imageUrl, "Page # 5");
                 default:
                     return null;
             }
