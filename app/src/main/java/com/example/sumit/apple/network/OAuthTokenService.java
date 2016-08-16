@@ -31,9 +31,6 @@ public class OAuthTokenService {
     private final String EXPIRATION_DATE = "EXPIRATION_DATE";
     private final String OAUTH_PREFERENCE = "OAUTH_PREFERENCE";
 
-    private final String EXPIRED = "EXPIRED";
-    private final String ADDITIONAL_INFORMATION = "ADDITIONAL_INFORMATION";
-    private final String EXPIRATION = "EXPIRATION";
     public SharedPreferences.Editor editor;
 
 
