@@ -2,6 +2,7 @@ package com.example.sumit.apple.network;
 
 import com.example.sumit.apple.models.Credential;
 import com.example.sumit.apple.models.Dog;
+import com.example.sumit.apple.models.DogDetails;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -40,6 +42,12 @@ public class Controller {
     public interface GetDogData {
         @GET("/api/v1")
         Call<List<Dog>> getDogData(@Header("Authorization") String authorization);
+    }
+
+    public interface GetDogDetails {
+        @GET("/api/v1/dog_details/{item_id}")
+        Call<DogDetails> getDogDetailsData(@Header("Authorization") String authorization,
+                                          @Path("item_id") int item_id);
     }
 
 

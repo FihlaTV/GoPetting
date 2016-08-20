@@ -23,7 +23,7 @@ public class DogDetailsFragment extends Fragment {
         DogDetailsFragment fragmentFirst = new DogDetailsFragment();
         Bundle args = new Bundle();
         args.putString("someImage", image);
-        args.putString("someTitle", title);
+        args.putString("someTitle", title);     //Remove this title field, not required
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }

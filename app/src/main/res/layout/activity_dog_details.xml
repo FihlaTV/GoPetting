@@ -11,12 +11,13 @@
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/footer_height">
+        android:paddingBottom="@dimen/footer_height"
+        >
 
         <LinearLayout
             android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="0.0dip"
             android:divider="@drawable/divider"
             android:dividerPadding="15.0dip"
@@ -29,7 +30,8 @@
             <RelativeLayout
                 android:id="@+id/brand_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingBottom="10.0dip">
 
                 <com.example.sumit.apple.views.TypefaceTextView
                     android:id="@+id/tv_brand_name"
@@ -90,17 +92,14 @@
             </RelativeLayout>
 
 
-            <include
-                android:id="@+id/delivery_options"
-                layout="@layout/text_view_expandable" />
+            <ExpandableListView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/expandableListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@android:color/darker_gray"
+                android:dividerHeight="0.5dp"
+                android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
 
-            <include
-                android:id="@+id/character"
-                layout="@layout/text_view_expandable" />
-
-            <include
-                android:id="@+id/life_size"
-                layout="@layout/text_view_expandable" />
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>

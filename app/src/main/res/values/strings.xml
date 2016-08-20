@@ -44,5 +44,8 @@
     <string name="add_to_cart">Add to Cart</string>
     <string name="dummy_text">"Delivery \n A drawable resource is a general concept for a graphic that can be drawn to the screen and which you can retrieve with APIs such as getDrawable(int) or apply to another XML resource with attributes "</string>
 
+    <!--DogShoppingActivity-->
+
+
 
 </resources>

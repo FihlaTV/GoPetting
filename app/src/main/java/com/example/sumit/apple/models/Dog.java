@@ -67,11 +67,11 @@ import com.mikepenz.fastadapter.items.AbstractItem;
         return mrp;
     }
 
-    public int getDiscount() {
+        public int getDiscount() {
         return discount;
     }
 
-    public int getLikes() {
+        public int getLikes() {
         return likes;
     }
 
