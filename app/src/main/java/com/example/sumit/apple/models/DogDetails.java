@@ -18,9 +18,6 @@ import com.mikepenz.fastadapter.items.AbstractItem;
  */
 public class DogDetails {
 
-    @SerializedName("item_id")
-    private int itemId;
-
     @SerializedName("image_url2")
     private String imageUrl2;
 
@@ -39,14 +36,11 @@ public class DogDetails {
 
     private String life;
 
+    @SerializedName("male_height")
     private String maleHeight;
 
+    @SerializedName("female_height")
     private String femaleHeight;
-
-
-    public int getItemId() {
-        return itemId;
-    }
 
     public String getImageUrl2() {
         return imageUrl2;
@@ -75,6 +69,7 @@ public class DogDetails {
     public String getLife() {
         return life;
     }
+
 
     public String getMaleHeight() {
         return maleHeight;

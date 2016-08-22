@@ -59,6 +59,10 @@ public class ExpandableListDataPump {
         lifeSize.add(lifeSizeRow3);
 
 
+//        expandableListDetail.put("Delivery Options", deliveryOptions);
+//        expandableListDetail.put("Characteristics", characteristics);
+//        expandableListDetail.put("Life & Size", lifeSize);
+
         expandableListDetail.put("DELIVERY OPTIONS", deliveryOptions);
         expandableListDetail.put("CHARACTERISTICS", characteristics);
         expandableListDetail.put("LIFE & SIZE", lifeSize);
