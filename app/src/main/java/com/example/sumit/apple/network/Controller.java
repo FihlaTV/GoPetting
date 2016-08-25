@@ -1,6 +1,7 @@
 package com.example.sumit.apple.network;
 
 import com.example.sumit.apple.models.Credential;
+import com.example.sumit.apple.models.DeliveryDetails;
 import com.example.sumit.apple.models.Dog;
 import com.example.sumit.apple.models.DogDetails;
 
@@ -50,5 +51,10 @@ public class Controller {
                                           @Path("item_id") int item_id);
     }
 
-
+    public interface CheckDeliveryDetails {
+        @GET("/api/v1/delivery_details/{item_id}/{pincode}")
+        Call<DeliveryDetails> checkDeliveryDetails(@Header("Authorization") String authorization,
+                                                   @Path("item_id") int item_id,
+                                                   @Path("pincode") int pincode);
+    }
 }

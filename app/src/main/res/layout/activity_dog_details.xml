@@ -7,7 +7,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <android.support.v4.widget.NestedScrollView
+
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,7 +19,7 @@
         <LinearLayout
             android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="0.0dip"
             android:divider="@drawable/divider"
             android:dividerPadding="15.0dip"
@@ -27,11 +29,13 @@
             <!--Added this View to shift nestedscrollview from top with product_gallery_height-->
             <View android:id="@+id/header_space" android:layout_width="fill_parent" android:layout_height="@dimen/product_gallery_height" />
 
+
+
             <RelativeLayout
                 android:id="@+id/brand_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="10.0dip">
+                android:paddingBottom="15.0dip">
 
                 <com.example.sumit.apple.views.TypefaceTextView
                     android:id="@+id/tv_brand_name"
@@ -92,10 +96,18 @@
             </RelativeLayout>
 
 
+            <FrameLayout
+                android:id="@+id/delivery_options_fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+
             <ExpandableListView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/expandableListView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:divider="@android:color/darker_gray"
                 android:dividerHeight="0.5dp"
                 android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
@@ -151,32 +163,32 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-            <FrameLayout
-                android:id="@+id/gallery_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:orientation="vertical"
-                app:layout_collapseMode="parallax">
-
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/product_gallery_pager"
+                <FrameLayout
+                    android:id="@+id/gallery_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_horizontal" />
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    app:layout_collapseMode="parallax">
 
-                <include
-                layout="@layout/toolbar_transparent"/>
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/product_gallery_pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal" />
 
-                <me.relex.circleindicator.CircleIndicator
-                    android:id="@+id/circle_indicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="15dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="5dp"
-                    app:ci_drawable="@drawable/white_radius" />
+                    <include
+                        layout="@layout/toolbar_transparent"/>
 
-                <!--<ImageButton-->
+                    <me.relex.circleindicator.CircleIndicator
+                        android:id="@+id/circle_indicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginBottom="5dp"
+                        app:ci_drawable="@drawable/white_radius" />
+
+                    <!--<ImageButton-->
                     <!--android:id="@+id/likes_rectangle"-->
 
                     <!--android:layout_width="wrap_content"-->
@@ -186,22 +198,24 @@
                     <!--android:src="@drawable/likes_rectangle"-->
                     <!--android:layout_gravity="bottom|right"/>-->
 
-                <ImageButton
-                    android:id="@+id/likes"
-                    android:background="@color/transparent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/margin_20"
-                    android:layout_marginBottom="@dimen/margin_12"
-                    android:src="@drawable/like"
-                    android:layout_gravity="bottom|right"/>
+                    <ImageButton
+                        android:id="@+id/likes"
+                        android:background="@color/transparent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/margin_20"
+                        android:layout_marginBottom="@dimen/margin_12"
+                        android:src="@drawable/like"
+                        android:layout_gravity="bottom|right"/>
 
 
-            </FrameLayout>
-</LinearLayout>
+                </FrameLayout>
+            </LinearLayout>
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </me.henrytao.smoothappbarlayout.SmoothAppBarLayout>
+
+
 
 </android.support.design.widget.CoordinatorLayout>
 

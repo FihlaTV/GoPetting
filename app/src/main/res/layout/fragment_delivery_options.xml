@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">     <!--TODO: Optimize these views hierarchy if possible through other layouts like Relative layouts -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6.0dip"
+        android:orientation="horizontal"
+        >
+
+    <ImageView
+        android:id="@id/iv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:src="@drawable/ic_pincode" />
+
+    <com.example.sumit.apple.views.TypefaceTextView
+        style="@style/AppDialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8.0dip"
+        android:text="@string/delivery_options_title"
+        android:textSize="@dimen/text_size_14" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/views_vertical_spacing"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/views_vertical_spacing"
+        android:orientation="vertical"
+        android:weightSum="1.0">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/pincode_box"
+            android:background="@drawable/border_pincode_editbox"
+            android:orientation="horizontal"
+            android:paddingRight="@dimen/activity_vertical_margin">
+
+            <EditText
+                android:id="@id/et_pincode_text"
+                style="@style/AppEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/activity_view_margin"
+                android:layout_toLeftOf="@id/btn_check"
+                android:background="@android:color/transparent"
+                android:focusableInTouchMode="true"
+                android:hint="@string/pincode_hint"
+                android:inputType="number"
+                android:maxLength="6"
+                android:textCursorDrawable="@drawable/cursor">
+
+
+            </EditText>
+
+            <ProgressBar
+                android:id="@id/pb_pincode"
+                style="@android:style/Widget.Holo.ProgressBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toLeftOf="@id/btn_check"
+                android:paddingRight="80.0dip"
+                android:visibility="invisible" />
+            <!--android:layout_marginRight="@dimen/activity_view_margin"-->
+
+
+            <Button
+                android:id="@id/btn_check"
+                android:layout_width="64.0dip"
+                android:layout_height="32.0dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/app_btn_selector"
+                android:text="@string/check"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_14" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.example.sumit.apple.views.TypefaceTextView
+                android:id="@+id/tv_delivery_text1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:alpha="0.8"
+
+                android:textColor="@color/dark_text"
+                android:textSize="@dimen/text_tiny"
+                android:visibility="visible"
+                app:customTypeface="@string/typeface_light" />
+
+            <com.example.sumit.apple.views.TypefaceTextView
+                android:id="@+id/tv_delivery_text2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:alpha="0.8"
+
+                android:textColor="@color/dark_text"
+                android:textSize="@dimen/text_tiny"
+                android:visibility="visible"
+                app:customTypeface="@string/typeface_light" />
+            <!--android:text="@string/enter_pincode"-->
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

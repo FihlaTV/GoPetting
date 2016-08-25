@@ -47,5 +47,10 @@
     <!--DogShoppingActivity-->
 
 
+    <!--DogDetailsActivity-->
+    <string name="pincode_hint">Enter Pincode</string>
+    <string name="check">Check</string>
+    <string name="enter_pincode">Please enter your PIN Code to check delivery time and Cash On Delivery availability.</string>
+    <string name="delivery_options_title">Delivery Options</string>
 
 </resources>

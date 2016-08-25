@@ -56,27 +56,22 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         TextView textView1 = (TextView) convertView.findViewById(R.id.tv_textview1);
         TextView textView2 = (TextView) convertView.findViewById(R.id.tv_textview2);
 
-        if (listPosition==0) {
-            textView2.setVisibility(View.GONE);
-            textView1.setText(childData.get(0));
 
-        }
-
-        if (listPosition==2) {                                  //TODO: Analyse listposition as it looks, different position is getting called for different group item
+        if (listPosition==1) {                                  //TODO: Analyse listposition as it looks, different position is getting called for different group item
             textView1.setText(childData.get(0));
             textView2.setVisibility(View.VISIBLE);
             textView2.setText(childData.get(1));
 
         }
 
-        if (listPosition==1 && expandedListPosition==0) {
+        if (listPosition==0 && expandedListPosition==0) {
             textView2.setVisibility(View.GONE);
             textView1.setText(childData.get(0));
 
 
         }
 
-        if (listPosition==1 && expandedListPosition!=0) {
+        if (listPosition==0 && expandedListPosition!=0) {
             textView1.setText(childData.get(0));
             textView2.setVisibility(View.VISIBLE);
             textView2.setText(childData.get(1));
@@ -101,6 +96,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getGroupCount() {
         return this.expandableListTitle.size();
+
     }
 
     @Override

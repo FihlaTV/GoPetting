@@ -41,6 +41,12 @@
     <item name="iv_item_likes" type="id" />
     <item name="tv_item_description" type="id" />
 
+<!--DogDetailsActivity-->
+    <item name="et_pincode_text" type="id" />
+    <item name="btn_check" type="id" />
+    <item name="pb_pincode" type="id" />
+    <item name="iv_location" type="id" />
+
 
 </resources>
 

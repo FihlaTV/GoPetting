@@ -47,6 +47,13 @@
     <color name="grey_600">#757575</color>
     <color name="blue_500">#2196F3</color>
     <color name="light_blue_500">#03A9F4</color>
+    <color name="ultra_light">#fff5f5f6</color>
+    <color name="green">#ff0bc6a0</color>
+    <color name="btn_disabled_color">#500bc6a0</color>
+    <color name="btn_color">#ff0bc6a0</color>
+    <color name="btn_pressed_color">#ff08b491</color>
+
+
 
 
 

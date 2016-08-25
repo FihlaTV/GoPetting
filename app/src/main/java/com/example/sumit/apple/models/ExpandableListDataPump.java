@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class ExpandableListDataPump {
 
-    private static final String DELIVERY_TEXT = "Enter pincode to check availability";
+
     private static final String CHAR_TEXT1 = "Temperament";
     private static final String CHAR_TEXT2 = "Barking";
     private static final String LIFE_SIZE_TEXT1 = "Max Male Height";
@@ -20,13 +20,6 @@ public class ExpandableListDataPump {
 
 
         HashMap<String, List<List<String>>> expandableListDetail = new HashMap<>();
-
-        //DeliveryOptions Data
-        List<String> row = new ArrayList<>();
-        row.add(DELIVERY_TEXT);
-
-        List<List<String>> deliveryOptions = new ArrayList<>();
-        deliveryOptions.add(row);
 
         //Characteristics Data
         List<String> charRow1 = new ArrayList<>();
@@ -58,12 +51,6 @@ public class ExpandableListDataPump {
         lifeSize.add(lifeSizeRow2);
         lifeSize.add(lifeSizeRow3);
 
-
-//        expandableListDetail.put("Delivery Options", deliveryOptions);
-//        expandableListDetail.put("Characteristics", characteristics);
-//        expandableListDetail.put("Life & Size", lifeSize);
-
-        expandableListDetail.put("DELIVERY OPTIONS", deliveryOptions);
         expandableListDetail.put("CHARACTERISTICS", characteristics);
         expandableListDetail.put("LIFE & SIZE", lifeSize);
 

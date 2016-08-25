@@ -23,6 +23,7 @@
 
     <!--DogDetailsActivity-->
     <dimen name="product_gallery_height">342.0dip</dimen>
+    <dimen name="product_gallery_height_minus">332.0dip</dimen>
     <dimen name="text_size_12">12.0sp</dimen>
     <dimen name="text_size_13">13.0sp</dimen>
     <dimen name="text_size_14">14.0sp</dimen>
@@ -35,5 +36,10 @@
     <dimen name="footer_height">50.0dip</dimen>
     <dimen name="margin_12">12.0dip</dimen>
     <dimen name="margin_20">20.0dip</dimen>
+    <dimen name="pincode_box">48.0dip</dimen>
+    <dimen name="activity_view_margin">8.0dip</dimen>
+    <dimen name="button_corner_radius">3.0dip</dimen>
+    <dimen name="views_vertical_spacing">10.0dip</dimen>
+
 
 </resources>

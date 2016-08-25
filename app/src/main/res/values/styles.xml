@@ -32,4 +32,22 @@
         <!--<item name="app:customTypeface">@string/typeface_bold</item>-->
     </style>
 
+
+    <!--App EditText Style-->
+    <style name="AppEditText">
+        <item name="android:background">@drawable/edittext_login</item>
+    </style>
+
+
+    <style name="AppDialogTitle">
+        <!--<item name="android:textSize">@dimen/text_verysmall</item>-->
+        <!--<item name="android:gravity">center_vertical</item>-->
+        <!--<item name="android:paddingLeft">16.0dip</item>-->
+        <!--<item name="android:paddingRight">16.0dip</item>-->
+        <!--<item name="android:layout_width">fill_parent</item>-->
+        <!--<item name="android:layout_height">@dimen/dialog_title_height</item>-->
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/ultra_dark</item>
+        <item name="customTypeface">@string/typeface_regular</item>
+    </style>
 </resources>

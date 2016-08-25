@@ -14,12 +14,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.sumit.apple.R;
 import com.example.sumit.apple.adapters.CustomExpandableListAdapter;
+import com.example.sumit.apple.fragments.DeliveryOptionsFragment;
 import com.example.sumit.apple.fragments.DogDetailsFragment;
 import com.example.sumit.apple.models.Credential;
 import com.example.sumit.apple.models.DogDetails;
@@ -65,6 +69,9 @@ public class DogDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dog_details);
 
+    // To make sure the keyboard only pops up when a user clicks into an EditText
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
          intent = getIntent();
          extras = intent.getExtras();
          itemId = extras.getInt("itemId");
@@ -83,9 +90,7 @@ public class DogDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);        //Hide Actionbar title
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-
-        // Check this
+        // Initializing these 3 views so that it could be setup later
         mProductGalleryPager = (ViewPager) findViewById(R.id.product_gallery_pager);
         circleIndicator = (CircleIndicator) findViewById(R.id.circle_indicator);
         expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
@@ -115,6 +120,27 @@ public class DogDetailsActivity extends AppCompatActivity {
             mItemDiscount.setVisibility(View.GONE);
         }
 
+
+
+    // Setting up Delivery Options Fragment
+
+        if (findViewById(R.id.delivery_options_fragment_container) != null) {
+
+            // However, if we're being restored from a previous state,
+            // then we don't need to do anything and should return or else
+            // we could end up with overlapping fragments.
+            if (savedInstanceState != null) {
+                return;
+            }
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.delivery_options_fragment_container, DeliveryOptionsFragment.newInstance(itemId))
+                    .commit();
+
+
+
+
+        }
 
 
     }
@@ -218,6 +244,9 @@ public class DogDetailsActivity extends AppCompatActivity {
         expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);
 
+        //temp code
+        setListViewHeight(expandableListView);
+
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override
@@ -257,12 +286,13 @@ public class DogDetailsActivity extends AppCompatActivity {
             }
         });
 
-        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {      // This specific listener and below setListViewHeight method is referenced from
-                                                                                                        // http://thedeveloperworldisyours.com/android/expandable-listview-inside-scrollview/#sthash.mNg34C9r.dpbs
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v,
                                         int groupPosition, long id) {
-                setListViewHeight(parent, groupPosition);
+                setListViewHeight(parent, groupPosition);                        // This specific listener and below setListViewHeight methods are referenced from
+                                                                                // http://stackoverflow.com/questions/17696039/expandablelistview-inside-a-scrollview?noredirect=1&lq=1
                 return false;
             }
         });
@@ -270,6 +300,23 @@ public class DogDetailsActivity extends AppCompatActivity {
 
 
     }
+
+
+    private void setListViewHeight(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }               // http://stackoverflow.com/questions/17696039/expandablelistview-inside-a-scrollview?noredirect=1&lq=1
 
 
     private void setListViewHeight(ExpandableListView listView,

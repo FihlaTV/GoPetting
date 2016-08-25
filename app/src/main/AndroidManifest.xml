@@ -33,6 +33,7 @@
             android:name=".activities.DogDetailsActivity"
             android:label="@string/title_activity_dog_details"
             android:parentActivityName=".activities.DogActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
