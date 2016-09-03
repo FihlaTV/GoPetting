@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/button_apply_filter_layout"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@id/rv_filter_category"
+            android:layout_width="0.0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="3.0"
+            android:background="@color/filter_list"
+            android:scrollbars="vertical" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@id/rv_filter_sub_category"
+            android:layout_width="0.0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="5.0" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@id/button_apply_filter_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@id/button_clear"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="3.0"
+            android:background="@color/bg_clear_button"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_normal"
+            android:text="@string/text_clear"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_large" />
+
+
+        <Button
+            android:id="@id/button_apply"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="5.0"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_normal"
+            android:background="@color/light_blue_500"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/text_apply"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_large" />
+
+        <!--<Button-->
+            <!--android:id="@id/button_apply"-->
+            <!--android:layout_width="0.0dip"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="5.0"-->
+            <!--android:paddingBottom="@dimen/spacing_normal"-->
+            <!--android:paddingTop="@dimen/spacing_normal"-->
+            <!--android:text="@string/text_apply" />-->
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@id/empty_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone"/>
+    </FrameLayout>
+</RelativeLayout>

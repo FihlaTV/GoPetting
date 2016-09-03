@@ -53,4 +53,11 @@
     <string name="enter_pincode">Please enter your PIN Code to check delivery time and Cash On Delivery availability.</string>
     <string name="delivery_options_title">Delivery Options</string>
 
+
+    <!--Filter Activity-->
+    <string name="text_clear">CLEAR</string>
+    <string name="text_apply">APPLY</string>
+    <string name="title_activity_filter">Filters</string>
+
+
 </resources>

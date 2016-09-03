@@ -79,6 +79,21 @@ import com.mikepenz.fastadapter.items.AbstractItem;
         return imageUrl;
     }
 
+    public int getGender() {
+        return gender;
+    }
+
+    public String getGenderString() {
+
+        if(gender==0){
+            return "MALE";
+        }
+        else {
+            return "FEMALE";
+        }
+
+    }
+
             //The logic to bind your data to the view
         @Override
         public void bindView(ViewHolder viewHolder) {

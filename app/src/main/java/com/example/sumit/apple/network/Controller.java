@@ -4,6 +4,7 @@ import com.example.sumit.apple.models.Credential;
 import com.example.sumit.apple.models.DeliveryDetails;
 import com.example.sumit.apple.models.Dog;
 import com.example.sumit.apple.models.DogDetails;
+import com.example.sumit.apple.models.FilterSubCategory;
 
 import java.util.List;
 
@@ -56,5 +57,11 @@ public class Controller {
         Call<DeliveryDetails> checkDeliveryDetails(@Header("Authorization") String authorization,
                                                    @Path("item_id") int item_id,
                                                    @Path("pincode") int pincode);
+    }
+
+    public interface GetBreedNames {
+        @GET("/api/v1/dog_details/breed/{product_category_id}")
+        Call<List<FilterSubCategory>> getBreedNames(@Header("Authorization") String authorization,
+                                                    @Path("product_category_id") int product_category_id);
     }
 }

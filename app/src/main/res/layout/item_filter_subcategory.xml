@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/spacing_normal"
+    android:paddingRight="@dimen/spacing_normal"
+    android:clickable="true">
+
+    <!--android:paddingBottom="@dimen/spacing_xxsmall"-->
+    <!--android:paddingTop="@dimen/spacing_xxsmall"-->
+
+    <!--android:layout_centerVertical="true"-->
+
+    <!--NOTES: Have set Linearlayout clickable=true and other subitems(checkbox and textview) clickable=false so that Checkbox can be clicked from entire item in recyclerview-->
+
+    <CheckBox
+        android:id="@id/cb_filter_subcategory"
+        android:layout_marginLeft="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        >
+    </CheckBox>
+
+
+    <com.example.sumit.apple.views.TypefaceTextView
+        android:id="@id/tv_filter_subcategory"
+        style="@style/TextSubSectionHeader"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:textColor="@color/text_color_light"
+        android:clickable="false"/>
+</LinearLayout>

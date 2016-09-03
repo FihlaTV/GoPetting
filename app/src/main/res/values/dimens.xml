@@ -8,18 +8,19 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="home_offer_view_pager_height">220dp</dimen>
 
-    <dimen name="list_top_bar_height">44.0dip</dimen>
-    <dimen name="top_bar_image_size">24.0dip</dimen>
+
+    <dimen name="bottom_bar_image_size">24.0dip</dimen>
     <dimen name="text_view_half_margin">4.0dip</dimen>
     <dimen name="text_tiny">12.0sp</dimen>
 
     <dimen name="item_text_size">13.0sp</dimen>
     <dimen name="item_dog_image_height">230dp</dimen>
 
-    <!--DogShoppingActivity-->
+    <!--DogActivity-->
     <dimen name="item_mrp_text_size">11.0sp</dimen>
     <dimen name="item_discount_text_size">10.0sp</dimen>
     <dimen name="item_description_text_size">10.0sp</dimen>
+    <dimen name="list_bottom_bar_height">44.0dip</dimen>
 
     <!--DogDetailsActivity-->
     <dimen name="product_gallery_height">342.0dip</dimen>
@@ -40,6 +41,26 @@
     <dimen name="activity_view_margin">8.0dip</dimen>
     <dimen name="button_corner_radius">3.0dip</dimen>
     <dimen name="views_vertical_spacing">10.0dip</dimen>
+
+    <!--Filter Activity-->
+
+    <dimen name="spacing_xxsmall">4.0dip</dimen>
+    <dimen name="spacing_xsmall">8.0dip</dimen>
+    <dimen name="spacing_small">12.0dip</dimen>
+    <dimen name="spacing_normal">16.0dip</dimen>
+    <dimen name="spacing_large">20.0dip</dimen>
+    <dimen name="spacing_xlarge">28.0dip</dimen>
+
+    <dimen name="text_size_xsmall">10.0sp</dimen>
+    <dimen name="text_size_small">12.0sp</dimen>
+    <dimen name="text_size_medium">14.0sp</dimen>
+    <dimen name="text_size_large">16.0sp</dimen>
+    <dimen name="text_size_xlarge">20.0sp</dimen>
+    <dimen name="text_size_xxlarge">24.0sp</dimen>
+
+
+
+
 
 
 </resources>

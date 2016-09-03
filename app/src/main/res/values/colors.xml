@@ -54,13 +54,17 @@
     <color name="btn_pressed_color">#ff08b491</color>
 
 
-
+<!--FilterActivity-->
+    <color name="bg_clear_button">#ff333333</color>
+    <color name="filter_list">#ffdedede</color>
+    <color name="text_color_light">#ff2d414e</color>
 
 
 <!--temp delete and streamline this-->
     <color name="text_color_w1">#fff7f7f7</color>
     <color name="color_da_grey">#ff666666</color>
     <color name="dark_text">#ff696e79</color>
+
 
 
 

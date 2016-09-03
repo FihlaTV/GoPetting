@@ -47,6 +47,21 @@
     <item name="pb_pincode" type="id" />
     <item name="iv_location" type="id" />
 
+    <!--FilterActivity-->
+    <item name="rv_filter_category" type="id" />
+    <item name="rv_filter_sub_category" type="id" />
+    <item name="button_clear" type="id" />
+    <item name="button_apply_filter_layout" type="id" />
+    <item name="button_apply" type="id" />
+    <item name="empty_view_container" type="id" />
+    <item name="toolbar_headerbar" type="id" />
+    <item name="product_list_filter_container" type="id" />
+    <item name="tv_filter_category" type="id" />
+    <item name="fastadapter_filter_category_item_id" type="id" />
+    <item name="fastadapter_filter_subcategory_item_id" type="id" />
+    <item name="tv_filter_subcategory" type="id" />
+    <item name="cb_filter_subcategory" type="id" />
+
 
 </resources>
 

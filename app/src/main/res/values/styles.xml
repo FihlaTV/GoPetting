@@ -14,6 +14,10 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="ActionBarThemeOverlay" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+
+
     <style name="HorizontalSeparator">
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:background">@color/separator_light_grey</item>
@@ -50,4 +54,47 @@
         <item name="android:textColor">@color/ultra_dark</item>
         <item name="customTypeface">@string/typeface_regular</item>
     </style>
+
+    <style name="ActionBarTitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">@dimen/text_size_xlarge</item>
+    </style>
+
+    <style name="ActionBarSubtitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="HeaderBar">
+        <item name="android:background">?colorPrimary</item>
+        <item name="titleTextAppearance">@style/ActionBarTitleText</item>
+        <item name="subtitleTextAppearance">@style/ActionBarSubtitleText</item>
+    </style>
+
+    <!--Text View-->
+
+    <style name="TextSectionHeader">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="android:paddingTop">@dimen/spacing_xsmall</item>
+        <item name="android:paddingBottom">@dimen/spacing_xsmall</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="customTypeface">@string/typeface_bold</item>
+    </style>
+
+    <style name="TextSubSectionHeader">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="android:paddingTop">@dimen/spacing_xsmall</item>
+        <item name="android:paddingBottom">@dimen/spacing_xsmall</item>
+        <item name="customTypeface">@string/typeface_regular</item>
+    </style>
+
+    <!--Text View-->
+
+
+    <!--Button-->
+
+
+    <!--Button-->
 </resources>
+
+
