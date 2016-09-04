@@ -39,6 +39,11 @@ import com.mikepenz.fastadapter.items.AbstractItem;
 
         private int age;
 
+        private String size;
+
+    @SerializedName("breed_type")
+        private String breedType;
+
         //The unique ID for this type of item
         @Override
         public int getType() {
@@ -94,6 +99,14 @@ import com.mikepenz.fastadapter.items.AbstractItem;
 
     }
 
+    public String getSize() {
+        return size;
+    }
+
+    public String getBreedType() {
+        return breedType;
+    }
+
             //The logic to bind your data to the view
         @Override
         public void bindView(ViewHolder viewHolder) {
@@ -122,7 +135,7 @@ import com.mikepenz.fastadapter.items.AbstractItem;
                 viewHolder.mItemDiscount.setVisibility(View.GONE);
             }
 
-            viewHolder.mItemDescription.setText(setItemDescription(gender,age));
+            viewHolder.mItemDescription.setText(setItemDescription(gender,breedType));
 
 //                viewHolder.mItemLikes.setImageResource(R.drawable.ic_heart);
 
@@ -135,18 +148,21 @@ import com.mikepenz.fastadapter.items.AbstractItem;
         }
 
 
-        private String setItemDescription(int gender,int age) {
+        private String setItemDescription(int gender, String breedType) {
             if(gender==0){
-                return "MALE/"+age+" MONTHS";
+//                return "MALE/"+age+" MONTHS";
+                return "MALE/"+breedType;
             }
             else {
-                return "FEMALE/"+age+" MONTHS";
+//                return "FEMALE/"+age+" MONTHS";
+                return "FEMALE/"+breedType;
             }
 
         }
 
 
-        //The viewHolder used for this item. This viewHolder is always reused by the RecyclerView so scrolling is blazing fast
+
+    //The viewHolder used for this item. This viewHolder is always reused by the RecyclerView so scrolling is blazing fast
         protected static class ViewHolder extends RecyclerView.ViewHolder {
             protected ImageView mItemImageView;
             protected TextView mItemName;

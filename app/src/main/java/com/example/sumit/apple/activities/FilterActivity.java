@@ -1,5 +1,6 @@
 package com.example.sumit.apple.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.sumit.apple.R;
@@ -25,6 +27,8 @@ import com.example.sumit.apple.network.RetrofitSingleton;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +66,14 @@ public class FilterActivity extends AppCompatActivity {
     private List<FilterSubCategory> breedTypeData;
     private static int filterCategorySelected = -1;     //Setting Default value as a Uninitialized sign
 
-    private ArrayList<ArrayList<FilterCheckBox>> filterModels = new ArrayList<>();
+    private ArrayList<FilteredItems> filteredItems = new ArrayList<>();
+    private ArrayList<String> breedNameSelected = new ArrayList<>();
+    private ArrayList<String> genderSelected = new ArrayList<>();
+    private ArrayList<String> sizeSelected = new ArrayList<>();
+    private ArrayList<String> breedTypeSelected = new ArrayList<>();
+
+    private Button buttonApply;
+    private Button buttonClear;
 
 
     //-------------------
@@ -126,13 +137,14 @@ public class FilterActivity extends AppCompatActivity {
 
 //        getServerData();
 
-//        fastAdapterFilterSubCategory.add();        //Adding Filter SubCategory Data
-
         rvFilterSubCategory.setAdapter(fastAdapterFilterSubCategory);
 
         mLayoutManagerSubCategory = new LinearLayoutManager(this);
         mLayoutManagerSubCategory.setOrientation(LinearLayoutManager.VERTICAL);
         rvFilterSubCategory.setLayoutManager(mLayoutManagerSubCategory);
+
+        buttonApply = (Button) findViewById(R.id.btn_apply);
+        buttonClear = (Button) findViewById(R.id.btn_clear);
 
         setClickListeners();
     }
@@ -210,27 +222,78 @@ public class FilterActivity extends AppCompatActivity {
 
 
 
+        buttonApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (FilterSubCategory model : breedNameData) {
+                    if (model.isChecked()) {
+                        filteredItems.get(FilteredItems.INDEX_BREED_NAME).getSubCategoryNames().add(model.getSubCategoryName());
+                    }
+                }
+
+                for (FilterSubCategory model : genderData) {
+                    if (model.isChecked()) {
+                        filteredItems.get(FilteredItems.INDEX_GENDER).getSubCategoryNames().add(model.getSubCategoryName());
+                    }
+                }
+
+                for (FilterSubCategory model : sizeData) {
+                    if (model.isChecked()) {
+                        filteredItems.get(FilteredItems.INDEX_SIZE).getSubCategoryNames().add(model.getSubCategoryName());
+                    }
+                }
+
+                for (FilterSubCategory model : breedTypeData) {
+                    if (model.isChecked()) {
+                        filteredItems.get(FilteredItems.INDEX_BREED_TYPE).getSubCategoryNames().add(model.getSubCategoryName());
+                    }
+                }
+
+
+                breedNameSelected = filteredItems.get(FilteredItems.INDEX_BREED_NAME).getSubCategoryNames();
+                genderSelected = filteredItems.get(FilteredItems.INDEX_GENDER).getSubCategoryNames();
+                sizeSelected = filteredItems.get(FilteredItems.INDEX_SIZE).getSubCategoryNames();
+                breedTypeSelected = filteredItems.get(FilteredItems.INDEX_BREED_TYPE).getSubCategoryNames();
+
+                //Check whether any filter is selected
+                if(breedNameSelected.isEmpty() && genderSelected.isEmpty() && sizeSelected.isEmpty() && breedTypeSelected.isEmpty()){
+                    //No Items are filterd, so returning without data
+                    Intent returnIntent = new Intent();
+                    setResult(Activity.RESULT_CANCELED, returnIntent);
+                    finish();
+                }else{
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("FILTERED_ITEMS", Parcels.wrap(filteredItems));
+                    setResult(Activity.RESULT_OK,returnIntent);
+                    finish();
+                }
+
+
+            }
+        });
+
+
 
     }
 
-    private void filterItemListClicked(FilterSubCategory item, int position) {
-
-
-        if (FilteredItems.categorySelected == 0) {
-            breedNameCheckbox.get(position).setChecked(!item.isChecked()).setName(item.getSubCategoryName());
-
-//            filterValAdapter = new FilterValRecyclerAdapter(this, R.layout.filter_list_val_item_layout, sizeMultipleListModels, MainFilterModel.SIZE);
-        } else if (FilteredItems.categorySelected == 1) {
-            genderCheckbox.get(position).setChecked(!item.isChecked()).setName(item.getSubCategoryName());
-        } else if (FilteredItems.categorySelected == 2) {
-            sizeCheckbox.get(position).setChecked(!item.isChecked()).setName(item.getSubCategoryName());
-        } else if (FilteredItems.categorySelected == 3) {
-            breedTypeCheckbox.get(position).setChecked(!item.isChecked()).setName(item.getSubCategoryName());
-        } else {
-            Toast.makeText(FilterActivity.this, "Error: Inside FilterItemListClicked", Toast.LENGTH_SHORT).show();
-        }
-        Toast.makeText(FilterActivity.this, "Temp: Inside FilterItemListClicked", Toast.LENGTH_SHORT).show();
-    }
+//    private void filterItemListClicked(FilterSubCategory item, int position) {
+//
+//
+//        if (FilteredItems.categorySelected == 0) {
+//            breedNameCheckbox.get(position).setChecked(!item.isChecked()).setName(item.getSubCategoryName());
+//
+////            filterValAdapter = new FilterValRecyclerAdapter(this, R.layout.filter_list_val_item_layout, sizeMultipleListModels, MainFilterModel.SIZE);
+//        } else if (FilteredItems.categorySelected == 1) {
+//            genderCheckbox.get(position).setChecked(!item.isChecked()).setName(item.getSubCategoryName());
+//        } else if (FilteredItems.categorySelected == 2) {
+//            sizeCheckbox.get(position).setChecked(!item.isChecked()).setName(item.getSubCategoryName());
+//        } else if (FilteredItems.categorySelected == 3) {
+//            breedTypeCheckbox.get(position).setChecked(!item.isChecked()).setName(item.getSubCategoryName());
+//        } else {
+//            Toast.makeText(FilterActivity.this, "Error: Inside FilterItemListClicked", Toast.LENGTH_SHORT).show();
+//        }
+//        Toast.makeText(FilterActivity.this, "Temp: Inside FilterItemListClicked", Toast.LENGTH_SHORT).show();
+//    }
 
     private void getServerData() {
 
@@ -302,40 +365,40 @@ public class FilterActivity extends AppCompatActivity {
 
     private void initFilterData() {
 
-        for (int i = 0; i < breedNameData.size(); i++) {   //Initialize breedNameCheckbox Data with disable checkbox
-
-            FilterCheckBox filterCheckBox = new FilterCheckBox();
-            filterCheckBox.setChecked(false);
-            breedNameCheckbox.add(filterCheckBox);
-        }
-
-        for (int i = 0; i < 2; i++) {                   //Initialize genderCheckbox Data  with disable checkbox
-
-            FilterCheckBox filterCheckBox = new FilterCheckBox();
-            filterCheckBox.setChecked(false);
-            genderCheckbox.add(filterCheckBox);
-        }
-
-
-        for (int i = 0; i < 3; i++) {                   //Initialize sizeCheckbox Data  with disable checkbox
-
-            FilterCheckBox filterCheckBox = new FilterCheckBox();
-            filterCheckBox.setChecked(false);
-            sizeCheckbox.add(filterCheckBox);
-        }
-
-
-        for (int i = 0; i < 2; i++) {                   //Initialize breedTypeCheckbox Data with disable checkbox
-
-            FilterCheckBox filterCheckBox = new FilterCheckBox();
-            filterCheckBox.setChecked(false);
-            breedTypeCheckbox.add(filterCheckBox);
-        }
-
-        filterModels.add(breedNameCheckbox);
-        filterModels.add(genderCheckbox);
-        filterModels.add(sizeCheckbox);
-        filterModels.add(breedTypeCheckbox);
+//        for (int i = 0; i < breedNameData.size(); i++) {   //Initialize breedNameCheckbox Data with disable checkbox
+//
+//            FilterCheckBox filterCheckBox = new FilterCheckBox();
+//            filterCheckBox.setChecked(false);
+//            breedNameCheckbox.add(filterCheckBox);
+//        }
+//
+//        for (int i = 0; i < 2; i++) {                   //Initialize genderCheckbox Data  with disable checkbox
+//
+//            FilterCheckBox filterCheckBox = new FilterCheckBox();
+//            filterCheckBox.setChecked(false);
+//            genderCheckbox.add(filterCheckBox);
+//        }
+//
+//
+//        for (int i = 0; i < 3; i++) {                   //Initialize sizeCheckbox Data  with disable checkbox
+//
+//            FilterCheckBox filterCheckBox = new FilterCheckBox();
+//            filterCheckBox.setChecked(false);
+//            sizeCheckbox.add(filterCheckBox);
+//        }
+//
+//
+//        for (int i = 0; i < 2; i++) {                   //Initialize breedTypeCheckbox Data with disable checkbox
+//
+//            FilterCheckBox filterCheckBox = new FilterCheckBox();
+//            filterCheckBox.setChecked(false);
+//            breedTypeCheckbox.add(filterCheckBox);
+//        }
+//
+//        filterModels.add(breedNameCheckbox);
+//        filterModels.add(genderCheckbox);
+//        filterModels.add(sizeCheckbox);
+//        filterModels.add(breedTypeCheckbox);
 
 
         //Setting first SubCategoryFilter data
@@ -349,6 +412,11 @@ public class FilterActivity extends AppCompatActivity {
         genderData = FilterSubCategoryData.getGenderData();
         sizeData = FilterSubCategoryData.getSizeData();
         breedTypeData = FilterSubCategoryData.getBreedTypeData();
+
+        for (int i = 0; i < 4; i++) {                           //Initialize filteredItems
+            FilteredItems filterItem = new FilteredItems();
+            filteredItems.add(filterItem);
+        }
 
 
     }

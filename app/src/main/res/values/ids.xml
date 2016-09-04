@@ -50,9 +50,9 @@
     <!--FilterActivity-->
     <item name="rv_filter_category" type="id" />
     <item name="rv_filter_sub_category" type="id" />
-    <item name="button_clear" type="id" />
+    <item name="btn_clear" type="id" />
     <item name="button_apply_filter_layout" type="id" />
-    <item name="button_apply" type="id" />
+    <item name="btn_apply" type="id" />
     <item name="empty_view_container" type="id" />
     <item name="toolbar_headerbar" type="id" />
     <item name="product_list_filter_container" type="id" />
