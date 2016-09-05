@@ -219,6 +219,40 @@ public class FilterActivity extends AppCompatActivity {
         });
 
 
+        buttonClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                for (int i = 0; i < filteredItems.size(); i++) {        //Clear filteredItems so filter selections are cleared
+                    filteredItems.get(i).clearSubCategoryNames();
+                }
+
+                //Clear SubCategory Data and notify SubCategoryAdapter of the changes done.
+                for (FilterSubCategory model : breedNameData) {
+                    model.setChecked(false);
+                }
+
+                for (FilterSubCategory model : genderData) {
+                    model.setChecked(false);
+                }
+
+                for (FilterSubCategory model : sizeData) {
+                    model.setChecked(false);
+                }
+
+                for (FilterSubCategory model : breedTypeData) {
+                    model.setChecked(false);
+                }
+
+
+                fastAdapterFilterSubCategory.notifyAdapterDataSetChanged(); //Notify Adapter of the cleared items
+
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("filtered_items", Parcels.wrap(filteredItems));
+                setResult(Activity.RESULT_OK,returnIntent);
+                finish();
+            }
+        });
 
         buttonApply.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,7 +260,7 @@ public class FilterActivity extends AppCompatActivity {
 
                 if(FILTER_PARAMETER_STATUS == 11){      //Clear filteredItems so that fresh filter selection can be added
 
-                    for (int i = 0; i < filteredItems.size(); i++) {                           //Initialize filteredItems
+                    for (int i = 0; i < filteredItems.size(); i++) {
                         filteredItems.get(i).clearSubCategoryNames();
                     }
                 }
