@@ -32,4 +32,9 @@ public class FilteredItems {
 
     }
 
+    public void clearSubCategoryNames() {
+        subCategoryNames.clear();       //Empty filter item list
+
+    }
+
 }

@@ -21,7 +21,12 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/list_bottom_bar_height" />
 
+
     </FrameLayout>
+    <!--android:layout_toLeftOf="@id/btn_check"-->
+    <!--android:paddingRight="80.0dip"-->
+
+
 
 </LinearLayout>
 

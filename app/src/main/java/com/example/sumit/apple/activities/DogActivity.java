@@ -10,7 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.sumit.apple.R;
@@ -46,6 +48,9 @@ public class DogActivity extends AppCompatActivity {
     private LinearLayout mSort;
     private LinearLayout mFilter;
     private ArrayList<FilteredItems> mFilteredItems;
+    private RecyclerView rvDogs;
+    private static int FILTER_PARAMETER_STATUS = 10;    // FILTER_PARAMETER_STATUS = 10 Filter is empty, 11= Filled
+
 
 
     @Override
@@ -62,10 +67,9 @@ public class DogActivity extends AppCompatActivity {
 //        Setting up filter & sort listeners
         setupListeners();
 
-
 //TODO: Check this optimize it (moving to fragments)
 
-        RecyclerView rvDogs = (RecyclerView) findViewById(R.id.dogs_recycler_view);
+        rvDogs = (RecyclerView) findViewById(R.id.dogs_recycler_view);
 
         fastAdapterDogs = new FastItemAdapter();
         fastAdapterDogs.withSelectable(true);
@@ -137,44 +141,6 @@ public class DogActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(DogActivity.this,"Sort Clicked",Toast.LENGTH_SHORT).show();
-                
-//                fastAdapterDogs.filter("Beagle");
-//                fastAdapterDogs.notifyAdapterDataSetChanged();
-
-//                String abc = "Labrador:Female";
-//                String[] constraints = abc.split(":");
-//                String first = constraints[0];
-//                String second = constraints[1];
-//                Toast.makeText(DogActivity.this,constraints[0],Toast.LENGTH_SHORT).show();
-
-//                fastAdapterDogs.withFilterPredicate(new IItemAdapter.Predicate<Dog>() {
-//                    @Override
-//                    public boolean filter(Dog item, CharSequence constraint) {
-//                        //return true if we should filter it out
-//                        //return false to keep it
-//                        boolean bool = !item.getName().toLowerCase().contains(constraint.toString().toLowerCase());
-//
-////                        boolean bool = splitFilterString(item, constraint);
-//
-////                String[] constraints = constraint.toString().split(":");
-//////                        Toast.makeText(DogActivity.this,constraints[0],Toast.LENGTH_SHORT).show();
-////                String breedName = constraints[0];
-////                String gender = constraints[1];
-////                String breedName2="Maltese";
-////                boolean breedNameCheck = item.getName().toLowerCase().contains(breedName.toLowerCase());
-////                boolean breedNameCheck2 = item.getName().toLowerCase().contains(breedName2.toLowerCase());
-////                boolean genderCheck = item.getGenderString().toLowerCase().contains(gender.toLowerCase());
-//
-////                return !((breedNameCheck || breedNameCheck2) && genderCheck);
-//
-////                return true;
-//                        return bool;
-//                    }
-//                });
-//
-
-
-
 
             }
         });
@@ -184,12 +150,18 @@ public class DogActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
                 Intent intent = new Intent(DogActivity.this, FilterActivity.class);
                 Bundle b = new Bundle();
-                b.putInt("FILTER_PARAMETER_STATUS", 10);    // 10 = Filter is empty, 11= Filled
+                b.putInt("filter_parameter_status", FILTER_PARAMETER_STATUS);    // FILTER_PARAMETER_STATUS = 10 Filter is empty, 11= Filled
+
+                if (FILTER_PARAMETER_STATUS == 11) {
+                   b.putParcelable("post_filtered_items", Parcels.wrap(mFilteredItems));
+                }
                 intent.putExtras(b);
 
                 startActivityForResult(intent,IDENTIFIER);
+
             }
         });
 
@@ -387,13 +359,17 @@ public class DogActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == 1) {
+        if (requestCode == IDENTIFIER) {
             if(resultCode == Activity.RESULT_OK){
-                mFilteredItems = (ArrayList<FilteredItems>) Parcels.unwrap(data.getParcelableExtra("FILTERED_ITEMS"));
+
+                FILTER_PARAMETER_STATUS = 11;       //Setting so that filteritems parcel can be sent back
+                mFilteredItems = (ArrayList<FilteredItems>) Parcels.unwrap(data.getParcelableExtra("filtered_items"));
 
                 String filterString = createFilterString();
 
                 fastAdapterDogs.filter(filterString);
+                fastAdapterDogs.notifyAdapterDataSetChanged();      //Refreshing the data
+                rvDogs.smoothScrollToPosition(0);               //TODO: Find a better way(like using Progressbar); Scroll to top recyclerview item
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {

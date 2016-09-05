@@ -74,6 +74,7 @@ public class FilterActivity extends AppCompatActivity {
 
     private Button buttonApply;
     private Button buttonClear;
+    private static int FILTER_PARAMETER_STATUS = 10;
 
 
     //-------------------
@@ -88,17 +89,14 @@ public class FilterActivity extends AppCompatActivity {
 
         intent = getIntent();
         extras = intent.getExtras();
-        filterParameterStatus = extras.getInt("FILTER_PARAMETER_STATUS");
+        FILTER_PARAMETER_STATUS = extras.getInt("filter_parameter_status");
 
-        if(filterParameterStatus != 10){            // 10 = Filter is empty, 11= Filled
+        if(FILTER_PARAMETER_STATUS == 11){            // 10 = Filter is empty, 11= Filled
 
-            //Initialize filter data.
-        }else {
-
-
-
-           getServerData();
+            filteredItems = (ArrayList<FilteredItems>) Parcels.unwrap(intent.getParcelableExtra("post_filtered_items"));
         }
+
+        getServerData();
 
         initActivity();
 
@@ -225,6 +223,14 @@ public class FilterActivity extends AppCompatActivity {
         buttonApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(FILTER_PARAMETER_STATUS == 11){      //Clear filteredItems so that fresh filter selection can be added
+
+                    for (int i = 0; i < filteredItems.size(); i++) {                           //Initialize filteredItems
+                        filteredItems.get(i).clearSubCategoryNames();
+                    }
+                }
+
                 for (FilterSubCategory model : breedNameData) {
                     if (model.isChecked()) {
                         filteredItems.get(FilteredItems.INDEX_BREED_NAME).getSubCategoryNames().add(model.getSubCategoryName());
@@ -263,7 +269,7 @@ public class FilterActivity extends AppCompatActivity {
                     finish();
                 }else{
                     Intent returnIntent = new Intent();
-                    returnIntent.putExtra("FILTERED_ITEMS", Parcels.wrap(filteredItems));
+                    returnIntent.putExtra("filtered_items", Parcels.wrap(filteredItems));
                     setResult(Activity.RESULT_OK,returnIntent);
                     finish();
                 }
@@ -365,42 +371,6 @@ public class FilterActivity extends AppCompatActivity {
 
     private void initFilterData() {
 
-//        for (int i = 0; i < breedNameData.size(); i++) {   //Initialize breedNameCheckbox Data with disable checkbox
-//
-//            FilterCheckBox filterCheckBox = new FilterCheckBox();
-//            filterCheckBox.setChecked(false);
-//            breedNameCheckbox.add(filterCheckBox);
-//        }
-//
-//        for (int i = 0; i < 2; i++) {                   //Initialize genderCheckbox Data  with disable checkbox
-//
-//            FilterCheckBox filterCheckBox = new FilterCheckBox();
-//            filterCheckBox.setChecked(false);
-//            genderCheckbox.add(filterCheckBox);
-//        }
-//
-//
-//        for (int i = 0; i < 3; i++) {                   //Initialize sizeCheckbox Data  with disable checkbox
-//
-//            FilterCheckBox filterCheckBox = new FilterCheckBox();
-//            filterCheckBox.setChecked(false);
-//            sizeCheckbox.add(filterCheckBox);
-//        }
-//
-//
-//        for (int i = 0; i < 2; i++) {                   //Initialize breedTypeCheckbox Data with disable checkbox
-//
-//            FilterCheckBox filterCheckBox = new FilterCheckBox();
-//            filterCheckBox.setChecked(false);
-//            breedTypeCheckbox.add(filterCheckBox);
-//        }
-//
-//        filterModels.add(breedNameCheckbox);
-//        filterModels.add(genderCheckbox);
-//        filterModels.add(sizeCheckbox);
-//        filterModels.add(breedTypeCheckbox);
-
-
         //Setting first SubCategoryFilter data
         filterCategorySelected = 0;
         if(!breedNameData.isEmpty()) {
@@ -413,9 +383,54 @@ public class FilterActivity extends AppCompatActivity {
         sizeData = FilterSubCategoryData.getSizeData();
         breedTypeData = FilterSubCategoryData.getBreedTypeData();
 
-        for (int i = 0; i < 4; i++) {                           //Initialize filteredItems
-            FilteredItems filterItem = new FilteredItems();
-            filteredItems.add(filterItem);
+        if(FILTER_PARAMETER_STATUS == 11){
+            //
+            for (FilterSubCategory model : breedNameData) {
+                for (int i = 0; i < filteredItems.get(FilteredItems.INDEX_BREED_NAME).getSubCategoryNames().size(); i++) {
+
+                    String string = filteredItems.get(FilteredItems.INDEX_BREED_NAME).getSubCategoryNames().get(i);
+                    if (model.getSubCategoryName().equalsIgnoreCase(string)) {
+                        model.setChecked(true);
+                    }
+                }
+            }
+
+            for (FilterSubCategory model : genderData) {
+                for (int i = 0; i < filteredItems.get(FilteredItems.INDEX_GENDER).getSubCategoryNames().size(); i++) {
+
+                    String string = filteredItems.get(FilteredItems.INDEX_GENDER).getSubCategoryNames().get(i);
+                    if (model.getSubCategoryName().equalsIgnoreCase(string)) {
+                        model.setChecked(true);
+                    }
+                }
+            }
+
+            for (FilterSubCategory model : sizeData) {
+                for (int i = 0; i < filteredItems.get(FilteredItems.INDEX_SIZE).getSubCategoryNames().size(); i++) {
+
+                    String string = filteredItems.get(FilteredItems.INDEX_SIZE).getSubCategoryNames().get(i);
+                    if (model.getSubCategoryName().equalsIgnoreCase(string)) {
+                        model.setChecked(true);
+                    }
+                }
+            }
+
+            for (FilterSubCategory model : breedTypeData) {
+                for (int i = 0; i < filteredItems.get(FilteredItems.INDEX_BREED_TYPE).getSubCategoryNames().size(); i++) {
+
+                    String string = filteredItems.get(FilteredItems.INDEX_BREED_TYPE).getSubCategoryNames().get(i);
+                    if (model.getSubCategoryName().equalsIgnoreCase(string)) {
+                        model.setChecked(true);
+                    }
+                }
+            }
+        fastAdapterFilterSubCategory.notifyAdapterDataSetChanged();
+
+        }else {
+            for (int i = 0; i < 4; i++) {                           //Initialize filteredItems
+                FilteredItems filterItem = new FilteredItems();
+                filteredItems.add(filterItem);
+            }
         }
 
 
