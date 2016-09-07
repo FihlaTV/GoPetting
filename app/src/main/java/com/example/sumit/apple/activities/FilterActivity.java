@@ -48,11 +48,6 @@ public class FilterActivity extends AppCompatActivity {
     private Credential credential;
     private LinearLayoutManager mLayoutManagerSubCategory;
 
-    //------------------TODO: Check and delete unncessary codes
-
-
-//    private ArrayList<FilteredItems> mFilteredItems = new ArrayList<>();
-
     private ArrayList<FilterCheckBox> breedNameCheckbox = new ArrayList<>();
     private ArrayList<FilterCheckBox> genderCheckbox = new ArrayList<>();
     private ArrayList<FilterCheckBox> sizeCheckbox = new ArrayList<>();
@@ -77,9 +72,6 @@ public class FilterActivity extends AppCompatActivity {
     private static int FILTER_PARAMETER_STATUS = 10;
 
 
-    //-------------------
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +88,12 @@ public class FilterActivity extends AppCompatActivity {
             filteredItems = (ArrayList<FilteredItems>) Parcels.unwrap(intent.getParcelableExtra("post_filtered_items"));
         }
 
+        //If filteredItem is null then no parcel is sent from parent activity, this could be because user moved to parent/other screen of DogActivity
+        // after filtering once and then again came back to Dogactivity and tried to filter again.
+        if(filteredItems == null){
+            FILTER_PARAMETER_STATUS = 10;       //Resetting since no filteredItems(Parcel) received.
+            filteredItems = new ArrayList<>();
+        }
         getServerData();
 
         initActivity();
