@@ -59,5 +59,17 @@
     <string name="text_apply">APPLY</string>
     <string name="title_activity_filter">Filters</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sort_by">SORT BY</string>
+
+
+
+        <string-array name="sort_by">
+            <item>Newly Listed</item>
+            <item>Price: Low to High</item>
+            <item>Price: High to Low</item>
+        </string-array>
+
 
 </resources>

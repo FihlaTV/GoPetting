@@ -40,6 +40,8 @@
     <item name="tv_item_mrp" type="id" />
     <item name="iv_item_likes" type="id" />
     <item name="tv_item_description" type="id" />
+    <item name="iv_sort" type="id" />
+    <item name="tv_sort_identifier" type="id" />
 
 <!--DogDetailsActivity-->
     <item name="et_pincode_text" type="id" />
@@ -61,6 +63,7 @@
     <item name="fastadapter_filter_subcategory_item_id" type="id" />
     <item name="tv_filter_subcategory" type="id" />
     <item name="cb_filter_subcategory" type="id" />
+
 
 
 </resources>

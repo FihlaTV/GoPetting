@@ -3,6 +3,7 @@ package com.example.sumit.apple.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,12 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.sumit.apple.R;
+import com.example.sumit.apple.fragments.SortDialogFragment;
 import com.example.sumit.apple.models.Credential;
 import com.example.sumit.apple.models.Dog;
 import com.example.sumit.apple.models.FilteredItems;
@@ -29,7 +29,10 @@ import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 
 import org.parceler.Parcels;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -38,7 +41,7 @@ import retrofit2.Call;
  * Created by Sumit on 7/26/2016.
  */
 
-public class DogActivity extends AppCompatActivity {
+public class DogActivity extends AppCompatActivity implements SortDialogFragment.SortDialogListener {
 
     private static final int IDENTIFIER = 1;
     public static FastItemAdapter fastAdapterDogs;
@@ -50,7 +53,11 @@ public class DogActivity extends AppCompatActivity {
     private ArrayList<FilteredItems> mFilteredItems;
     private RecyclerView rvDogs;
     private static int FILTER_PARAMETER_STATUS = 10;    // FILTER_PARAMETER_STATUS = 10 Filter is empty, 11= Filled
-
+    private List<Dog> mDogData;
+    private String mfilterString;
+    private static final int SORT_ASCENDING = 0;
+    private static final int SORT_DESCENDING = 1;
+    private static final int SORT_NONE = -1;
 
 
     @Override
@@ -142,6 +149,11 @@ public class DogActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                Toast.makeText(DogActivity.this,"Sort Clicked",Toast.LENGTH_SHORT).show();
 
+                // Create an instance of the dialog fragment and show it
+                DialogFragment dialogFragment = new SortDialogFragment();
+                dialogFragment.show(getSupportFragmentManager(), "SortDialogFragment");
+//                setupSortOptions();
+
             }
         });
 
@@ -167,6 +179,11 @@ public class DogActivity extends AppCompatActivity {
 
 
     }
+
+//    private void setupSortOptions() {
+//
+//
+//    }
 
     private void showFilterSortLayout() {
 
@@ -214,7 +231,9 @@ public class DogActivity extends AppCompatActivity {
 
                                     @Override
                                     public void success(List<Dog> dogs) {
-                                        fastAdapterDogs.add(dogs);
+//                                        fastAdapterDogs.add(dogs);
+                                        mDogData = dogs;            //using mainly for Sorting
+                                        fastAdapterDogs.add(mDogData);
                                         configureFilterPredicate();
 
                                     }
@@ -243,7 +262,9 @@ public class DogActivity extends AppCompatActivity {
 
                 @Override
                 public void success(List<Dog> dogs) {
-                    fastAdapterDogs.add(dogs);
+//                    fastAdapterDogs.add(dogs);
+                    mDogData = dogs;            //using mainly for Sorting
+                    fastAdapterDogs.add(mDogData);
                     configureFilterPredicate();
 
                 }
@@ -365,9 +386,9 @@ public class DogActivity extends AppCompatActivity {
                 FILTER_PARAMETER_STATUS = 11;       //Setting so that filteritems parcel can be sent back
                 mFilteredItems = (ArrayList<FilteredItems>) Parcels.unwrap(data.getParcelableExtra("filtered_items"));
 
-                String filterString = createFilterString();
+                mfilterString = createFilterString();
 
-                fastAdapterDogs.filter(filterString);
+                fastAdapterDogs.filter(mfilterString);
                 fastAdapterDogs.notifyAdapterDataSetChanged();      //Refreshing the data
                 rvDogs.smoothScrollToPosition(0);               //TODO: Find a better way(like using Progressbar); Scroll to top recyclerview item
 
@@ -536,5 +557,62 @@ public class DogActivity extends AppCompatActivity {
 
         return boolBreedName && boolGender && boolSize && boolBreedTypes;
     }
+
+    // The dialog fragment receives a reference to this Activity through the
+    // Fragment.onAttach() callback, which it uses to call the following methods
+    // defined by the SortDialogFragment.SortDialogListener interface
+    @Override
+    public void onDialogItemClick(SortDialogFragment dialogFragment, int position) {
+
+        switch (position) {
+            case 0:
+                //Newly Listed
+                Toast.makeText(DogActivity.this, "0 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case 1:
+                //Price: Low to High
+                fastAdapterDogs.getItemAdapter().withComparator(getComparator(SORT_ASCENDING));
+                break;
+            case 2:
+                //Price: High to Low
+                fastAdapterDogs.getItemAdapter().withComparator(getComparator(SORT_DESCENDING));
+                break;
+        }
+
+    }
+
+    private Comparator<Dog> getComparator(int sort) {
+        switch (sort) {
+            case SORT_ASCENDING:
+                return new IntegerComparatorAscending();
+            case SORT_DESCENDING:
+                return new IntegerComparatorDescending();
+            case SORT_NONE:
+                return null;
+        }
+
+        throw new RuntimeException("This sortingStrategy is not supported.");
+    }
+
+    /**
+     * A simple Comparator to sort the items ascending.
+     */
+    private class IntegerComparatorAscending implements Comparator<Dog>, Serializable {
+        @Override
+        public int compare(Dog lhs, Dog rhs) {
+            return Integer.valueOf(lhs.getUnitPrice()).compareTo(rhs.getUnitPrice()); // To compare integer values
+        }
+    }
+
+    /**
+     * A simple Comparator to sort the items descending.
+     */
+    private class IntegerComparatorDescending implements Comparator<Dog>, Serializable {
+        @Override
+        public int compare(Dog lhs, Dog rhs) {
+            return Integer.valueOf(rhs.getUnitPrice()).compareTo(lhs.getUnitPrice()); // To compare integer values
+        }
+    }
+
 
 }
