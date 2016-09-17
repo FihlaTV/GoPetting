@@ -95,6 +95,24 @@
 
 
     <!--Button-->
+
+<!--Amit Login Activity-->
+    <style name="SocialLoginButton">
+        <!--<item name="android:textSize">@dimen/text_verysmall</item>-->
+        <item name="android:textColor">@color/dark</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <!--<item name="android:background">@drawable/rounded_border_light</item>-->
+        <item name="android:paddingLeft">10.0dip</item>
+        <item name="android:paddingRight">10.0dip</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40.0dip</item>
+        <item name="android:minWidth">140.0dip</item>
+        <item name="android:drawablePadding">6.0dip</item>
+        <item name="android:textAllCaps">true</item>
+        <!--<item name="typeface">@string/typeface_bold</item>-->
+    </style>
+
 </resources>
 
 

@@ -5,6 +5,7 @@ import com.example.sumit.apple.models.DeliveryDetails;
 import com.example.sumit.apple.models.Dog;
 import com.example.sumit.apple.models.DogDetails;
 import com.example.sumit.apple.models.FilterSubCategory;
+import com.example.sumit.apple.models.User;
 
 import java.util.List;
 
@@ -64,4 +65,17 @@ public class Controller {
         Call<List<FilterSubCategory>> getBreedNames(@Header("Authorization") String authorization,
                                                     @Path("product_category_id") int product_category_id);
     }
+
+//   /api/v1/user/get_user_id?id=<id>&indicator=<indicator>&email=<email>
+    public interface GetUserId {
+        @GET("/api/v1/user/get_user_id")
+        Call<User> getUserId(@Header("Authorization") String authorization,
+                           @Query("id") String id,
+                           @Query("indicator") int indicator,   //indicator=1 for google_id and 2 for facebook_id
+                           @Query("email") String email,
+                           @Query("first_name") String first_name,
+                           @Query("last_name") String last_name);
+    }
+
+
 }

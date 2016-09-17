@@ -66,6 +66,8 @@
     <color name="dark_text">#ff696e79</color>
 
 
-
+<!--Login Activity-->
+    <color name="grey_0">#ffffff</color>
+    <color name="grey_1000">#000000</color>
 
 </resources>

@@ -58,6 +58,9 @@
     <dimen name="text_size_xlarge">20.0sp</dimen>
     <dimen name="text_size_xxlarge">24.0sp</dimen>
 
+    <!--Login Activity-->
+
+    <dimen name="loginactivity_logo_from_login">20dp</dimen>
 
 
 

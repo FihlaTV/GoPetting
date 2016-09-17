@@ -1,6 +1,10 @@
 package com.example.sumit.apple.activities;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -8,29 +12,50 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.example.sumit.apple.R;
+import com.example.sumit.apple.bus.MoveToFragmentEvent;
+import com.example.sumit.apple.bus.UpdateActionBarTitleEvent;
 import com.example.sumit.apple.fragments.AboutUsFragment;
 import com.example.sumit.apple.fragments.ContactUsFragment;
 import com.example.sumit.apple.fragments.HomeFragment;
 import com.example.sumit.apple.fragments.LocationFragment;
 import com.example.sumit.apple.fragments.OrdersFragment;
-import com.example.sumit.apple.R;
 import com.example.sumit.apple.fragments.TermsConditionsFragment;
-import com.example.sumit.apple.bus.MoveToFragmentEvent;
-import com.example.sumit.apple.bus.UpdateActionBarTitleEvent;
-import com.example.sumit.apple.models.Credential;
-import com.example.sumit.apple.network.Controller;
-import com.example.sumit.apple.network.OAuthTokenService;
+import com.example.sumit.apple.models.CircleImageView;
+import com.example.sumit.apple.network.SessionManager;
+import com.example.sumit.apple.utils.Constants;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.plus.People;
+import com.google.android.gms.plus.Plus;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 import de.greenrobot.event.EventBus;
-import retrofit2.Call;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,
+                                                                GoogleApiClient.ConnectionCallbacks,
+                                                                GoogleApiClient.OnConnectionFailedListener,
+                                                                ResultCallback<People.LoadPeopleResult> {
 
     private DrawerLayout mDrawerLayout;
     private Toolbar mToolbar;
@@ -39,10 +64,66 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private FragmentManager mFragmentManager;
 
+//------------------------------LoginActivity-----------------------------//
+
+    private boolean isLog = true;
+    private SessionManager session;
+    public JSONObject json_object;
+    private static final String TAG = "MyActivity";
+    private RelativeLayout Relativelayout;
+    // public Menu menu;
+    CircleImageView proPic;
+    TextView ProfText;
+    ProgressDialog progress_dialog;
+
+    GoogleApiClient mGoogleApiClient;
+
+    boolean mSignInClicked;
+    ProgressDialog ringProgressDialog;
+
+
+    private static final int RC_SIGN_IN = 0;
+    private boolean mIsResolving = false;
+    /* Should we automatically resolve ConnectionResults when possible? */
+    private boolean mShouldResolve = false;
+
+
+
+
+// ------------------------------LoginActivity-----------------------------//
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//------------------------------LoginActivity-----------------------------//
+
+        //Get User Profile Info
+        session = new SessionManager(getApplicationContext());
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        progress_dialog = new ProgressDialog(this);
+        progress_dialog.setMessage("Signing in....");
+
+
+       /* mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this).addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN).build();
+*/
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API)
+                .addScope(new Scope(Scopes.PROFILE))
+                .build();
+        mGoogleApiClient.connect();
+
+
+
+// ------------------------------LoginActivity-----------------------------//
 
 
         // Set a Toolbar to replace the ActionBar.
@@ -53,10 +134,59 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mNavDrawer = (NavigationView) findViewById(R.id.nvView);
 
+// ------------------------------LoginActivity-----------------------------//
+
+        mNavDrawer.post(new Runnable() {
+            @Override
+            public void run() {
+                Resources resources = getResources();
+                float width = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 265, resources.getDisplayMetrics());
+                DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) mNavDrawer.getLayoutParams();
+                params.width = (int) (width);
+                mNavDrawer.setLayoutParams(params);
+            }
+        });
+
+        //mNavDrawer.getMenu().findItem(R.id.Login).setTitle("Test");
         //Adding Navigation Header to NavigationView
         LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.navigation_header,null,false);
+        View view = inflater.inflate(R.layout.navigation_header, null, false);
+
+        // TODO : This Logic has to be Removed . Already Implemented.
+
+        TextView Login_SignUp = (TextView) view.findViewById(R.id.profile_name);
+        Login_SignUp.setOnClickListener(this);
+
+        Relativelayout = (RelativeLayout) view.findViewById(R.id.navLayout);
+        RelativeLayout Rlout = (RelativeLayout) view.findViewById(R.id.navLayout);
+
+        Relativelayout.setOnClickListener(this);
+
+
+        proPic = (CircleImageView) view.findViewById(R.id.profile_pic);
+        ProfText = (TextView) view.findViewById(R.id.profile_name);
+
+        if (session.isLoggedIn()) {
+            HashMap<String, String> user = session.getUserDetails();
+
+            Glide.with(getApplicationContext())
+                    .load(user.get(SessionManager.KEY_PICTURE))
+                    //.placeholder(R.mipmap.default_photo)
+                    //.override(350, 448)
+                    //.diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(proPic);
+            ProfText.setText(user.get(SessionManager.KEY_NAME));
+
+        } else {
+            proPic.setImageResource(R.drawable.default_profile_pic);
+            ProfText.setText("Login/SignUp");
+
+        }
+
+
         mNavDrawer.addHeaderView(view);
+
+// ------------------------------LoginActivity-----------------------------//
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -101,6 +231,8 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
+
+
     private class NavigationItemSelectedListener implements NavigationView.OnNavigationItemSelectedListener {
 
         @Override
@@ -133,6 +265,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.AboutUs:
                 EventBus.getDefault().post(new MoveToFragmentEvent(new AboutUsFragment()));
+                break;
+            case R.id.LogBtn:
+
+                if (allAccountLogOut()) {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                }
                 break;
             default:
                 EventBus.getDefault().post(new MoveToFragmentEvent(new HomeFragment()));
@@ -201,9 +339,23 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        //super.onCreateOptionsMenu(menu);
+        MenuItem LogText = mNavDrawer.getMenu().findItem(R.id.LogBtn);
+        if (session.isLoggedIn()) {
+            mNavDrawer = (NavigationView) findViewById(R.id.nvView);
+            LogText.setTitle("Logout");
+        } else {
+            isLog = true;
+            proPic.setImageResource(R.drawable.default_profile_pic);
+            ProfText.setText("Login/SignUp");
+            LogText.setTitle("LogIn");
+
+        }
+
 
         return true;
     }
+
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -296,8 +448,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     @Override
     public void onStart() {
+        if (session.isLoggedIn()) {
+            mGoogleApiClient.connect();
+        }
         super.onStart();
         EventBus.getDefault().register(this);
     }
@@ -306,9 +462,119 @@ public class MainActivity extends AppCompatActivity {
     public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
+
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+
     }
 
 
+    public boolean allAccountLogOut() {
+        if (session.isLoggedIn()) {
 
+            if (mGoogleApiClient.isConnected()) {
+
+                Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
+
+                    @Override
+                    public void onResult(Status status) {
+                        mGoogleApiClient.disconnect();
+                        mGoogleApiClient.connect();
+
+                    }
+
+                });
+                mGoogleApiClient.connect();
+                session.setLogin(false);
+                isLog = false;
+            }
+
+            if (isLog != false) {
+                LoginManager.getInstance().logOut();
+                session.setLogin(false);
+                isLog = false;
+            }
+            session.logoutUser();
+
+
+        }
+
+
+        return isLog;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.navLayout:
+                // Toast.makeText(this, "Login Clicked", Toast.LENGTH_LONG).show();
+                if (session.isLoggedIn()) {
+                    Toast.makeText(this, "Profile page is under developement", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(MainActivity.this, Profile_Page.class));
+
+                    break;
+                }
+                else {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                }
+
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        // Could not connect to Google Play Services.  The user needs to select an account,
+        // grant permissions or resolve an error in order to sign in. Refer to the javadoc for
+        // ConnectionResult to see possible error codes.
+        Log.d(Constants.TAG_LOGIN, "onConnectionFailed:" + connectionResult);
+        //ringProgressDialog.dismiss();
+
+        if (!mIsResolving && mShouldResolve) {
+            if (connectionResult.hasResolution()) {
+                try {
+                    connectionResult.startResolutionForResult(this, RC_SIGN_IN);
+                    mIsResolving = true;
+                } catch (IntentSender.SendIntentException e) {
+                    Log.e(Constants.TAG_LOGIN, "Could not resolve ConnectionResult.", e);
+                    Toast.makeText(MainActivity.this, "Could not resolve ConnectionResult", Toast.LENGTH_LONG).show();
+                    mIsResolving = false;
+                }
+            } else {
+                // Could not resolve the connection result, show the user an
+                // error dialog.
+                Toast.makeText(MainActivity.this, "Error on Login, check your google + login method", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            // Show the signed-out UI
+        }
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
+        mShouldResolve = false;
+
+        Plus.PeopleApi.loadVisible(mGoogleApiClient, null).setResultCallback(
+                this);
+
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onResult(People.LoadPeopleResult loadPeopleResult) {
+
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        //menu.findItem(R.id.Login).setTitle("Logout");
+        return super.onPrepareOptionsMenu(menu);
+    }
 }
 

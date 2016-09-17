@@ -31,6 +31,25 @@
             android:id="@id/AboutUs"
             android:icon="@drawable/ic_three"
             android:title="@string/AboutUs" />
+
+        <item android:title="">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/InviteEarn"
+                        android:title="Invite and Earn" />
+                    <item
+
+                        android:title="Rating" />
+                    <item
+                        android:title="@string/login"
+                        android:id="@+id/LogBtn"
+
+                        android:visible="true"/>
+
+                </group>
+            </menu>
+        </item>
     </group>
 </menu>
 
