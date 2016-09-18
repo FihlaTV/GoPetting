@@ -69,5 +69,7 @@
 <!--Login Activity-->
     <color name="grey_0">#ffffff</color>
     <color name="grey_1000">#000000</color>
+    <color name="login_google_button_color">#ffdb4b38</color>
+    <color name="login_fb_button_color">#ff48629b</color>
 
 </resources>

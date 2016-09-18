@@ -91,6 +91,8 @@
     <string name="sample_text_login">Sample Text Login</string>
     <string name="user_profile">Profile</string>
     <string name="login_snackbar">\"Email Id is required to sign-up, please try again\"</string>
+    <string name="google_signin">Sign in with Google</string>
+    <string name="fb_signin">Sign in with Facebook</string>
 
 
 </resources>

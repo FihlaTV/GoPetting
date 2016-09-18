@@ -63,7 +63,9 @@
     <item name="fastadapter_filter_subcategory_item_id" type="id" />
     <item name="tv_filter_subcategory" type="id" />
     <item name="cb_filter_subcategory" type="id" />
-
+    <item name="ic_login_logo" type="id" />
+    <item name="btn_login_google" type="id" />
+    <item name="btn_login_fb" type="id" />
 
 
 </resources>

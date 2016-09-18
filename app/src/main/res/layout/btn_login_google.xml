@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/btn_login_google"
+    android:layout_width="@dimen/button_width"
+    android:layout_height="@dimen/button_height"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginBottom="17.0dip"
+    android:layout_marginTop="@dimen/login_textview_margin"
+    android:background="@color/login_google_button_color"
+    android:drawableLeft="@drawable/icn_google"
+    android:drawablePadding="5.0dip"
+    android:gravity="center_vertical"
+    android:paddingLeft="15.0dip"
+    android:text="@string/google_signin"
+    android:textAllCaps="false"
+    android:textColor="@color/white"
+    android:textSize="@dimen/text_size_medium" />

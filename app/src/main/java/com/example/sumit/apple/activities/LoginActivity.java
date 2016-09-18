@@ -1,7 +1,5 @@
 package com.example.sumit.apple.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.LoaderManager;
 import android.app.ProgressDialog;
@@ -13,7 +11,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -22,18 +19,14 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.sumit.apple.R;
@@ -44,7 +37,6 @@ import com.example.sumit.apple.network.OAuthTokenService;
 import com.example.sumit.apple.network.RetrofitSingleton;
 import com.example.sumit.apple.network.SessionManager;
 import com.example.sumit.apple.utils.Constants;
-import com.example.sumit.apple.utils.ValidateUserInfo;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -89,19 +81,31 @@ public class LoginActivity extends AppCompatActivity implements
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
      */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
+
+
+
+
+//    private static final String[] DUMMY_CREDENTIALS = new String[]{       //         --ssahu: Disabling Custom Signup
+//            "foo@example.com:hello", "bar@example.com:world"
+//    };
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
+
+/*         --ssahu: Disabling Custom Signup
+
+
     private UserLoginTask mAuthTask = null;
+
 
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+
+*/
 
     /* Request code used to invoke sign in user interactions. */
     private static final int RC_SIGN_IN = 0;
@@ -116,20 +120,20 @@ public class LoginActivity extends AppCompatActivity implements
     private CallbackManager callbackManager;
 
     private Button mPlusSignInButton;
-    private Button mEmailSignInButton;
+//    private Button mEmailSignInButton;
 
-    private TextView txt_create, txt_forgot;
+//    private TextView txt_create, txt_forgot;
     private LoginButton facebookLoginButton;
 
     ProgressDialog ringProgressDialog;
 
     private boolean IsGbtnClickInd;
     SessionManager session;
-    Button btn_fb_login;
+//    Button btn_fb_login;
     Toolbar mToolbar;
 
-    AutoCompleteTextView mUserName;
-    AutoCompleteTextView mUserPassword;
+//    AutoCompleteTextView mUserName;
+//    AutoCompleteTextView mUserPassword;
     private Credential credential;
     private String mFirstName;
     private String mLastName;
@@ -137,6 +141,7 @@ public class LoginActivity extends AppCompatActivity implements
     private String mEmailId;
     private Person mCurrentPerson;
     private User mUser;
+    private Button mFbSignInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,16 +152,23 @@ public class LoginActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_login);
 
         /*Setting Toolbar*/
-        mToolbar = (Toolbar) findViewById(R.id.login_toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_transparent);      //Changed id; ssahu
         setSupportActionBar(mToolbar);
         //Setting the Home Back button
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);        //Hide Actionbar title
+
 
         //Taking reference of UserName and Password Fiedls
+
+/*      --ssahu: Disabling Custom Signup
+
 
          mUserName =(AutoCompleteTextView)findViewById(R.id.txt_email);
          mUserPassword = (AutoCompleteTextView)findViewById(R.id.txt_password);
 
+*/
         /*Setting the Text Font*//*
         TextView txt = (TextView) findViewById(R.id.txt_forgot);
         Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont-4.2.0");
@@ -171,13 +183,20 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     private void initInstances() {
+
+/*      --ssahu: Disabling Custom Signup
+
         // Set up the login form.
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.txt_email);
+
+*/
+
         populateAutoComplete();
 
+/*
         mPasswordView = (EditText) findViewById(R.id.txt_password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -199,6 +218,8 @@ public class LoginActivity extends AppCompatActivity implements
         mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(this);
 
+*/
+
 
         //Google+ Login
         mPlusSignInButton = (Button) findViewById(R.id.btn_login_google);
@@ -215,70 +236,16 @@ public class LoginActivity extends AppCompatActivity implements
 
         //Facebook Login
 
-        facebookLoginButton = (LoginButton)findViewById(R.id.fb_login_button);
+        mFbSignInButton = (Button)findViewById(R.id.btn_login_fb);
+        facebookLoginButton = (LoginButton)findViewById(R.id.btn_fb_native);
 
-        facebookLoginButton.setReadPermissions(Arrays.asList("public_profile, email, user_birthday,user_location user_friends"));
-
-        //callbackManager = CallbackManager.Factory.create();
-
-        // Callback registration
-        facebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-
-
-            public void onSuccess(LoginResult loginResult) {
-                // App code
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(
-                                    JSONObject object,
-                                    GraphResponse response) {
-                                // Application code
-
-                                session.logoutUser();
-
-                                //By ssahu
-                                mId = object.optString("id");
-                                mFirstName = object.optString("first_name");
-                                mLastName = object.optString("last_name");
-                                mEmailId = object.optString("email");
-
-                                if(mEmailId.isEmpty()){
-                                    Snackbar.make(findViewById(R.id.ll_login), R.string.login_snackbar, Snackbar.LENGTH_LONG)
-                                                                                    .show(); // Don’t forget to show!
-                                }else {
-                                    getServerData(2);       //Indicator=2 for facebook_id;  By ssahu
-
-                                    session.createLoginSession(object);
-                                    handleSignInResult(object);
-                                }
-
-                            }
-                        });
-
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,first_name,last_name,email,picture.width(150).height(150)");
-                request.setParameters(parameters);
-                request.executeAsync();
-            }
-
-            @Override
-            public void onCancel() {
-                Toast.makeText(LoginActivity.this, "User cancelled", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(FacebookException exception) {
-                Toast.makeText(LoginActivity.this, "Error on Login, check your facebook app_id", Toast.LENGTH_LONG).show();
-            }
-        });
-
+        mFbSignInButton.setOnClickListener(this);
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
     }
+
+
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
@@ -288,6 +255,9 @@ public class LoginActivity extends AppCompatActivity implements
         getLoaderManager().initLoader(0, null, this);
     }
 
+
+
+
     private boolean mayRequestContacts() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;
@@ -296,7 +266,7 @@ public class LoginActivity extends AppCompatActivity implements
             return true;
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make((LinearLayout)findViewById(R.id.ll_main), R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(findViewById(R.id.ll_login_container), R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         @TargetApi(Build.VERSION_CODES.M)
@@ -310,9 +280,14 @@ public class LoginActivity extends AppCompatActivity implements
         return false;
     }
 
+
     /**
      * Callback received when a permissions request has been completed.
      */
+
+
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -323,11 +298,15 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
+
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
+
+/*      --ssahu: Disabling Custom Signup
+
     private void attemptLogin() {
 
         if (mAuthTask != null) {
@@ -386,14 +365,14 @@ public class LoginActivity extends AppCompatActivity implements
                         }}
 
                 );
-*/
+
 
 //            mAuthTask = new UserLoginTask(email, password);
-            /*mAuthTask.execute((Void) null);*/
-
+//            mAuthTask.execute((Void) null);
         }
     }
 
+*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -408,6 +387,10 @@ public class LoginActivity extends AppCompatActivity implements
     /**
      * Shows the progress UI and hides the login form.
      */
+
+/*    --ssahu: Disabling Custom Signup
+
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
@@ -440,6 +423,8 @@ public class LoginActivity extends AppCompatActivity implements
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
+
+*/
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -492,17 +477,29 @@ public class LoginActivity extends AppCompatActivity implements
                 new ArrayAdapter<>(LoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mEmailView.setAdapter(adapter);
+//        mEmailView.setAdapter(adapter);           /*   --ssahu: Disabling Custom Signup
     }
 
     @Override
     public void onClick(View v) {
-        String email = mEmailView.getText().toString();
+//        String email = mEmailView.getText().toString();       /*   --ssahu: Disabling Custom Signup
+
 
         switch (v.getId()) {
             case R.id.btn_login_google:
                 onSignInClicked();
                 break;
+
+            case R.id.btn_login_fb:
+                facebookLoginButton.performClick();
+                fbRegisterCallback();
+                break;
+
+
+
+/*      --ssahu: Disabling Custom Signup
+
+
             case R.id.email_sign_in_button:
                 attemptLogin();
                 break;
@@ -520,7 +517,69 @@ public class LoginActivity extends AppCompatActivity implements
 //                startActivity(intentForgot);
                 finish();
                 break;
+
+*/
         }
+    }
+
+    private void fbRegisterCallback() {
+
+        facebookLoginButton.setReadPermissions(Arrays.asList("public_profile, email"));
+
+        // Callback registration
+        facebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+
+
+            public void onSuccess(LoginResult loginResult) {
+                // App code
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(
+                                    JSONObject object,
+                                    GraphResponse response) {
+                                // Application code
+
+                                session.logoutUser();
+
+                                //By ssahu
+                                mId = object.optString("id");
+                                mFirstName = object.optString("first_name");
+                                mLastName = object.optString("last_name");
+                                mEmailId = object.optString("email");
+
+                                if(mEmailId.isEmpty()){
+                                    Snackbar.make(findViewById(R.id.ll_login), R.string.login_snackbar, Snackbar.LENGTH_LONG).show();
+                                }else {
+                                    getServerData(2);       //Indicator=2 for facebook_id;  By ssahu
+
+                                    session.createLoginSession(object);
+                                    handleSignInResult(object);
+                                }
+
+                            }
+                        });
+
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,first_name,last_name,email,picture.width(150).height(150)");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+//                Toast.makeText(LoginActivity.this, "Login cancelled", Toast.LENGTH_SHORT).show();
+//                Snackbar.make(findViewById(R.id.ll_login), R.string.login_cancelled, Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                Toast.makeText(LoginActivity.this, "Error on Login, check your facebook app_id", Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     // handles the sign in functionality
@@ -672,6 +731,10 @@ public class LoginActivity extends AppCompatActivity implements
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
+
+/*      --ssahu: Disabling custom signup
+
+
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
@@ -707,9 +770,10 @@ public class LoginActivity extends AppCompatActivity implements
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(final Boolean success
+        ) {
             mAuthTask = null;
-            showProgress(false);
+//            showProgress(false);
 
             if (success) {
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -723,10 +787,11 @@ public class LoginActivity extends AppCompatActivity implements
         @Override
         protected void onCancelled() {
             mAuthTask = null;
-            showProgress(false);
+//            showProgress(false);      --ssahu: Disabling custom signup
         }
     }
 
+*/
     private void getServerData(final int indicator) {        // By ssahu
 
         final OAuthTokenService oAuthTokenService = OAuthTokenService.getInstance(this);
@@ -792,6 +857,16 @@ public class LoginActivity extends AppCompatActivity implements
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:     //Clicking 'Close' button in toolbar closes LoginActivity
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onStop() {
@@ -800,5 +875,7 @@ public class LoginActivity extends AppCompatActivity implements
             mGoogleApiClient.disconnect();
         }
     }
-}
 
+
+
+}
