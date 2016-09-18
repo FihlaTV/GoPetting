@@ -90,6 +90,7 @@
     <string name="app_decription">Your awesome app</string>
     <string name="sample_text_login">Sample Text Login</string>
     <string name="user_profile">Profile</string>
+    <string name="login_snackbar">\"Email Id is required to sign-up, please try again\"</string>
 
 
 </resources>

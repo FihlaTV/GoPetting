@@ -245,10 +245,15 @@ public class LoginActivity extends AppCompatActivity implements
                                 mLastName = object.optString("last_name");
                                 mEmailId = object.optString("email");
 
-                                getServerData(2);       //Indicator=2 for facebook_id;  By ssahu
+                                if(mEmailId.isEmpty()){
+                                    Snackbar.make(findViewById(R.id.ll_login), R.string.login_snackbar, Snackbar.LENGTH_LONG)
+                                                                                    .show(); // Don’t forget to show!
+                                }else {
+                                    getServerData(2);       //Indicator=2 for facebook_id;  By ssahu
 
-                                session.createLoginSession(object);
-                                handleSignInResult(object);
+                                    session.createLoginSession(object);
+                                    handleSignInResult(object);
+                                }
 
                             }
                         });
