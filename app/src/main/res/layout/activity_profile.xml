@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+        android:orientation="vertical">
+
+
+        <include
+            android:id="@+id/profile_toolbar"
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="#fff"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#fff"
+                android:orientation="horizontal">
+
+
+                <com.example.sumit.apple.models.CircleImageView
+                    android:id="@+id/user_profile_photo"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="30dp"
+
+
+                    />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical">
+
+                        <com.example.sumit.apple.views.TypefaceTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="@string/profile_text"
+                            android:textSize="@dimen/text_size_medium"
+                            android:textColor="@color/text_regular"
+                            app:customTypeface="@string/typeface_light"/>
+
+                        <com.example.sumit.apple.views.TypefaceTextView
+                            android:id="@+id/User_Name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:background="#00000000"
+                            android:padding="5dp"
+                            android:textSize="@dimen/text_size_medium"
+                            app:customTypeface="@string/typeface_regular" />
+                        <!--android:layout_marginLeft="3dp"-->
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="#ACACAC" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="#ACACAC" />
+
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#EEEEEE"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="22dp"
+                    android:background="@drawable/ic_email" />
+
+
+                <com.example.sumit.apple.views.TypefaceTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/profile_email"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textColor="@color/text_regular"
+                    app:customTypeface="@string/typeface_light"/>
+
+
+            </LinearLayout>
+
+            <com.example.sumit.apple.views.TypefaceTextView
+                android:id="@+id/User_Email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="10dp"
+                android:padding="5dp"
+                android:textSize="@dimen/text_size_medium"
+                app:customTypeface="@string/typeface_regular" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginLeft="45dp"
+                android:layout_marginTop="5dp"
+                android:background="#ACACAC" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/ic_mobile" />
+
+
+                <com.example.sumit.apple.views.TypefaceTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/profile_mobile"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textColor="@color/text_regular"
+                    app:customTypeface="@string/typeface_light"/>
+
+
+
+            </LinearLayout>
+
+            <com.example.sumit.apple.views.TypefaceTextView
+                android:id="@+id/User_Mobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:padding="5dp"
+                android:textSize="@dimen/text_size_medium"
+                app:customTypeface="@string/typeface_regular" />
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal">-->
+
+                <!--<ImageView-->
+                    <!--android:layout_width="15dp"-->
+                    <!--android:layout_height="15dp"-->
+                    <!--android:layout_marginLeft="10dp"-->
+                    <!--android:layout_marginTop="12dp"-->
+                    <!--android:background="@drawable/ic_dob" />-->
+
+
+                <!--<com.example.sumit.apple.views.TypefaceTextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="20dp"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:text="@string/profile_dob"-->
+                    <!--android:textSize="@dimen/text_size_medium"-->
+                    <!--android:textColor="@color/text_regular"-->
+                    <!--app:customTypeface="@string/typeface_light"/>-->
+
+
+
+            <!--</LinearLayout>-->
+
+            <!--<com.example.sumit.apple.views.TypefaceTextView-->
+                <!--android:id="@+id/user_dob"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="40dp"-->
+                <!--android:padding="5dp"-->
+                <!--android:textSize="@dimen/text_size_medium"-->
+                <!--app:customTypeface="@string/typeface_regular" />-->
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginLeft="45dp"
+                android:layout_marginTop="5dp"
+                android:background="#ACACAC" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/ic_address" />
+
+
+                <com.example.sumit.apple.views.TypefaceTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/address"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textColor="@color/text_regular"
+                    app:customTypeface="@string/typeface_light"/>
+
+
+            </LinearLayout>
+
+            <com.example.sumit.apple.views.TypefaceTextView
+                android:id="@+id/User_Address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="10dp"
+                android:padding="5dp"
+                android:textSize="@dimen/text_size_medium"
+                app:customTypeface="@string/typeface_regular" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginLeft="45dp"
+                android:layout_marginTop="5dp"
+                android:background="#ACACAC" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginTop="50dp"
+            android:background="#ACACAC" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#fff"
+            android:orientation="horizontal">
+
+
+            <View
+                android:layout_width="0.1dp"
+                android:layout_height="50dp"
+                android:background="#ACACAC" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

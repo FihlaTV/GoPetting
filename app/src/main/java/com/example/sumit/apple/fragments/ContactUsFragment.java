@@ -40,5 +40,8 @@ public class ContactUsFragment extends BaseFragment {
         text.setText(R.string.contact_us_text);
         return rootView;
     }
+
+
+
 }
 

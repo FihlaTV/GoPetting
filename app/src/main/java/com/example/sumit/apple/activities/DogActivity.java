@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sumit.apple.R;
@@ -58,7 +61,11 @@ public class DogActivity extends AppCompatActivity implements SortDialogFragment
     private static final int SORT_ASCENDING = 0;
     private static final int SORT_DESCENDING = 1;
     private static final int SORT_NONE = -1;
-
+    private ImageView mSortImage;
+    private ImageView mFilterImage;
+    private TextView mSortText;
+    private TextView mFilterText;
+    private static int mIsClear = 21;   //21 Filter Inactive; 20 Active
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +77,20 @@ public class DogActivity extends AppCompatActivity implements SortDialogFragment
 
         //Inflating layout_filter_sort
         mLLFilterSort = (LinearLayout) findViewById(R.id.ll_filter_sort_container);
+
+        mSortImage = (ImageView) findViewById (R.id.iv_product_list_sort_icon);
+        mSortText = (TextView) findViewById (R.id.tv_product_list_sort_label);
+        mFilterImage = (ImageView) findViewById (R.id.iv_product_list_filter_icon);
+        mFilterText = (TextView) findViewById (R.id.tv_product_list_filter_label);
+
+//        Set Filter color when it's active
+        if(FILTER_PARAMETER_STATUS == 11 && mIsClear == 20) {
+            mFilterImage.setImageResource(R.drawable.ic_filter_clicked);
+            mFilterText.setTextColor(ContextCompat.getColor(DogActivity.this, R.color.colorAccent));
+        }else{
+            mFilterImage.setImageResource(R.drawable.ic_filter);
+            mFilterText.setTextColor(ContextCompat.getColor(DogActivity.this, R.color.white));
+        }
 
 //        Setting up filter & sort listeners
         setupListeners();
@@ -392,13 +413,23 @@ public class DogActivity extends AppCompatActivity implements SortDialogFragment
                 fastAdapterDogs.notifyAdapterDataSetChanged();      //Refreshing the data
                 rvDogs.smoothScrollToPosition(0);               //TODO: Find a better way(like using Progressbar); Scroll to top recyclerview item
 
+                mIsClear = data.getExtras().getInt("filter_clear");
+
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Nothing do be done as no items were filtered
+
             }
         }
 
-
+        // Set Filter color when it's active ; mIsClear=21 when Filter is clear
+        if(FILTER_PARAMETER_STATUS == 11 && mIsClear == 20) {
+            mFilterImage.setImageResource(R.drawable.ic_filter_clicked);
+            mFilterText.setTextColor(ContextCompat.getColor(DogActivity.this, R.color.colorAccent));
+        }else{
+            mFilterImage.setImageResource(R.drawable.ic_filter);
+            mFilterText.setTextColor(ContextCompat.getColor(DogActivity.this, R.color.white));
+        }
 
     }
 
@@ -612,6 +643,17 @@ public class DogActivity extends AppCompatActivity implements SortDialogFragment
         public int compare(Dog lhs, Dog rhs) {
             return Integer.valueOf(rhs.getUnitPrice()).compareTo(lhs.getUnitPrice()); // To compare integer values
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
 

@@ -5,7 +5,7 @@
     android:id="@id/ll_filter_sort_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/colorPrimary"
     android:orientation="horizontal">
 <!--Have set sort and filter views clickable to true so that product list behind views doesn't get clicked since this layout will be integrated inside Framelayout-->
     <LinearLayout
@@ -37,10 +37,11 @@
             android:text="@string/menu_sort"
             android:textAllCaps="true"
             android:textSize="@dimen/text_tiny"
+            android:textColor="@color/white"
             app:customTypeface="@string/typeface_bold" />
     </LinearLayout>
 
-    <View style="@style/HorizontalSeparator" />
+    <!--<View style="@style/AppHorizontalSeparator" />-->
 
     <LinearLayout
         android:id="@id/ll_product_list_filter"
@@ -70,6 +71,7 @@
             android:text="@string/menu_filter"
             android:textAllCaps="true"
             android:textSize="@dimen/text_tiny"
+            android:textColor="@color/white"
             app:customTypeface="@string/typeface_bold" />
     </LinearLayout>
 </LinearLayout>

@@ -418,4 +418,5 @@ public class DogDetailsActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_dog_details, menu);
         return true;
     }
+
 }

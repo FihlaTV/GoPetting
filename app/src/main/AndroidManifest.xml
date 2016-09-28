@@ -16,7 +16,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.Base">
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -55,7 +55,7 @@
             android:name=".activities.LoginActivity"
             android:label="@string/login"
 
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.Base">
 
         </activity>
         <!--android:parentActivityName=".activities.MainActivity"-->
@@ -64,7 +64,7 @@
             android:label="@string/title_activity_dog"
             android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.Base">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
@@ -75,7 +75,7 @@
             android:label="@string/title_activity_dog_details"
             android:parentActivityName=".activities.DogActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.Base">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.DogActivity" />
@@ -85,7 +85,7 @@
             android:label="@string/title_activity_filter"></activity>
 
         <activity
-            android:name=".activities.Profile_Page"
+            android:name=".activities.ProfileActivity"
             android:label="@string/user_profile">
 
             <meta-data
@@ -94,6 +94,9 @@
             >
         </activity>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="d62b278b073d4abf2a4c671c105d048cc36c1938" />
     </application>
 
 </manifest>

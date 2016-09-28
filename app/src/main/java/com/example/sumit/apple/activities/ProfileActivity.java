@@ -15,7 +15,7 @@ import java.util.HashMap;
 /**
  * Created by Smit on 7/4/2016.
  */
-public class Profile_Page extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity {
     CircleImageView proPic;
     TextView mName;
     TextView mEmail;
@@ -28,7 +28,7 @@ public class Profile_Page extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.profile_page);
+        setContentView(R.layout.activity_profile);
 
         mToolbar = (Toolbar) findViewById(R.id.profile_toolbar);
         setSupportActionBar(mToolbar);
@@ -47,19 +47,20 @@ public class Profile_Page extends AppCompatActivity {
                 // proPic.setImageResource(user.get(SessionManager.KEY_PICTURE));
         Glide.with(getApplicationContext())
                 .load(user.get(SessionManager.KEY_PICTURE))
-                .placeholder(R.drawable.default_profile_pic)
+
+
                         //.override(350, 448)
                         //.diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(proPic);
         mName.setText(user.get(SessionManager.KEY_NAME));
 
         mEmail.setText(user.get(SessionManager.KEY_EMAIL));
-        mAddress.setText(user.get(SessionManager.KEY_LOCATION));
+//        mAddress.setText(user.get(SessionManager.KEY_LOCATION));
        // mLocation.setText("Chennai,India");
 
        // mBirthday.setText(user.get(SessionManager.KEY_BIRTHDATE));
 
-        mMobile.setText("8056015741");
+//        mMobile.setText("8056015741");
 
 
 

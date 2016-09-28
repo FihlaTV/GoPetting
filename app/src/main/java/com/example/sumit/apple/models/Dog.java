@@ -128,7 +128,7 @@ import com.mikepenz.fastadapter.items.AbstractItem;
 
                 viewHolder.mItemMRP.setText("Rs." + mrp);
                 viewHolder.mItemMRP.setPaintFlags(viewHolder.mItemMRP.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG); // To strike through text
-                viewHolder.mItemDiscount.setText(discount + "% Off");
+                viewHolder.mItemDiscount.setText(discount + "% OFF");
 
             }else {
                 viewHolder.mItemMRP.setVisibility(View.GONE);

@@ -29,11 +29,15 @@
     <string name="menu_filter">Filter</string>
 
     <!--fonts-->
-    <string name="typeface_bold">fonts/Whitney-Semibold-Bas.otf</string>
-    <string name="typeface_light">fonts/Whitney-Book-Bas.otf</string>
-    <string name="typeface_light_italics">fonts/Whitney-BookItal-Bas.otf</string>
-    <string name="typeface_regular">fonts/Whitney-Book-Bas.otf</string>
-    <string name="typeface_stylish">fonts/Leitura-Display-Swashes.otf</string>
+    <!--<string name="typeface_bold">fonts/Whitney-Semibold-Bas.otf</string>-->
+    <!--<string name="typeface_light">fonts/Whitney-Book-Bas.otf</string>-->
+    <!--<string name="typeface_light_italics">fonts/Whitney-BookItal-Bas.otf</string>-->
+    <!--<string name="typeface_regular">fonts/Whitney-Book-Bas.otf</string>-->
+    <!--<string name="typeface_stylish">fonts/Leitura-Display-Swashes.otf</string>-->
+
+    <string name="typeface_bold">fonts/DIN-Bold.otf</string>
+    <string name="typeface_light">fonts/DIN-Light.otf</string>
+    <string name="typeface_regular">fonts/DIN-Regular.otf</string>
 
     <!--DogShoppingActivity-->
 
@@ -93,6 +97,11 @@
     <string name="login_snackbar">\"Email Id is required to sign-up, please try again\"</string>
     <string name="google_signin">Sign in with Google</string>
     <string name="fb_signin">Sign in with Facebook</string>
+    <string name="profile_text">Name</string>
+    <string name="profile_email">Email</string>
+    <string name="profile_mobile">Mobile</string>
+    <string name="address">Address</string>
+    <string name="profile_dob">Date Of Birth</string>
 
 
 </resources>

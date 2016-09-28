@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ActionBarDrawerToggle mDrawerToggle;
     private FragmentManager mFragmentManager;
 
-//------------------------------LoginActivity-----------------------------//
+//------------------------------LoginActivity - Start-----------------------------//
 
     private boolean isLog = true;
     private SessionManager session;
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-// ------------------------------LoginActivity-----------------------------//
+// ------------------------------LoginActivity - End-----------------------------//
 
 
     @Override
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//------------------------------LoginActivity-----------------------------//
+//------------------------------LoginActivity -Start-----------------------------//
 
         //Get User Profile Info
         session = new SessionManager(getApplicationContext());
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-// ------------------------------LoginActivity-----------------------------//
+// ------------------------------LoginActivity -End-----------------------------//
 
 
         // Set a Toolbar to replace the ActionBar.
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mNavDrawer = (NavigationView) findViewById(R.id.nvView);
 
-// ------------------------------LoginActivity-----------------------------//
+// ------------------------------LoginActivity - Start-----------------------------//
 
         mNavDrawer.post(new Runnable() {
             @Override
@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mNavDrawer.addHeaderView(view);
 
-// ------------------------------LoginActivity-----------------------------//
+// ------------------------------LoginActivity - End-----------------------------//
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -511,7 +511,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // Toast.makeText(this, "Login Clicked", Toast.LENGTH_LONG).show();
                 if (session.isLoggedIn()) {
                     Toast.makeText(this, "Profile page is under developement", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(MainActivity.this, Profile_Page.class));
+                    startActivity(new Intent(MainActivity.this, ProfileActivity.class));
 
                     break;
                 }

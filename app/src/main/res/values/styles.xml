@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="AppTheme.Base" />
+    <style name="AppTheme.Base" parent="AppTheme" />
 
     <!-- Base application theme. -->
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/blue_colorPrimary</item>
-        <item name="colorPrimaryDark">@color/blue_colorPrimaryDark</item>
-        <item name="colorAccent">@color/blue_colorAccent</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <!--<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />-->
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <!--<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
 
     <style name="ActionBarThemeOverlay" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
 
 
-    <style name="HorizontalSeparator">
+    <style name="AppHorizontalSeparator">
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:background">@color/separator_light_grey</item>
         <item name="android:layout_width">1.0dip</item>
@@ -57,10 +58,12 @@
 
     <style name="ActionBarTitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textSize">@dimen/text_size_xlarge</item>
+
     </style>
 
     <style name="ActionBarSubtitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
         <item name="android:textSize">@dimen/text_size_small</item>
+
     </style>
 
     <style name="HeaderBar">

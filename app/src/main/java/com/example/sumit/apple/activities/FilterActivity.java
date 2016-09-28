@@ -246,7 +246,12 @@ public class FilterActivity extends AppCompatActivity {
                 fastAdapterFilterSubCategory.notifyAdapterDataSetChanged(); //Notify Adapter of the cleared items
 
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("filtered_items", Parcels.wrap(filteredItems));
+
+                Bundle b = new Bundle();
+                b.putInt("filter_clear", 21);      //Filter is clear; status=21; Logic for Filter state= active or not active
+                b.putParcelable("filtered_items", Parcels.wrap(filteredItems));
+
+                returnIntent.putExtras(b);
                 setResult(Activity.RESULT_OK,returnIntent);
                 finish();
             }
@@ -301,7 +306,13 @@ public class FilterActivity extends AppCompatActivity {
                     finish();
                 }else{
                     Intent returnIntent = new Intent();
-                    returnIntent.putExtra("filtered_items", Parcels.wrap(filteredItems));
+
+                    Bundle b = new Bundle();
+                    b.putInt("filter_clear", 20);      //Filter is not empty; status=20; Logic for Filter state= active or not active
+                    b.putParcelable("filtered_items", Parcels.wrap(filteredItems));
+
+//                    returnIntent.putExtra("filtered_items", Parcels.wrap(filteredItems));
+                    returnIntent.putExtras(b);
                     setResult(Activity.RESULT_OK,returnIntent);
                     finish();
                 }

@@ -6,10 +6,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.example.sumit.apple.R;
 import com.example.sumit.apple.models.Dog;
 
 
+import io.fabric.sdk.android.Fabric;
 import java.util.List;
 
 //import android.support.v7.app.AppCompatActivity;
@@ -25,6 +27,7 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.splash_activity);
 
 		/*

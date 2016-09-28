@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+
+    <color name="colorPrimary">#009688</color>
+    <color name="colorPrimaryDark">#00796B</color>
+    <color name="colorAccent">#FFFF00</color>
+
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+    <!--<color name="colorAccent">#FF4081</color>-->
 
     <!-- TODO: Change these names to Blue-Grey when u're fine with color; Check these color codes again, they may be incorrect; These color codes are available at the bottom also-->
     <!-- Name is Blue, but it's 'Blue-Grey'; Just a temp check-->
@@ -72,4 +77,7 @@
     <color name="login_google_button_color">#ffdb4b38</color>
     <color name="login_fb_button_color">#ff48629b</color>
 
+    <!--Profile Activity-->
+    <color name="text_regular">#8829303f</color>
+    <color name="text_dark">#ff29303f</color>
 </resources>

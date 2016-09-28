@@ -147,6 +147,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_19" />
 
+
     </LinearLayout>
 
     <me.henrytao.smoothappbarlayout.SmoothAppBarLayout
