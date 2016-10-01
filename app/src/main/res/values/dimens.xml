@@ -69,9 +69,7 @@
     <dimen name="login_top_margin">100.0dip</dimen>
 
 
-
-
-
-
+    <dimen name="promotional_gallery_height">200.0dip</dimen>
+    <dimen name="product_category_height">150.0dip</dimen>
 
 </resources>

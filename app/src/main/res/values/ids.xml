@@ -66,6 +66,10 @@
     <item name="ic_login_logo" type="id" />
     <item name="btn_login_google" type="id" />
     <item name="btn_login_fb" type="id" />
+    <item name="progress_bar_regular" type="id" />
+    <item name="container" type="id" />
+    <item name="fastadapter_product_category_item_id" type="id" />
+    <item name="fastadapter_header_item_id" type="id" />
 
 
 </resources>

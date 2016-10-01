@@ -68,12 +68,11 @@
     <string name="sort_by">SORT BY</string>
 
 
-
-        <string-array name="sort_by">
-            <item>Newly Listed</item>
-            <item>Price: Low to High</item>
-            <item>Price: High to Low</item>
-        </string-array>
+    <string-array name="sort_by">
+        <item>Newly Listed</item>
+        <item>Price: Low to High</item>
+        <item>Price: High to Low</item>
+    </string-array>
 
     <!--Login Activity-->
     <string name="facebook_app_id">1781043332107936</string>

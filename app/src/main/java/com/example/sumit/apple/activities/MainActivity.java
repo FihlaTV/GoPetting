@@ -7,10 +7,16 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
@@ -28,11 +34,14 @@ import com.example.sumit.apple.bus.MoveToFragmentEvent;
 import com.example.sumit.apple.bus.UpdateActionBarTitleEvent;
 import com.example.sumit.apple.fragments.AboutUsFragment;
 import com.example.sumit.apple.fragments.ContactUsFragment;
+import com.example.sumit.apple.fragments.GalleryFragment;
 import com.example.sumit.apple.fragments.HomeFragment;
 import com.example.sumit.apple.fragments.LocationFragment;
 import com.example.sumit.apple.fragments.OrdersFragment;
 import com.example.sumit.apple.fragments.TermsConditionsFragment;
 import com.example.sumit.apple.models.CircleImageView;
+import com.example.sumit.apple.models.Credential;
+import com.example.sumit.apple.models.ProductCategoryData;
 import com.example.sumit.apple.network.SessionManager;
 import com.example.sumit.apple.utils.Constants;
 import com.facebook.FacebookSdk;
@@ -45,12 +54,14 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
+import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
 import de.greenrobot.event.EventBus;
+import me.relex.circleindicator.CircleIndicator;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
                                                                 GoogleApiClient.ConnectionCallbacks,
@@ -86,8 +97,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean mIsResolving = false;
     /* Should we automatically resolve ConnectionResults when possible? */
     private boolean mShouldResolve = false;
+    private ViewPager mGalleryViewPager;
+    private CircleIndicator mCircleIndicator;
 
+    private static final String PROMO_IMAGE1 = "https://s3-ap-southeast-1.amazonaws.com/samplebucket-6-5-2016/offers_gopetting.jpg";
+    private static final String PROMO_IMAGE2 = "https://s3-ap-southeast-1.amazonaws.com/samplebucket-6-5-2016/offers_grooming.jpg";
+    private static final String PROMO_IMAGE3 = "https://s3-ap-southeast-1.amazonaws.com/samplebucket-6-5-2016/offers_boarding.jpg";
 
+    private static final String CATEGORY_IMAGE1 = "https://s3-ap-southeast-1.amazonaws.com/samplebucket-6-5-2016/grooming.jpg";
+    private static final String CATEGORY_IMAGE2 = "https://s3-ap-southeast-1.amazonaws.com/samplebucket-6-5-2016/boarding.jpg";
+    private static final String CATEGORY_IMAGE3 = "https://s3-ap-southeast-1.amazonaws.com/samplebucket-6-5-2016/training.jpg";
+    private static final String CATEGORY_IMAGE4 = "https://s3-ap-southeast-1.amazonaws.com/samplebucket-6-5-2016/vaccination.jpg";
+    private GalleryPagerAdapter mGalleryPagerAdapter;
+    private RecyclerView mRecyclerViewCategory;
+    private FastItemAdapter fastAdapterProductCategory;
+    private LinearLayoutManager mLayoutManagerCategory;
+    private Credential mCredential;
 
 
 // ------------------------------LoginActivity - End-----------------------------//
@@ -127,12 +152,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         // Set a Toolbar to replace the ActionBar.
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_headerbar);
         setSupportActionBar(mToolbar);
+
+//        getServerData();
 
         // Find our drawer view
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mNavDrawer = (NavigationView) findViewById(R.id.nvView);
+
+        // Initializing these views so that it could be setup later
+        mGalleryViewPager = (ViewPager) findViewById(R.id.view_pager_promotional);
+        mCircleIndicator = (CircleIndicator) findViewById(R.id.circle_indicator);
+        mRecyclerViewCategory = (RecyclerView) findViewById(R.id.recycler_category);
+
+        setupHomeScreen();
 
 // ------------------------------LoginActivity - Start-----------------------------//
 
@@ -148,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         //mNavDrawer.getMenu().findItem(R.id.Login).setTitle("Test");
-        //Adding Navigation Header to NavigationView
+        //Adding Navigation HeaderItem to NavigationView
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.navigation_header, null, false);
 
@@ -188,12 +222,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 // ------------------------------LoginActivity - End-----------------------------//
 
+        /*      --Commenting as fragment containers are removed from activity_main layout
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.flContent, HomeFragment.newInstance()) //TODO: Update this
                     .commit();
         }
-
+*/
 
         // Setup drawer view ; Set Navigation Item Selection Listener
         mNavDrawer.setNavigationItemSelectedListener(new NavigationItemSelectedListener());
@@ -227,8 +262,153 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
+        fastAdapterProductCategory.withSavedInstanceState(savedInstanceState);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+//    private void getServerData() {
+//
+//        final OAuthTokenService oAuthTokenService = OAuthTokenService.getInstance(this);
+//
+////        oAuthTokenService.deleteTokenWithId("default");
+////          oAuthTokenService.deleteAllToken();
+//        mCredential = oAuthTokenService.getAccessTokenWithID("default");
+//
+//        if(mCredential == null || mCredential.getAccess_token()==null || oAuthTokenService.isExpired("default"))
+//        {
+//            oAuthTokenService.authenticateUsingOAuth( new Controller.MethodsCallback<Credential>()
+//            {
+//                @Override public void failure(Throwable throwable)
+//                {
+//                    Toast.makeText(MainActivity.this, throwable.getMessage(),Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+//                }
+//                @Override public void success(Credential credential)
+//                {
+//                    if(credential != null)
+//                    {
+//                        oAuthTokenService.saveTokenWithID(credential, "default");
+//
+//                        getPromotionalGalleryData();
+//
+//                    }
+//                }
+//                @Override public void responseBody(Call<Credential> call)
+//                {
+//
+//                }
+//            });
+//        }else {
+//
+//            getPromotionalGalleryData();
+//
+//        }
+//    }
+//
+//    private void getPromotionalGalleryData(){
+//
+//        Controller.GetBreedNames retrofitSingleton = RetrofitSingleton.getInstance().create(Controller.GetBreedNames.class);
+//        Call<List<FilterSubCategory>> call = retrofitSingleton.getBreedNames("Bearer " + credential.getAccess_token(),PRODUCT_CATEGORY_ID);
+//        call.enqueue(new Callback<List<FilterSubCategory>>() {
+//            @Override
+//            public void onResponse(Call<List<FilterSubCategory>> call, Response<List<FilterSubCategory>> response) {
+//                if (response.isSuccessful()) {
+//
+//
+////                FilteredItems.categorySelected = 0;
+////               fastAdapterFilterSubCategory.add(response.body());        //Adding Filter Category Data
+//
+//                    breedNameData =response.body();
+//                    initFilterData();
+//
+//
+//
+//                } else {
+//                    Log.d("Error Response", "FilterActivity.getBreedNamesData :Error Response");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<FilterSubCategory>> call, Throwable t) {
+//                Toast.makeText(FilterActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+//            }
+//        });
+//    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //add the values which need to be saved from the adapter to the bundel
+        outState = fastAdapterProductCategory.saveInstanceState(outState);
+        super.onSaveInstanceState(outState);
+    }
+
+    private void setupHomeScreen() {
+
+        mGalleryPagerAdapter = new GalleryPagerAdapter(getSupportFragmentManager());
+        mGalleryViewPager.setAdapter(mGalleryPagerAdapter);
+
+        //Adding Circle Indicator with ViewPager
+        mCircleIndicator.setViewPager(mGalleryViewPager);
+
+        //Product Category RecyclerView adapter setup
+        fastAdapterProductCategory = new FastItemAdapter();
+        fastAdapterProductCategory.withSelectable(true);
+        fastAdapterProductCategory.add(ProductCategoryData.getItems());
+
+        mRecyclerViewCategory.setAdapter(fastAdapterProductCategory);
+
+        //Product Category RecyclerView LayoutManager setup
+        mLayoutManagerCategory = new LinearLayoutManager(this);
+        mLayoutManagerCategory.setOrientation(LinearLayoutManager.VERTICAL);
+
+        mRecyclerViewCategory.setLayoutManager(mLayoutManagerCategory);
+
+//        Set Default Item Animator
+        mRecyclerViewCategory.setItemAnimator(new DefaultItemAnimator());
+
+
+    }
+
+
+    public static class GalleryPagerAdapter extends FragmentPagerAdapter {
+        private static int NUM_ITEMS = 3;
+//        private static DogDetails mDogDetails;
+
+
+        public GalleryPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+//            mDogDetails = mDetails;
+
+        }
+
+        // Returns total number of pages
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        // Returns the fragment to display for that page
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return GalleryFragment.newInstance(PROMO_IMAGE1);
+                case 1:
+                    return GalleryFragment.newInstance(PROMO_IMAGE2);
+                case 2:
+                    return GalleryFragment.newInstance(PROMO_IMAGE3);
+                default:
+                    return null;
+            }
+        }
+
+        // Returns the page title for the top indicator
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "Page " + position;
+        }
+
     }
 
 
@@ -237,7 +417,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public boolean onNavigationItemSelected(MenuItem menuItem) {
-            selectDrawerItem(menuItem);
+//            selectDrawerItem(menuItem);
             return true;
         }
 
@@ -305,35 +485,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void onEvent(MoveToFragmentEvent e) {
-        if (e.getFragment() instanceof HomeFragment) {
-
-            getSupportFragmentManager().beginTransaction().replace(R.id.flContent,e.getFragment()).addToBackStack(null).commit();
-
-        } else if (e.getFragment() instanceof LocationFragment) {
-
-            getSupportFragmentManager().beginTransaction().replace(R.id.flContent,e.getFragment()).addToBackStack(null).commit();
-
-        } else if (e.getFragment() instanceof OrdersFragment) {
-
-            getSupportFragmentManager().beginTransaction().replace(R.id.flContent,e.getFragment()).addToBackStack(null).commit();
-
-        }  else if (e.getFragment() instanceof ContactUsFragment) {
-
-            getSupportFragmentManager().beginTransaction().replace(R.id.flContent,e.getFragment()).addToBackStack(null).commit();
-
-        }  else if (e.getFragment() instanceof TermsConditionsFragment) {
-
-            getSupportFragmentManager().beginTransaction().replace(R.id.flContent,e.getFragment()).addToBackStack(null).commit();
-
-        }  else if (e.getFragment() instanceof AboutUsFragment) {
-
-            getSupportFragmentManager().beginTransaction().replace(R.id.flContent,e.getFragment()).addToBackStack(null).commit();
-
-        }
-
-
-    }
+//    public void onEvent(MoveToFragmentEvent e) {
+//        if (e.getFragment() instanceof HomeFragment) {
+//
+//            getSupportFragmentManager().beginTransaction().replace(R.id.flContent,e.getFragment()).addToBackStack(null).commit();
+//
+//        } else if (e.getFragment() instanceof LocationFragment) {
+//
+//            getSupportFragmentManager().beginTransaction().replace(R.id.flContent,e.getFragment()).addToBackStack(null).commit();
+//
+//        } else if (e.getFragment() instanceof OrdersFragment) {
+//
+//            getSupportFragmentManager().beginTransaction().replace(R.id.flContent,e.getFragment()).addToBackStack(null).commit();
+//
+//        }  else if (e.getFragment() instanceof ContactUsFragment) {
+//
+//            getSupportFragmentManager().beginTransaction().replace(R.id.flContent,e.getFragment()).addToBackStack(null).commit();
+//
+//        }  else if (e.getFragment() instanceof TermsConditionsFragment) {
+//
+//            getSupportFragmentManager().beginTransaction().replace(R.id.flContent,e.getFragment()).addToBackStack(null).commit();
+//
+//        }  else if (e.getFragment() instanceof AboutUsFragment) {
+//
+//            getSupportFragmentManager().beginTransaction().replace(R.id.flContent,e.getFragment()).addToBackStack(null).commit();
+//
+//        }
+//
+//
+//    }
 
 
 
@@ -402,52 +582,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-/*
-    public static class PlaceholderFragment extends BaseFragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-			*//* Update fragment's title.*//*
-            EventBus.getDefault().post(new UpdateActionBarTitleEvent(getActivity().getTitle()));
-            View rootView = inflater.inflate(R.layout.fragment_home, container, false); //TODO: Change/Rename fragment_home layout name to something meaningful like fragment_placeholder
-            TextView text = (TextView) rootView.findViewById(R.id.fragment_text);
-            text.setText(R.string.home_text);
-
-*//*
-			*//*
-*//* Move to fragment that can demonstrate sticky-event. *//**//*
-
-            rootView.findViewById(R.id.btn_test).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EventBus.getDefault().post(new MoveToFragmentEvent(new SecondFragment()));
-                }
-            });
-			*//*
-*//* Move to fragment that can not accept sticky-event. *//**//*
-
-            rootView.findViewById(R.id.btn_no_sticky).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EventBus.getDefault().post(new MoveToFragmentEvent(new NoStickyFragment()));
-                }
-            });
-*//*
-
-            return rootView;
-        }
-    }*/
-
     public void onEvent(UpdateActionBarTitleEvent e) {
         getSupportActionBar().setTitle(e.getTitle());
 
     }
-
-
 
     @Override
     public void onStart() {
@@ -576,5 +714,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //menu.findItem(R.id.Login).setTitle("Logout");
         return super.onPrepareOptionsMenu(menu);
     }
+
 }
 
