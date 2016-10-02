@@ -5,14 +5,15 @@
     <string name="profile_name">Hugh Jackman</string>
 
     <!--drawer_view Items-->
-    <string name="location">Location</string>
-    <string name="orders">Orders</string>
-    <string name="ContactUs">Contact Us</string>
-    <string name="TC">T&amp;C</string>
-    <string name="AboutUs">About Us</string>
+    <string name="drawer_location">Location</string>
+    <string name="drawer_orders">Orders</string>
+    <string name="drawer_contact_us">Contact Us</string>
+    <string name="drawer_terms_conditions">T&amp;C</string>
+    <string name="drawer_about_us">About Us</string>
     <string name="drawer_open">Drawer Opened</string>
     <string name="drawer_close">Drawer Closed</string>
-    <string name="home">Home</string>
+    <string name="drawer_home">Home</string>
+    <string name="drawer_login">Login</string>
     <string name="home_text">Home Text</string>
     <string name="location_text">Location Text</string>
     <string name="orders_text">Orders Text</string>
@@ -101,6 +102,8 @@
     <string name="profile_mobile">Mobile</string>
     <string name="address">Address</string>
     <string name="profile_dob">Date Of Birth</string>
+    <string name="drawer_faq">FAQ</string>
+    <string name="drawer_feedback">Feedback</string>
 
 
 </resources>

@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +40,8 @@ import com.example.sumit.apple.fragments.HomeFragment;
 import com.example.sumit.apple.fragments.LocationFragment;
 import com.example.sumit.apple.fragments.OrdersFragment;
 import com.example.sumit.apple.fragments.TermsConditionsFragment;
-import com.example.sumit.apple.models.CircleImageView;
+
+
 import com.example.sumit.apple.models.Credential;
 import com.example.sumit.apple.models.ProductCategoryData;
 import com.example.sumit.apple.network.SessionManager;
@@ -61,6 +63,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import de.greenrobot.event.EventBus;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import me.relex.circleindicator.CircleIndicator;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
@@ -81,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SessionManager session;
     public JSONObject json_object;
     private static final String TAG = "MyActivity";
-    private RelativeLayout Relativelayout;
+    private LinearLayout mLinearLayout;
     // public Menu menu;
     CircleImageView proPic;
     TextView ProfText;
@@ -104,10 +108,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String PROMO_IMAGE2 = "https://s3-ap-southeast-1.amazonaws.com/samplebucket-6-5-2016/offers_grooming.jpg";
     private static final String PROMO_IMAGE3 = "https://s3-ap-southeast-1.amazonaws.com/samplebucket-6-5-2016/offers_boarding.jpg";
 
-    private static final String CATEGORY_IMAGE1 = "https://s3-ap-southeast-1.amazonaws.com/samplebucket-6-5-2016/grooming.jpg";
-    private static final String CATEGORY_IMAGE2 = "https://s3-ap-southeast-1.amazonaws.com/samplebucket-6-5-2016/boarding.jpg";
-    private static final String CATEGORY_IMAGE3 = "https://s3-ap-southeast-1.amazonaws.com/samplebucket-6-5-2016/training.jpg";
-    private static final String CATEGORY_IMAGE4 = "https://s3-ap-southeast-1.amazonaws.com/samplebucket-6-5-2016/vaccination.jpg";
     private GalleryPagerAdapter mGalleryPagerAdapter;
     private RecyclerView mRecyclerViewCategory;
     private FastItemAdapter fastAdapterProductCategory;
@@ -191,10 +191,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView Login_SignUp = (TextView) view.findViewById(R.id.profile_name);
         Login_SignUp.setOnClickListener(this);
 
-        Relativelayout = (RelativeLayout) view.findViewById(R.id.navLayout);
-        RelativeLayout Rlout = (RelativeLayout) view.findViewById(R.id.navLayout);
-
-        Relativelayout.setOnClickListener(this);
+//        linearLayout = (RelativeLayout) view.findViewById(R.id.navLayout);
+//        RelativeLayout Rlout = (RelativeLayout) view.findViewById(R.id.navLayout);
+       mLinearLayout = (LinearLayout) view.findViewById(R.id.navLayout);
+        mLinearLayout.setOnClickListener(this);
 
 
         proPic = (CircleImageView) view.findViewById(R.id.profile_pic);
@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ProfText.setText(user.get(SessionManager.KEY_NAME));
 
         } else {
-            proPic.setImageResource(R.drawable.default_profile_pic);
+            proPic.setImageResource(R.drawable.ic_profile);
             ProfText.setText("Login/SignUp");
 
         }
@@ -417,7 +417,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public boolean onNavigationItemSelected(MenuItem menuItem) {
-//            selectDrawerItem(menuItem);
+            selectDrawerItem(menuItem);
             return true;
         }
 
@@ -428,24 +428,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //TODO: Update all fragments to extend from Basefragment: Done
         //TODO: Change cases like Homefragment - HomeFragment.newInstance()
         switch(menuItem.getItemId()) {
-            case R.id.home:
-                EventBus.getDefault().post(new MoveToFragmentEvent(HomeFragment.newInstance()));
-                break;
-            case R.id.location:
-                EventBus.getDefault().post(new MoveToFragmentEvent(new LocationFragment()));
-                break;
-            case R.id.orders:
-                EventBus.getDefault().post(new MoveToFragmentEvent(new OrdersFragment()));
-                break;
-            case R.id.ContactUs:
-                EventBus.getDefault().post(new MoveToFragmentEvent(new ContactUsFragment()));
-                break;
-            case R.id.TC:
-                EventBus.getDefault().post(new MoveToFragmentEvent(new TermsConditionsFragment()));
-                break;
-            case R.id.AboutUs:
-                EventBus.getDefault().post(new MoveToFragmentEvent(new AboutUsFragment()));
-                break;
+//            case R.id.home:
+//                EventBus.getDefault().post(new MoveToFragmentEvent(HomeFragment.newInstance()));
+//                break;
+//            case R.id.location:
+//                EventBus.getDefault().post(new MoveToFragmentEvent(new LocationFragment()));
+//                break;
+//            case R.id.orders:
+//                EventBus.getDefault().post(new MoveToFragmentEvent(new OrdersFragment()));
+//                break;
+//            case R.id.contact_us:
+//                EventBus.getDefault().post(new MoveToFragmentEvent(new ContactUsFragment()));
+//                break;
+//            case R.id.terms_conditions:
+//                EventBus.getDefault().post(new MoveToFragmentEvent(new TermsConditionsFragment()));
+//                break;
+//            case R.id.about_us:
+//                EventBus.getDefault().post(new MoveToFragmentEvent(new AboutUsFragment()));
+//                break;
             case R.id.LogBtn:
 
                 if (allAccountLogOut()) {
@@ -526,7 +526,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             LogText.setTitle("Logout");
         } else {
             isLog = true;
-            proPic.setImageResource(R.drawable.default_profile_pic);
+            proPic.setImageResource(R.drawable.ic_profile);
             ProfText.setText("Login/SignUp");
             LogText.setTitle("LogIn");
 
@@ -648,7 +648,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.navLayout:
                 // Toast.makeText(this, "Login Clicked", Toast.LENGTH_LONG).show();
                 if (session.isLoggedIn()) {
-                    Toast.makeText(this, "Profile page is under developement", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "Profile page is under developement", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(MainActivity.this, ProfileActivity.class));
 
                     break;

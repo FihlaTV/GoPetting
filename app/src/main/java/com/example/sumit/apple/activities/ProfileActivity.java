@@ -7,10 +7,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.sumit.apple.R;
-import com.example.sumit.apple.models.CircleImageView;
+
 import com.example.sumit.apple.network.SessionManager;
 
 import java.util.HashMap;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Smit on 7/4/2016.

@@ -116,6 +116,11 @@
         <!--<item name="typeface">@string/typeface_bold</item>-->
     </style>
 
+    <style name="AppNavigationDrawerStyle">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:typeface">monospace</item>
+    </style>
+
 </resources>
 
 

@@ -79,6 +79,8 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:9.2.1'
     compile 'com.google.android.gms:play-services-plus:9.2.1'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'      //Added for google+ authentication

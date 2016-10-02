@@ -14,7 +14,7 @@ public class ProductCategoryData {
             return toList(
                     new ProductCategory().setCategoryImage(R.drawable.grooming),
                     new ProductCategory().setCategoryImage(R.drawable.training),
-                    new ProductCategory().setCategoryImage(R.drawable.vaccination),
+                    new ProductCategory().setCategoryImage(R.drawable.pet_doctor),
                     new ProductCategory().setCategoryImage(R.drawable.boarding)
             );
         }

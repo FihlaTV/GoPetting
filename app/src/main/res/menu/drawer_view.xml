@@ -6,50 +6,44 @@
 
         <item
             android:id="@id/home"
-            android:icon="@drawable/ic_one"
-            android:title="@string/home" />
+            android:icon="@drawable/ic_home"
+            android:title="@string/drawer_home" />
 
-        <item
-            android:id="@id/location"
-            android:icon="@drawable/ic_two"
-            android:title="@string/location" />
         <item
             android:id="@id/orders"
-            android:icon="@drawable/ic_three"
-            android:title="@string/orders" />
-        <item
-            android:id="@id/ContactUs"
-            android:icon="@drawable/ic_one"
-            android:title="@string/ContactUs" />
+            android:icon="@drawable/ic_orders"
+            android:title="@string/drawer_orders" />
+
+        <!--<item-->
+            <!--android:id="@id/faq"-->
+            <!--android:icon="@drawable/ic_two"-->
+            <!--android:title="@string/drawer_faq" />-->
+
+        <!--<item-->
+            <!--android:id="@id/feedback"-->
+            <!--android:icon="@drawable/ic_two"-->
+            <!--android:title="@string/drawer_feedback" />-->
 
         <item
-            android:id="@id/TC"
-            android:icon="@drawable/ic_two"
-            android:title="@string/TC" />
+            android:id="@id/contact_us"
+            android:icon="@drawable/ic_contact_us"
+            android:title="@string/drawer_contact_us" />
 
         <item
-            android:id="@id/AboutUs"
-            android:icon="@drawable/ic_three"
-            android:title="@string/AboutUs" />
+            android:id="@id/terms_conditions"
+            android:icon="@drawable/ic_terms_conditions"
+            android:title="@string/drawer_terms_conditions" />
 
-        <item android:title="">
-            <menu>
-                <group android:checkableBehavior="single">
-                    <item
-                        android:id="@+id/InviteEarn"
-                        android:title="Invite and Earn" />
-                    <item
+        <item
+            android:id="@id/about_us"
+            android:icon="@drawable/ic_about_us"
+            android:title="@string/drawer_about_us" />
 
-                        android:title="Rating" />
-                    <item
-                        android:title="@string/login"
-                        android:id="@+id/LogBtn"
+        <item
+            android:id="@id/LogBtn"
+            android:icon="@drawable/ic_drawer_login"
+            android:title="@string/drawer_login" />
 
-                        android:visible="true"/>
-
-                </group>
-            </menu>
-        </item>
     </group>
 </menu>
 

@@ -15,9 +15,10 @@
     <item name="home" type="id" />
     <item name="location" type="id" />
     <item name="orders" type="id" />
-    <item name="ContactUs" type="id" />
-    <item name="TC" type="id" />
-    <item name="AboutUs" type="id" />
+    <item name="contact_us" type="id" />
+    <item name="terms_conditions" type="id" />
+    <item name="about_us" type="id" />
+    <item name="LogBtn" type="id" />
     <item name="offers_image" type="id" />
     <item name="layout_fragment_home_pager" type="id" />
     <item name="fastadapter_product_item_id" type="id" />
@@ -70,6 +71,8 @@
     <item name="container" type="id" />
     <item name="fastadapter_product_category_item_id" type="id" />
     <item name="fastadapter_header_item_id" type="id" />
+    <item name="faq" type="id" />
+    <item name="feedback" type="id" />
 
 
 </resources>

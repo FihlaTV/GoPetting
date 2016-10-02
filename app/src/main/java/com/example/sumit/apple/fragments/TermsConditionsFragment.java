@@ -33,7 +33,7 @@ public class TermsConditionsFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         /* Update fragment's title.*/
-        EventBus.getDefault().post(new UpdateActionBarTitleEvent(getString(R.string.TC)));
+        EventBus.getDefault().post(new UpdateActionBarTitleEvent(getString(R.string.drawer_terms_conditions)));
         //Inflate menu
         View rootView = inflater.inflate(R.layout.fragment_contact, container, false);
         TextView text = (TextView) rootView.findViewById(R.id.fragment_text);

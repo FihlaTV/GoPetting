@@ -33,7 +33,7 @@ public class LocationFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         /* Update fragment's title.*/
-        EventBus.getDefault().post(new UpdateActionBarTitleEvent(getString(R.string.location)));
+        EventBus.getDefault().post(new UpdateActionBarTitleEvent(getString(R.string.drawer_location)));
         //Inflate menu
         View rootView = inflater.inflate(R.layout.fragment_contact, container, false);
         TextView text = (TextView) rootView.findViewById(R.id.fragment_text);
