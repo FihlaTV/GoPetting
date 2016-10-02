@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -55,6 +57,8 @@ import com.example.sumit.apple.network.SessionManager;
 import com.example.sumit.apple.utils.Constants;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -69,6 +73,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import de.greenrobot.event.EventBus;
 
@@ -83,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                                                 GoogleApiClient.OnConnectionFailedListener,
                                                                 ResultCallback<People.LoadPeopleResult> {
 
+    private static final int NUM_PAGES = 3; //Promotional Screens
     private DrawerLayout mDrawerLayout;
     private Toolbar mToolbar;
     private NavigationView mNavDrawer;
@@ -126,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Credential mCredential;
     private List<StringItem> mPromotionalScreens;
     private ProgressBar mProgressBar;
+    private int mCurrentPage;
 
 
 // ------------------------------LoginActivity - End-----------------------------//
@@ -151,14 +159,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .addScope(Plus.SCOPE_PLUS_LOGIN).build();
 */
 
+        // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(Plus.API)
                 .addScope(new Scope(Scopes.PROFILE))
-                .build();
+                .addApi(AppIndex.API).build();
         mGoogleApiClient.connect();
-
 
 
 // ------------------------------LoginActivity -End-----------------------------//
@@ -180,7 +189,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mProgressBar.setVisibility(View.VISIBLE);
         getServerData();
-
 
 
 // ------------------------------LoginActivity - Start-----------------------------//
@@ -208,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 //        linearLayout = (RelativeLayout) view.findViewById(R.id.navLayout);
 //        RelativeLayout Rlout = (RelativeLayout) view.findViewById(R.id.navLayout);
-       mLinearLayout = (LinearLayout) view.findViewById(R.id.navLayout);
+        mLinearLayout = (LinearLayout) view.findViewById(R.id.navLayout);
         mLinearLayout.setOnClickListener(this);
 
 
@@ -255,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final CharSequence mDrawerTitle;
         mTitle = mDrawerTitle = getTitle();
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                 R.string.drawer_open, R.string.drawer_close) {
+                R.string.drawer_open, R.string.drawer_close) {
 
 //           Called when a drawer has settled in a completely closed state.
 
@@ -276,7 +284,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -358,6 +365,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mGalleryPagerAdapter = new GalleryPagerAdapter(getSupportFragmentManager(),mPromotionalScreens);
         mGalleryViewPager.setAdapter(mGalleryPagerAdapter);
+
+        //Automatic Viewpager Slide Setup
+        final Handler handler = new Handler();
+
+        final Runnable update = new Runnable() {
+            public void run() {
+
+                if (mCurrentPage == NUM_PAGES) {
+                    mCurrentPage = 0;
+                }
+                mGalleryViewPager.setCurrentItem(mCurrentPage++, true);
+            }
+        };
+
+        new Timer().schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                handler.post(update);
+            }
+        }, 100, 2500);      //Delay, Period
+
+
 
         //Adding Circle Indicator with ViewPager
         mCircleIndicator.setViewPager(mGalleryViewPager);
@@ -627,6 +657,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         super.onStart();
         EventBus.getDefault().register(this);
+
     }
 
     @Override
