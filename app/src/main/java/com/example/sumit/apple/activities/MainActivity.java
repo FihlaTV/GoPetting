@@ -10,9 +10,11 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +47,10 @@ import com.example.sumit.apple.fragments.TermsConditionsFragment;
 
 import com.example.sumit.apple.models.Credential;
 import com.example.sumit.apple.models.ProductCategoryData;
+import com.example.sumit.apple.models.StringItem;
+import com.example.sumit.apple.network.Controller;
+import com.example.sumit.apple.network.OAuthTokenService;
+import com.example.sumit.apple.network.RetrofitSingleton;
 import com.example.sumit.apple.network.SessionManager;
 import com.example.sumit.apple.utils.Constants;
 import com.facebook.FacebookSdk;
@@ -61,11 +68,15 @@ import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.relex.circleindicator.CircleIndicator;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
                                                                 GoogleApiClient.ConnectionCallbacks,
@@ -113,6 +124,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FastItemAdapter fastAdapterProductCategory;
     private LinearLayoutManager mLayoutManagerCategory;
     private Credential mCredential;
+    private List<StringItem> mPromotionalScreens;
+    private ProgressBar mProgressBar;
 
 
 // ------------------------------LoginActivity - End-----------------------------//
@@ -155,8 +168,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mToolbar = (Toolbar) findViewById(R.id.toolbar_headerbar);
         setSupportActionBar(mToolbar);
 
-//        getServerData();
-
         // Find our drawer view
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mNavDrawer = (NavigationView) findViewById(R.id.nvView);
@@ -165,8 +176,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mGalleryViewPager = (ViewPager) findViewById(R.id.view_pager_promotional);
         mCircleIndicator = (CircleIndicator) findViewById(R.id.circle_indicator);
         mRecyclerViewCategory = (RecyclerView) findViewById(R.id.recycler_category);
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar_regular);
 
-        setupHomeScreen();
+        mProgressBar.setVisibility(View.VISIBLE);
+        getServerData();
+
+
 
 // ------------------------------LoginActivity - Start-----------------------------//
 
@@ -262,90 +277,86 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        fastAdapterProductCategory.withSavedInstanceState(savedInstanceState);
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
-//    private void getServerData() {
-//
-//        final OAuthTokenService oAuthTokenService = OAuthTokenService.getInstance(this);
-//
-////        oAuthTokenService.deleteTokenWithId("default");
-////          oAuthTokenService.deleteAllToken();
-//        mCredential = oAuthTokenService.getAccessTokenWithID("default");
-//
-//        if(mCredential == null || mCredential.getAccess_token()==null || oAuthTokenService.isExpired("default"))
-//        {
-//            oAuthTokenService.authenticateUsingOAuth( new Controller.MethodsCallback<Credential>()
-//            {
-//                @Override public void failure(Throwable throwable)
-//                {
-//                    Toast.makeText(MainActivity.this, throwable.getMessage(),Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
-//                }
-//                @Override public void success(Credential credential)
-//                {
-//                    if(credential != null)
-//                    {
-//                        oAuthTokenService.saveTokenWithID(credential, "default");
-//
-//                        getPromotionalGalleryData();
-//
-//                    }
-//                }
-//                @Override public void responseBody(Call<Credential> call)
-//                {
-//
-//                }
-//            });
-//        }else {
-//
-//            getPromotionalGalleryData();
-//
-//        }
-//    }
-//
-//    private void getPromotionalGalleryData(){
-//
-//        Controller.GetBreedNames retrofitSingleton = RetrofitSingleton.getInstance().create(Controller.GetBreedNames.class);
-//        Call<List<FilterSubCategory>> call = retrofitSingleton.getBreedNames("Bearer " + credential.getAccess_token(),PRODUCT_CATEGORY_ID);
-//        call.enqueue(new Callback<List<FilterSubCategory>>() {
-//            @Override
-//            public void onResponse(Call<List<FilterSubCategory>> call, Response<List<FilterSubCategory>> response) {
-//                if (response.isSuccessful()) {
-//
-//
-////                FilteredItems.categorySelected = 0;
-////               fastAdapterFilterSubCategory.add(response.body());        //Adding Filter Category Data
-//
-//                    breedNameData =response.body();
-//                    initFilterData();
-//
-//
-//
-//                } else {
-//                    Log.d("Error Response", "FilterActivity.getBreedNamesData :Error Response");
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<FilterSubCategory>> call, Throwable t) {
-//                Toast.makeText(FilterActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
-//            }
-//        });
-//    }
+    private void getServerData() {
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        //add the values which need to be saved from the adapter to the bundel
-        outState = fastAdapterProductCategory.saveInstanceState(outState);
-        super.onSaveInstanceState(outState);
+        final OAuthTokenService oAuthTokenService = OAuthTokenService.getInstance(this);
+
+//        oAuthTokenService.deleteTokenWithId("default");
+//          oAuthTokenService.deleteAllToken();
+        mCredential = oAuthTokenService.getAccessTokenWithID("default");
+
+        if(mCredential == null || mCredential.getAccess_token()==null || oAuthTokenService.isExpired("default"))
+        {
+            oAuthTokenService.authenticateUsingOAuth( new Controller.MethodsCallback<Credential>()
+            {
+                @Override public void failure(Throwable throwable)
+                {
+                    Toast.makeText(MainActivity.this, throwable.getMessage(),Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+                }
+                @Override public void success(Credential credential)
+                {
+                    if(credential != null)
+                    {
+                        oAuthTokenService.saveTokenWithID(credential, "default");
+
+                        getPromotionalGalleryData();
+
+                    }
+                }
+                @Override public void responseBody(Call<Credential> call)
+                {
+
+                }
+            });
+        }else {
+
+            getPromotionalGalleryData();
+
+        }
     }
+
+    private void getPromotionalGalleryData(){
+
+        Controller.GetPromotionalScreens retrofitSingleton = RetrofitSingleton.getInstance().create(Controller.GetPromotionalScreens.class);
+        Call<List<StringItem>> call = retrofitSingleton.getPromotionalScreens("Bearer " + mCredential.getAccess_token());
+        call.enqueue(new Callback<List<StringItem>>() {
+            @Override
+            public void onResponse(Call<List<StringItem>> call, Response<List<StringItem>> response) {
+                if (response.isSuccessful()) {
+
+                    mPromotionalScreens =response.body();
+                    setupHomeScreen();
+
+                } else {
+                    Log.d("Error Response", "MainActivity.getPromotionalScreens :Error Response");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StringItem>> call, Throwable t) {
+                Log.d("onFailure", "MainActivity.getPromotionalScreens :Error Response");
+            }
+        });
+    }
+
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        //add the values which need to be saved from the adapter to the bundel
+//        outState = fastAdapterProductCategory.saveInstanceState(outState);
+//        super.onSaveInstanceState(outState);
+//    }
 
     private void setupHomeScreen() {
 
-        mGalleryPagerAdapter = new GalleryPagerAdapter(getSupportFragmentManager());
+        mProgressBar.setVisibility(View.GONE);
+
+        mGalleryPagerAdapter = new GalleryPagerAdapter(getSupportFragmentManager(),mPromotionalScreens);
         mGalleryViewPager.setAdapter(mGalleryPagerAdapter);
 
         //Adding Circle Indicator with ViewPager
@@ -367,18 +378,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        Set Default Item Animator
         mRecyclerViewCategory.setItemAnimator(new DefaultItemAnimator());
 
-
+//        fastAdapterProductCategory.withSavedInstanceState(savedInstanceState);
     }
 
 
     public static class GalleryPagerAdapter extends FragmentPagerAdapter {
         private static int NUM_ITEMS = 3;
+        private final List<StringItem> mPromotionalScreens;
 //        private static DogDetails mDogDetails;
 
 
-        public GalleryPagerAdapter(FragmentManager fragmentManager) {
+        public GalleryPagerAdapter(FragmentManager fragmentManager, List<StringItem> PromotionalScreens) {
             super(fragmentManager);
-//            mDogDetails = mDetails;
+            mPromotionalScreens = PromotionalScreens;
 
         }
 
@@ -393,11 +405,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return GalleryFragment.newInstance(PROMO_IMAGE1);
+                    return GalleryFragment.newInstance(mPromotionalScreens.get(0).getName());
                 case 1:
-                    return GalleryFragment.newInstance(PROMO_IMAGE2);
+                    return GalleryFragment.newInstance(mPromotionalScreens.get(1).getName());
                 case 2:
-                    return GalleryFragment.newInstance(PROMO_IMAGE3);
+                    return GalleryFragment.newInstance(mPromotionalScreens.get(2).getName());
                 default:
                     return null;
             }
@@ -453,7 +465,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             default:
-                EventBus.getDefault().post(new MoveToFragmentEvent(new HomeFragment()));
+//                Toast.makeText(this, menuItem.getItemId(), Toast.LENGTH_SHORT).show();
+//                startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
 /*        try {
             fragment = (Fragment) FragmentClass.newInstance();
@@ -477,7 +490,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         // Highlight the selected item, update the toolbar title, and close the drawer
-        menuItem.setChecked(true);
+        menuItem.setChecked(false); //TODO: This is not working; Need to fix this.
 //        setTitle(menuItem.getTitle());
 //        Toast.makeText(this, menuItem.getItemId(), Toast.LENGTH_SHORT).show();  //temp toast
         mDrawerLayout.closeDrawer(mNavDrawer);
@@ -519,7 +532,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //super.onCreateOptionsMenu(menu);
+//        super.onCreateOptionsMenu(menu);
         MenuItem LogText = mNavDrawer.getMenu().findItem(R.id.LogBtn);
         if (session.isLoggedIn()) {
             mNavDrawer = (NavigationView) findViewById(R.id.nvView);
@@ -529,9 +542,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             proPic.setImageResource(R.drawable.ic_profile);
             ProfText.setText("Login/SignUp");
             LogText.setTitle("LogIn");
-
         }
 
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        //setup toolbar service location item
+        MenuItem item = menu.findItem(R.id.menu_service_location);
+        MenuItemCompat.setActionView(item, R.layout.menu_service_location_layout);
+        TextView textView = (TextView) MenuItemCompat.getActionView(item);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                builder.setMessage(R.string.dialog_message_service_location)
+                        .setTitle(R.string.dialog_title_service_location);
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
 
         return true;
     }
@@ -551,8 +583,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return true;
         }
 
-        //TODO : Add/Handle Action bar options item
-        // Handle your other action bar items...
+//        if (item.getItemId() == R.id.menu_service_location) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

@@ -2,9 +2,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.MainActivity">
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+    <!--<item-->
+        <!--android:id="@+id/action_settings"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="@string/action_settings"-->
+        <!--app:showAsAction="never" />-->
+
+    <item android:id="@id/menu_service_location"
+        android:title="@string/text_service_location"
+        android:actionLayout="@layout/menu_service_location_layout"
+        app:showAsAction="always|withText" />
+
+    <!--android:orderInCategory="1"-->
+
+    <!--android:icon="@drawable/ic_service_location"-->
+
 </menu>

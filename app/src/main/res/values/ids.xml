@@ -73,6 +73,8 @@
     <item name="fastadapter_header_item_id" type="id" />
     <item name="faq" type="id" />
     <item name="feedback" type="id" />
+    <item name="menu_service_location" type="id" />
+    <item name="fastadapter_string_item_id" type="id" />
 
 
 </resources>

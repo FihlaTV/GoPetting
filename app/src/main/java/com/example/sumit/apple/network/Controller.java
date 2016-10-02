@@ -5,6 +5,7 @@ import com.example.sumit.apple.models.DeliveryDetails;
 import com.example.sumit.apple.models.Dog;
 import com.example.sumit.apple.models.DogDetails;
 import com.example.sumit.apple.models.FilterSubCategory;
+import com.example.sumit.apple.models.StringItem;
 import com.example.sumit.apple.models.User;
 
 import java.util.List;
@@ -75,6 +76,11 @@ public class Controller {
                            @Query("email") String email,
                            @Query("first_name") String first_name,
                            @Query("last_name") String last_name);
+    }
+
+    public interface GetPromotionalScreens {
+        @GET("/api/v1/screens/promotional")
+        Call<List<StringItem>> getPromotionalScreens(@Header("Authorization") String authorization);
     }
 
 

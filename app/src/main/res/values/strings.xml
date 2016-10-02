@@ -104,6 +104,9 @@
     <string name="profile_dob">Date Of Birth</string>
     <string name="drawer_faq">FAQ</string>
     <string name="drawer_feedback">Feedback</string>
+    <string name="text_service_location">Hyderabad</string>
+    <string name="dialog_message_service_location">We\'re launching soon in other cities</string>
+    <string name="dialog_title_service_location">Service Location : Hyderabad</string>
 
 
 </resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.sumit.apple.views.TypefaceTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tv_service_location"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
+    android:drawablePadding="3.0dip"
+    android:drawableRight="@drawable/ic_service_location"
+    android:gravity="center_vertical"
+    android:paddingLeft="5.0dip"
+    android:paddingRight="5.0dip"
+    android:text="Hyderabad"
+    android:textColor="#ffffffff"
+    android:textSize="@dimen/text_size_medium"
+    app:customTypeface="@string/typeface_regular"
+    android:clickable="true"/>

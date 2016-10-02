@@ -8,9 +8,9 @@
     android:orientation="vertical">
 
     <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:orientation="vertical">-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:orientation="vertical">-->
 
     <!--<View-->
     <!--android:id="@id/header_space"-->
@@ -20,9 +20,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffffff"
-        >
+        android:layout_height="match_parent"
+        android:background="#ffffffff">
 
         <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
         <android.support.v7.widget.RecyclerView
@@ -30,8 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/grey_300"
-    android:paddingTop="@dimen/promotional_gallery_height"
-            android:clipToPadding="false"/>
+            android:clipToPadding="false"
+            android:paddingTop="@dimen/promotional_gallery_height" />
 
         <!--android:scrollbars="vertical"-->
         <ProgressBar
@@ -60,34 +59,33 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 
-                <FrameLayout
-                    android:id="@id/container"
+            <FrameLayout
+                android:id="@id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical"
+                app:layout_collapseMode="none">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/view_pager_promotional"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:orientation="vertical"
-                    app:layout_collapseMode="none">
+                    android:gravity="center_horizontal" />
 
-                    <android.support.v4.view.ViewPager
-                        android:id="@+id/view_pager_promotional"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_horizontal"
-                        />
-
-                    <me.relex.circleindicator.CircleIndicator
-                        android:id="@+id/circle_indicator"
-                        android:layout_width="match_parent"
-                        android:layout_height="15dp"
-                        android:layout_gravity="bottom"
-                        android:layout_marginBottom="5dp"
-                        app:ci_drawable="@drawable/white_radius" />
+                <me.relex.circleindicator.CircleIndicator
+                    android:id="@+id/circle_indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="5dp"
+                    app:ci_drawable="@drawable/white_radius" />
 
 
-                </FrameLayout>
+            </FrameLayout>
 
         </android.support.design.widget.CollapsingToolbarLayout>
-<!--</android.support.design.widget.AppBarLayout>-->
+        <!--</android.support.design.widget.AppBarLayout>-->
     </me.henrytao.smoothappbarlayout.SmoothAppBarLayout>
 
 
