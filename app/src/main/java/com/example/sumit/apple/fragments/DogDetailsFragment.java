@@ -44,7 +44,7 @@ public class DogDetailsFragment extends Fragment {
         ImageView ivProductDetails = (ImageView) view.findViewById(R.id.iv_product_details);
 //        ivProductDetails.setImageResource(page);
 
-        Glide.with(this).load(imageUrl).placeholder(R.drawable.ic_shopping_placeholder).into(ivProductDetails);
+        Glide.with(this).load(imageUrl).placeholder(R.drawable.placeholder_promo).into(ivProductDetails);
 //        Toast.makeText(getContext(),imageUrl, Toast.LENGTH_SHORT).show();
         return view;
 

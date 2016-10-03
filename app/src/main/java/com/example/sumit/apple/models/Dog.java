@@ -116,7 +116,7 @@ import com.mikepenz.fastadapter.items.AbstractItem;
             //get the context
             Context ctx = viewHolder.itemView.getContext();
 
-            Glide.with(ctx).load(imageUrl).placeholder(R.drawable.ic_shopping_placeholder).into(viewHolder.mItemImageView);
+            Glide.with(ctx).load(imageUrl).placeholder(R.drawable.placeholder_promo).into(viewHolder.mItemImageView);
 
             viewHolder.mItemName.setText(name);
             viewHolder.mItemPrice.setText("Rs."+ unitPrice);

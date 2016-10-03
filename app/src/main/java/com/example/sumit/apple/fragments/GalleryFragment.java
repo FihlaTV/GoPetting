@@ -48,7 +48,7 @@ public class GalleryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
         ImageView ivScreen = (ImageView) view.findViewById(R.id.iv_screen);
 
-        Glide.with(this).load(mImageUrl).placeholder(R.drawable.ic_shopping_placeholder).into(ivScreen);
+        Glide.with(this).load(mImageUrl).placeholder(R.drawable.placeholder_promo).into(ivScreen);
 //        Toast.makeText(getContext(),imageUrl, Toast.LENGTH_SHORT).show();
         return view;
     }

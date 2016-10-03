@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -30,34 +29,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.sumit.apple.R;
-import com.example.sumit.apple.bus.MoveToFragmentEvent;
 import com.example.sumit.apple.bus.UpdateActionBarTitleEvent;
-import com.example.sumit.apple.fragments.AboutUsFragment;
-import com.example.sumit.apple.fragments.ContactUsFragment;
 import com.example.sumit.apple.fragments.GalleryFragment;
-import com.example.sumit.apple.fragments.HomeFragment;
-import com.example.sumit.apple.fragments.LocationFragment;
-import com.example.sumit.apple.fragments.OrdersFragment;
-import com.example.sumit.apple.fragments.TermsConditionsFragment;
-
-
 import com.example.sumit.apple.models.Credential;
 import com.example.sumit.apple.models.ProductCategoryData;
 import com.example.sumit.apple.models.StringItem;
-import com.example.sumit.apple.network.Controller;
-import com.example.sumit.apple.network.OAuthTokenService;
-import com.example.sumit.apple.network.RetrofitSingleton;
 import com.example.sumit.apple.network.SessionManager;
 import com.example.sumit.apple.utils.Constants;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
-import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
@@ -78,12 +63,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import de.greenrobot.event.EventBus;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.relex.circleindicator.CircleIndicator;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         GoogleApiClient.ConnectionCallbacks,

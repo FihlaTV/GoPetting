@@ -10,6 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/promotional_gallery_height"
         android:scaleType="fitXY"
-        android:src="@drawable/placeholder_offers" />
+        android:src="@drawable/placeholder_promo" />
 
 </LinearLayout>
