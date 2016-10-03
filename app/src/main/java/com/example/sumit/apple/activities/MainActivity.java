@@ -71,6 +71,7 @@ import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
@@ -85,9 +86,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
-                                                                GoogleApiClient.ConnectionCallbacks,
-                                                                GoogleApiClient.OnConnectionFailedListener,
-                                                                ResultCallback<People.LoadPeopleResult> {
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        ResultCallback<People.LoadPeopleResult> {
 
     private static final int NUM_PAGES = 3; //Promotional Screens
     private DrawerLayout mDrawerLayout;
@@ -122,9 +123,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ViewPager mGalleryViewPager;
     private CircleIndicator mCircleIndicator;
 
-    private static final String PROMO_IMAGE1 = "https://s3-ap-southeast-1.amazonaws.com/samplebucket-6-5-2016/offers_gopetting.jpg";
-    private static final String PROMO_IMAGE2 = "https://s3-ap-southeast-1.amazonaws.com/samplebucket-6-5-2016/offers_grooming.jpg";
-    private static final String PROMO_IMAGE3 = "https://s3-ap-southeast-1.amazonaws.com/samplebucket-6-5-2016/offers_boarding.jpg";
 
     private GalleryPagerAdapter mGalleryPagerAdapter;
     private RecyclerView mRecyclerViewCategory;
@@ -134,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<StringItem> mPromotionalScreens;
     private ProgressBar mProgressBar;
     private int mCurrentPage;
+    private List<String> mPromoImages;
 
 
 // ------------------------------LoginActivity - End-----------------------------//
@@ -143,6 +142,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mPromoImages = new ArrayList<>();
+
+        //Get Promotional Images
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        mPromoImages.add(bundle.getString("promo_image1"));
+        mPromoImages.add(bundle.getString("promo_image2"));
+        mPromoImages.add(bundle.getString("promo_image3"));
 
 //------------------------------LoginActivity -Start-----------------------------//
 
@@ -187,8 +196,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRecyclerViewCategory = (RecyclerView) findViewById(R.id.recycler_category);
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar_regular);
 
-        mProgressBar.setVisibility(View.VISIBLE);
-        getServerData();
+        setupHomeScreen();
 
 
 // ------------------------------LoginActivity - Start-----------------------------//
@@ -290,67 +298,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
-    private void getServerData() {
 
-        final OAuthTokenService oAuthTokenService = OAuthTokenService.getInstance(this);
-
-//        oAuthTokenService.deleteTokenWithId("default");
-//          oAuthTokenService.deleteAllToken();
-        mCredential = oAuthTokenService.getAccessTokenWithID("default");
-
-        if(mCredential == null || mCredential.getAccess_token()==null || oAuthTokenService.isExpired("default"))
-        {
-            oAuthTokenService.authenticateUsingOAuth( new Controller.MethodsCallback<Credential>()
-            {
-                @Override public void failure(Throwable throwable)
-                {
-                    Toast.makeText(MainActivity.this, throwable.getMessage(),Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
-                }
-                @Override public void success(Credential credential)
-                {
-                    if(credential != null)
-                    {
-                        oAuthTokenService.saveTokenWithID(credential, "default");
-
-                        getPromotionalGalleryData();
-
-                    }
-                }
-                @Override public void responseBody(Call<Credential> call)
-                {
-
-                }
-            });
-        }else {
-
-            getPromotionalGalleryData();
-
-        }
-    }
-
-    private void getPromotionalGalleryData(){
-
-        Controller.GetPromotionalScreens retrofitSingleton = RetrofitSingleton.getInstance().create(Controller.GetPromotionalScreens.class);
-        Call<List<StringItem>> call = retrofitSingleton.getPromotionalScreens("Bearer " + mCredential.getAccess_token());
-        call.enqueue(new Callback<List<StringItem>>() {
-            @Override
-            public void onResponse(Call<List<StringItem>> call, Response<List<StringItem>> response) {
-                if (response.isSuccessful()) {
-
-                    mPromotionalScreens =response.body();
-                    setupHomeScreen();
-
-                } else {
-                    Log.d("Error Response", "MainActivity.getPromotionalScreens :Error Response");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<StringItem>> call, Throwable t) {
-                Log.d("onFailure", "MainActivity.getPromotionalScreens :Error Response");
-            }
-        });
-    }
 
 //    @Override
 //    protected void onSaveInstanceState(Bundle outState) {
@@ -361,9 +309,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setupHomeScreen() {
 
-        mProgressBar.setVisibility(View.GONE);
-
-        mGalleryPagerAdapter = new GalleryPagerAdapter(getSupportFragmentManager(),mPromotionalScreens);
+        //Setup Promotional Screen
+        mGalleryPagerAdapter = new GalleryPagerAdapter(getSupportFragmentManager(), mPromoImages);
         mGalleryViewPager.setAdapter(mGalleryPagerAdapter);
 
         //Automatic Viewpager Slide Setup
@@ -388,8 +335,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }, 100, 2500);      //Delay, Period
 
 
-
-        //Adding Circle Indicator with ViewPager
+        //Setup Product Category
         mCircleIndicator.setViewPager(mGalleryViewPager);
 
         //Product Category RecyclerView adapter setup
@@ -408,19 +354,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        Set Default Item Animator
         mRecyclerViewCategory.setItemAnimator(new DefaultItemAnimator());
 
+
 //        fastAdapterProductCategory.withSavedInstanceState(savedInstanceState);
     }
 
 
     public static class GalleryPagerAdapter extends FragmentPagerAdapter {
         private static int NUM_ITEMS = 3;
-        private final List<StringItem> mPromotionalScreens;
-//        private static DogDetails mDogDetails;
+        private final List<String> mPromoImages;
+        private static Fragment galleryFragment1;
+        private static Fragment galleryFragment2;
+        private static Fragment galleryFragment3;
 
 
-        public GalleryPagerAdapter(FragmentManager fragmentManager, List<StringItem> PromotionalScreens) {
+        public GalleryPagerAdapter(FragmentManager fragmentManager, List<String> promoImages) {
             super(fragmentManager);
-            mPromotionalScreens = PromotionalScreens;
+            mPromoImages = promoImages;
 
         }
 
@@ -433,13 +382,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Returns the fragment to display for that page
         @Override
         public Fragment getItem(int position) {
+
             switch (position) {
                 case 0:
-                    return GalleryFragment.newInstance(mPromotionalScreens.get(0).getName());
+                    if (galleryFragment1 == null)
+                        galleryFragment1 = GalleryFragment.newInstance(mPromoImages.get(0));
+
+                    return galleryFragment1;
+
                 case 1:
-                    return GalleryFragment.newInstance(mPromotionalScreens.get(1).getName());
+                    if (galleryFragment2 == null)
+                        galleryFragment2 = GalleryFragment.newInstance(mPromoImages.get(1));
+
+                        return galleryFragment2;
                 case 2:
-                    return GalleryFragment.newInstance(mPromotionalScreens.get(2).getName());
+                    if (galleryFragment3 == null)
+                        galleryFragment3 = GalleryFragment.newInstance(mPromoImages.get(2));
+
+                        return galleryFragment3;
                 default:
                     return null;
             }
@@ -452,7 +412,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
-
 
 
     private class NavigationItemSelectedListener implements NavigationView.OnNavigationItemSelectedListener {
@@ -469,7 +428,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //TODO: Update all fragments to extend from Basefragment: Done
         //TODO: Change cases like Homefragment - HomeFragment.newInstance()
-        switch(menuItem.getItemId()) {
+        switch (menuItem.getItemId()) {
 //            case R.id.home:
 //                EventBus.getDefault().post(new MoveToFragmentEvent(HomeFragment.newInstance()));
 //                break;
@@ -559,7 +518,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //    }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 //        super.onCreateOptionsMenu(menu);
@@ -629,7 +587,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
 //        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
 //            mDrawerLayout.closeDrawer(GravityCompat.START);
 //        } else {
@@ -716,8 +674,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     startActivity(new Intent(MainActivity.this, ProfileActivity.class));
 
                     break;
-                }
-                else {
+                } else {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 }
 

@@ -1,17 +1,31 @@
 package com.example.sumit.apple.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.example.sumit.apple.R;
+import com.example.sumit.apple.models.Credential;
 import com.example.sumit.apple.models.Dog;
+import com.example.sumit.apple.models.StringItem;
+import com.example.sumit.apple.network.Controller;
+import com.example.sumit.apple.network.OAuthTokenService;
+import com.example.sumit.apple.network.RetrofitSingleton;
 
 
 import io.fabric.sdk.android.Fabric;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import java.util.List;
 
 //import android.support.v7.app.AppCompatActivity;
@@ -23,6 +37,12 @@ import java.util.List;
 public class SplashActivity extends Activity {
 
     String now_playing, earned;
+    private Credential mCredential;
+    private List<StringItem> mPromotionalScreens;
+    private ProgressBar mProgressBar;
+
+    private SharedPreferences sharedpreferences;
+    public SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,19 +50,121 @@ public class SplashActivity extends Activity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.splash_activity);
 
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar_regular);
+
+        mProgressBar.setVisibility(View.VISIBLE);
+
+        getServerData();
+//
+//        try {
+//            Thread.currentThread();
+//            Thread.sleep(3000);
+//        }
+//        catch (InterruptedException e)
+//        {
+//            e.printStackTrace();
+//        }
+
+
 		/*
          * Showing splashscreen while making network calls to download necessary
 		 * data before launching the app Will use AsyncTask to make http call
 		 */
-        new PrefetchData().execute();
+//        new PrefetchData().execute();
+
 
     }
+
+    private void getServerData() {
+
+        final OAuthTokenService oAuthTokenService = OAuthTokenService.getInstance(this);
+
+//        oAuthTokenService.deleteTokenWithId("default");
+//          oAuthTokenService.deleteAllToken();
+        mCredential = oAuthTokenService.getAccessTokenWithID("default");
+
+        if(mCredential == null || mCredential.getAccess_token()==null || oAuthTokenService.isExpired("default"))
+        {
+            oAuthTokenService.authenticateUsingOAuth( new Controller.MethodsCallback<Credential>()
+            {
+                @Override public void failure(Throwable throwable)
+                {
+                    Toast.makeText(SplashActivity.this, throwable.getMessage(),Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+                }
+                @Override public void success(Credential credential)
+                {
+                    if(credential != null)
+                    {
+                        oAuthTokenService.saveTokenWithID(credential, "default");
+
+//                        sharedpreferences = SplashActivity.this.getSharedPreferences("default", Context.MODE_PRIVATE);
+//                        editor = sharedpreferences.edit();
+                        getPromotionalGalleryData();
+
+                    }
+                }
+                @Override public void responseBody(Call<Credential> call)
+                {
+
+                }
+            });
+        }else {
+
+            getPromotionalGalleryData();
+
+        }
+    }
+
+
+    private void getPromotionalGalleryData(){
+
+//Temp Arrangement:        Added these below 2 extra lines to handle Token storage issue during first start
+        final OAuthTokenService oAuth = OAuthTokenService.getInstance(this);
+
+        Credential credOAuth = oAuth.getAccessTokenWithID("default");
+
+        Controller.GetPromotionalScreens retrofitSingleton = RetrofitSingleton.getInstance().create(Controller.GetPromotionalScreens.class);
+        Call<List<StringItem>> call = retrofitSingleton.getPromotionalScreens("Bearer " + credOAuth.getAccess_token());
+        call.enqueue(new Callback<List<StringItem>>() {
+            @Override
+            public void onResponse(Call<List<StringItem>> call, Response<List<StringItem>> response) {
+                if (response.isSuccessful()) {
+
+                    mPromotionalScreens =response.body();
+
+//                    setupHomeScreen();
+
+                    Intent intent = new Intent(SplashActivity.this,MainActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("promo_image1", mPromotionalScreens.get(0).getName());
+                    bundle.putString("promo_image2", mPromotionalScreens.get(1).getName());
+                    bundle.putString("promo_image3", mPromotionalScreens.get(2).getName());
+                    intent.putExtras(bundle);
+
+                    mProgressBar.setVisibility(View.GONE);
+
+                    startActivity(intent);
+                    SplashActivity.this.finish();
+
+
+                } else {
+                    Log.d("Error Response", "SplashActivity.getPromotionalScreens :Error Response");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StringItem>> call, Throwable t) {
+                Log.d("onFailure", "SplashActivity.getPromotionalScreens :Error Response");
+            }
+        });
+    }
+    
 
     /*
      * Async Task to make http call
      */
     private class PrefetchData extends AsyncTask<Void, Void, Void> {
-        List<Dog> dogs;
+
 
         @Override
         protected void onPreExecute() {
@@ -53,7 +175,7 @@ public class SplashActivity extends Activity {
 
             try {
                 Thread.currentThread();
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             }
             catch (InterruptedException e)
             {
@@ -111,7 +233,7 @@ public class SplashActivity extends Activity {
                 }
             });*/
 
-            Log.e("Response: ", "> " + dogs);
+//            Log.e("Response: ", "> " + dogs);
 
             return null;
         }
@@ -125,7 +247,7 @@ public class SplashActivity extends Activity {
             //i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             // i.putStringArrayListExtra("now_playing", (ArrayList<String>)dogs);
             // i.putExtra("earned", (ArrayList<RetrofitServiceGenerator.Dog>)dogs);
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));//immy
+//            startActivity(new Intent(SplashActivity.this, MainActivity.class));//immy
 
 
             //context.startActivity(new Intent(context, ResultsQueryActivity.class));
