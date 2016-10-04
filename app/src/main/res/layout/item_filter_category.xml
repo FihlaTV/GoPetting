@@ -15,7 +15,7 @@
         <!--android:layout_height="@dimen/filter_image"-->
         <!--android:layout_gravity="center_horizontal" />-->
 
-    <com.example.sumit.apple.views.TypefaceTextView
+    <com.gopetting.android.views.TypefaceTextView
         android:id="@id/tv_filter_category"
         style="@style/TextSectionHeader"
         android:layout_width="fill_parent"

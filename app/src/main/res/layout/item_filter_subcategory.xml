@@ -24,7 +24,7 @@
     </CheckBox>
 
 
-    <com.example.sumit.apple.views.TypefaceTextView
+    <com.gopetting.android.views.TypefaceTextView
         android:id="@id/tv_filter_subcategory"
         style="@style/TextSubSectionHeader"
         android:layout_width="fill_parent"

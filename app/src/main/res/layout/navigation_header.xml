@@ -71,7 +71,7 @@
 
 
         <!--android:layout_marginTop="10dp"-->
-        <com.example.sumit.apple.views.TypefaceTextView
+        <com.gopetting.android.views.TypefaceTextView
             android:id="@+id/profile_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

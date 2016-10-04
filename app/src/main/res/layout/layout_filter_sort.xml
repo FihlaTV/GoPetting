@@ -27,7 +27,7 @@
             android:contentDescription="@string/menu_sort"
             android:src="@drawable/ic_sort" />
 
-        <com.example.sumit.apple.views.TypefaceTextView
+        <com.gopetting.android.views.TypefaceTextView
             android:id="@id/tv_product_list_sort_label"
             amdroid:typeface="@string/typeface_bold"
             android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
             android:contentDescription="@string/menu_filter"
             android:src="@drawable/ic_filter" />
 
-        <com.example.sumit.apple.views.TypefaceTextView
+        <com.gopetting.android.views.TypefaceTextView
             android:id="@id/tv_product_list_filter_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

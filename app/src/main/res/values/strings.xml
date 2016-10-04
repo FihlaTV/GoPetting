@@ -76,7 +76,7 @@
     </string-array>
 
     <!--Login Activity-->
-    <string name="facebook_app_id">1781043332107936</string>
+    <string name="facebook_app_id">218585938557253</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign In</string>

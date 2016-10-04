@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "19358614245",
-    "project_id": "gopetting"
+    "project_number": "617720920735",
+    "project_id": "gopetting-9999"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:19358614245:android:e1cd8f5a5fc53ecb",
+        "mobilesdk_app_id": "1:617720920735:android:1a6809b078ebdba2",
         "android_client_info": {
-          "package_name": "com.example.sumit.apple"
+          "package_name": "com.gopetting.android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "19358614245-qdnmb928n5sgfmv15og9f3scrklj3t5r.apps.googleusercontent.com",
+          "client_id": "617720920735-cnn8jeblrro95nju5ul8j0k43a6ol92s.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.sumit.apple",
+            "package_name": "com.gopetting.android",
             "certificate_hash": "8AA01DBD40090E3AF6044FE6896695A3B7E5FB77"
           }
         },
         {
-          "client_id": "19358614245-1dghdfg9mq2hgqfdrpspkbl8i1r5rg98.apps.googleusercontent.com",
+          "client_id": "617720920735-glot7tpf6kn4vvj3vcf85h3f6f832ooq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDbjchrJHZumPSeJ7wUGGWbs78A8rgLXeI"
+          "current_key": "AIzaSyCG4np6TPOWoiIQzqo-VdoRD2_IPuF1Cmo"
         }
       ],
       "services": {

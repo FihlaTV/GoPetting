@@ -1,0 +1,44 @@
+package com.gopetting.android.fragments;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.gopetting.android.R;
+import com.gopetting.android.bus.UpdateActionBarTitleEvent;
+
+import de.greenrobot.event.EventBus;
+
+/**
+ * Created by Sumit on 1/24/2016.
+ */
+public class LocationFragment extends BaseFragment {
+//    public static final String ARG_QUOTE_NUMBER = "quote_number";
+
+    /**
+     * Create a new instance of Fragment that will be initialized
+     * with the given arguments.
+     */
+    static LocationFragment newInstance() {
+        LocationFragment fragment = new LocationFragment();
+//        Bundle args = new Bundle();
+//        args.putInt(fragment.ARG_QUOTE_NUMBER, itemID);
+//        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        /* Update fragment's title.*/
+        EventBus.getDefault().post(new UpdateActionBarTitleEvent(getString(R.string.drawer_location)));
+        //Inflate menu
+        View rootView = inflater.inflate(R.layout.fragment_contact, container, false);
+        TextView text = (TextView) rootView.findViewById(R.id.fragment_text);
+        text.setText(R.string.location_text);
+        return rootView;
+    }
+}
+

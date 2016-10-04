@@ -19,7 +19,7 @@
         android:clickable="false"
         android:src="@drawable/ic_pincode" />
 
-    <com.example.sumit.apple.views.TypefaceTextView
+    <com.gopetting.android.views.TypefaceTextView
         style="@style/AppDialogTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.example.sumit.apple.views.TypefaceTextView
+            <com.gopetting.android.views.TypefaceTextView
                 android:id="@+id/tv_delivery_text1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
                 android:visibility="visible"
                 app:customTypeface="@string/typeface_light" />
 
-            <com.example.sumit.apple.views.TypefaceTextView
+            <com.gopetting.android.views.TypefaceTextView
                 android:id="@+id/tv_delivery_text2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

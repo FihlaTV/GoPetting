@@ -11,7 +11,7 @@
     android:paddingRight="10.0dip"
     android:paddingTop="10.0dip">
 
-    <com.example.sumit.apple.views.TypefaceTextView
+    <com.gopetting.android.views.TypefaceTextView
         android:id="@+id/tv_textview1"
         android:layout_width="0.0dip"
         android:layout_height="fill_parent"
@@ -24,7 +24,7 @@
         app:customTypeface="@string/typeface_light" />
 
 
-    <com.example.sumit.apple.views.TypefaceTextView
+    <com.gopetting.android.views.TypefaceTextView
         android:id="@+id/tv_textview2"
         android:layout_width="0.0dip"
         android:layout_height="fill_parent"

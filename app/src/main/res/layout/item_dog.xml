@@ -23,7 +23,7 @@
         android:src="@drawable/ic_heart_outline" />
 
 
-    <com.example.sumit.apple.views.TypefaceTextView
+    <com.gopetting.android.views.TypefaceTextView
         android:id="@id/tv_item_likes"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
 
     <!--android:singleLine="true"-->
 
-    <com.example.sumit.apple.views.TypefaceTextView
+    <com.gopetting.android.views.TypefaceTextView
         android:id="@id/tv_item_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
         android:textSize="@dimen/item_text_size"
         app:customTypeface="@string/typeface_regular" />
 
-    <com.example.sumit.apple.views.TypefaceTextView
+    <com.gopetting.android.views.TypefaceTextView
         android:id="@id/tv_item_unit_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
         app:customTypeface="@string/typeface_bold" />
 
 
-    <com.example.sumit.apple.views.TypefaceTextView
+    <com.gopetting.android.views.TypefaceTextView
         android:id="@id/tv_item_mrp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
         android:textSize="@dimen/item_mrp_text_size"
         app:customTypeface="@string/typeface_bold" />
 
-    <com.example.sumit.apple.views.TypefaceTextView
+    <com.gopetting.android.views.TypefaceTextView
         android:id="@id/tv_item_discount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
 
 
 
-    <com.example.sumit.apple.views.TypefaceTextView
+    <com.gopetting.android.views.TypefaceTextView
         android:id="@id/tv_item_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

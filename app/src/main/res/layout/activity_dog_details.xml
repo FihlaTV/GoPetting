@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="15.0dip">
 
-                <com.example.sumit.apple.views.TypefaceTextView
+                <com.gopetting.android.views.TypefaceTextView
                     android:id="@+id/tv_brand_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                     android:textSize="@dimen/text_size_19"
                     app:customTypeface="@string/typeface_regular" />
 
-                <com.example.sumit.apple.views.TypefaceTextView
+                <com.gopetting.android.views.TypefaceTextView
                     android:id="@id/tv_item_unit_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
                     android:textSize="@dimen/text_size_17"
                     app:customTypeface="@string/typeface_bold" />
 
-                <com.example.sumit.apple.views.TypefaceTextView
+                <com.gopetting.android.views.TypefaceTextView
                     android:id="@id/tv_item_mrp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
                     android:textSize="@dimen/text_size_15"
                     app:customTypeface="@string/typeface_bold" />
 
-                <com.example.sumit.apple.views.TypefaceTextView
+                <com.gopetting.android.views.TypefaceTextView
                     android:id="@id/tv_item_discount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -60,7 +60,7 @@
                         android:layout_marginTop="10dp"
                         android:orientation="vertical">
 
-                        <com.example.sumit.apple.views.TypefaceTextView
+                        <com.gopetting.android.views.TypefaceTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
@@ -69,7 +69,7 @@
                             android:textColor="@color/text_regular"
                             app:customTypeface="@string/typeface_light"/>
 
-                        <com.example.sumit.apple.views.TypefaceTextView
+                        <com.gopetting.android.views.TypefaceTextView
                             android:id="@+id/User_Name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -161,7 +161,7 @@
                     android:background="@drawable/ic_email" />
 
 
-                <com.example.sumit.apple.views.TypefaceTextView
+                <com.gopetting.android.views.TypefaceTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -174,7 +174,7 @@
 
             </LinearLayout>
 
-            <com.example.sumit.apple.views.TypefaceTextView
+            <com.gopetting.android.views.TypefaceTextView
                 android:id="@+id/User_Email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -204,7 +204,7 @@
                     android:background="@drawable/ic_mobile" />
 
 
-                <com.example.sumit.apple.views.TypefaceTextView
+                <com.gopetting.android.views.TypefaceTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -218,7 +218,7 @@
 
             </LinearLayout>
 
-            <com.example.sumit.apple.views.TypefaceTextView
+            <com.gopetting.android.views.TypefaceTextView
                 android:id="@+id/User_Mobile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -240,7 +240,7 @@
                     <!--android:background="@drawable/ic_dob" />-->
 
 
-                <!--<com.example.sumit.apple.views.TypefaceTextView-->
+                <!--<gopettingting.android.views.TypefaceTextView-->
                     <!--android:layout_width="match_parent"-->
                     <!--android:layout_height="wrap_content"-->
                     <!--android:layout_marginLeft="20dp"-->
@@ -254,7 +254,7 @@
 
             <!--</LinearLayout>-->
 
-            <!--<com.example.sumit.apple.views.TypefaceTextView-->
+            <!--<gopettingting.android.views.TypefaceTextView-->
                 <!--android:id="@+id/user_dob"-->
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="wrap_content"-->
@@ -284,7 +284,7 @@
                     android:background="@drawable/ic_address" />
 
 
-                <com.example.sumit.apple.views.TypefaceTextView
+                <com.gopetting.android.views.TypefaceTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="22dp"
@@ -297,7 +297,7 @@
 
             </LinearLayout>
 
-            <com.example.sumit.apple.views.TypefaceTextView
+            <com.gopetting.android.views.TypefaceTextView
                 android:id="@+id/User_Address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
