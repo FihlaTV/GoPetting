@@ -14,6 +14,7 @@ import com.example.sumit.apple.network.Controller;
 import com.example.sumit.apple.network.OAuthTokenService;
 import com.example.sumit.apple.network.RetrofitSingleton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
@@ -32,6 +33,7 @@ public class SplashActivity extends Activity {
     String now_playing, earned;
     private Credential mCredential;
     private List<StringItem> mPromotionalScreens;
+    private ArrayList<String> mPromoImages;
 
 
     @Override
@@ -40,6 +42,7 @@ public class SplashActivity extends Activity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.splash_activity);
 
+        mPromoImages = new ArrayList<>();   //Initializing
 
         getServerData();
 //
@@ -117,14 +120,19 @@ public class SplashActivity extends Activity {
 
                     mPromotionalScreens =response.body();
 
+                    mPromoImages.add(mPromotionalScreens.get(0).getName());
+                    mPromoImages.add(mPromotionalScreens.get(1).getName());
+                    mPromoImages.add(mPromotionalScreens.get(2).getName());
+
                     Intent intent = new Intent(SplashActivity.this,MainActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString("promo_image1", mPromotionalScreens.get(0).getName());
-                    bundle.putString("promo_image2", mPromotionalScreens.get(1).getName());
-                    bundle.putString("promo_image3", mPromotionalScreens.get(2).getName());
-                    intent.putExtras(bundle);
+//                    bundle.putString("promo_image1", mPromotionalScreens.get(0).getName());
+//                    bundle.putString("promo_image2", mPromotionalScreens.get(1).getName());
+//                    bundle.putString("promo_image3", mPromotionalScreens.get(2).getName());
 
-//                    mProgressBar.setVisibility(View.GONE);
+                    bundle.putStringArrayList("promo_images", mPromoImages);
+                    intent.putExtras(bundle);
+//                    intent.putStringArrayListExtra("promo_images", mPromoImages);
 
                     startActivity(intent);
                     SplashActivity.this.finish();

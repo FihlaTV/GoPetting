@@ -25,8 +25,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.sumit.apple.R;
@@ -83,8 +81,6 @@ public class LoginActivity extends AppCompatActivity implements
      */
 
 
-
-
 //    private static final String[] DUMMY_CREDENTIALS = new String[]{       //         --ssahu: Disabling Custom Signup
 //            "foo@example.com:hello", "bar@example.com:world"
 //    };
@@ -122,17 +118,17 @@ public class LoginActivity extends AppCompatActivity implements
     private Button mPlusSignInButton;
 //    private Button mEmailSignInButton;
 
-//    private TextView txt_create, txt_forgot;
+    //    private TextView txt_create, txt_forgot;
     private LoginButton facebookLoginButton;
 
     ProgressDialog ringProgressDialog;
 
     private boolean IsGbtnClickInd;
     SessionManager session;
-//    Button btn_fb_login;
+    //    Button btn_fb_login;
     Toolbar mToolbar;
 
-//    AutoCompleteTextView mUserName;
+    //    AutoCompleteTextView mUserName;
 //    AutoCompleteTextView mUserPassword;
     private Credential credential;
     private String mFirstName;
@@ -142,10 +138,21 @@ public class LoginActivity extends AppCompatActivity implements
     private Person mCurrentPerson;
     private User mUser;
     private Button mFbSignInButton;
+    private ArrayList<String> mPromoImages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mPromoImages = new ArrayList<>();
+
+        //Get Promotional Images
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        if (bundle != null) {
+            mPromoImages = bundle.getStringArrayList("promo_images");
+        }
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
@@ -175,10 +182,10 @@ public class LoginActivity extends AppCompatActivity implements
         txt.setTypeface(font);*/
 
 
-        session  = new SessionManager(getApplicationContext());
+        session = new SessionManager(getApplicationContext());
         // TODO: This IsGbtnClickInd ind checks if Google login button is clicked. check for the the case when
         // TODO: G Plus button is clicked , user canceled it and want to login from FB account.
-        IsGbtnClickInd =false;
+        IsGbtnClickInd = false;
         initInstances();
     }
 
@@ -236,15 +243,14 @@ public class LoginActivity extends AppCompatActivity implements
 
         //Facebook Login
 
-        mFbSignInButton = (Button)findViewById(R.id.btn_login_fb);
-        facebookLoginButton = (LoginButton)findViewById(R.id.btn_fb_native);
+        mFbSignInButton = (Button) findViewById(R.id.btn_login_fb);
+        facebookLoginButton = (LoginButton) findViewById(R.id.btn_fb_native);
 
         mFbSignInButton.setOnClickListener(this);
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
     }
-
 
 
     private void populateAutoComplete() {
@@ -254,8 +260,6 @@ public class LoginActivity extends AppCompatActivity implements
 
         getLoaderManager().initLoader(0, null, this);
     }
-
-
 
 
     private boolean mayRequestContacts() {
@@ -284,8 +288,6 @@ public class LoginActivity extends AppCompatActivity implements
     /**
      * Callback received when a permissions request has been completed.
      */
-
-
 
 
     @Override
@@ -378,7 +380,7 @@ public class LoginActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
 
         callbackManager.onActivityResult(requestCode, resultCode, data);
-        if(IsGbtnClickInd ==true ) {
+        if (IsGbtnClickInd == true) {
             getProfileInformation();
         }
     }
@@ -425,7 +427,6 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
 */
-
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return new CursorLoader(this,
@@ -550,9 +551,9 @@ public class LoginActivity extends AppCompatActivity implements
                                 mLastName = object.optString("last_name");
                                 mEmailId = object.optString("email");
 
-                                if(mEmailId.isEmpty()){
+                                if (mEmailId.isEmpty()) {
                                     Snackbar.make(findViewById(R.id.ll_login), R.string.login_snackbar, Snackbar.LENGTH_LONG).show();
-                                }else {
+                                } else {
                                     getServerData(2);       //Indicator=2 for facebook_id;  By ssahu
 
                                     session.createLoginSession(object);
@@ -584,18 +585,29 @@ public class LoginActivity extends AppCompatActivity implements
 
     // handles the sign in functionality
     public void handleSignInResult(JSONObject userInfo) {
-        Intent nextMainAct = new Intent(LoginActivity.this, MainActivity.class);
-        //TODO: This flow should be optimised : This Iscorrect we are using there in MainActivity to check if it returned from Login screen
-        nextMainAct.putExtra("FromLoginActivity", true);
-        nextMainAct.putExtra("User_profile", userInfo.toString());
-        startActivity(nextMainAct);
+
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
+        //TODO: This flow should be optimised : This Iscorrect we are using there in MainActivity to check if it returned from Login scree
+        intent.putExtra("FromLoginActivity", true);
+        intent.putExtra("User_profile", userInfo.toString());
+
+        //Below Code Modified by SS
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("promo_images", mPromoImages);
+        intent.putExtras(bundle);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);    //Clear stack; for exiting activity
+        startActivity(intent);
+        LoginActivity.this.finish();    //for exiting activity
+
+
     }
 
 
     private void onSignInClicked() {
 //        toastLoading.show();
-        IsGbtnClickInd =true;
-        mIsResolving=false;
+        IsGbtnClickInd = true;
+        mIsResolving = false;
         // User clicked the sign-in button, so begin the sign-in process and automatically
         // attempt to resolve any errors that occur.
         ringProgressDialog = ProgressDialog.show(LoginActivity.this, "Connecting...", "Atempting to connect", true);
@@ -656,19 +668,15 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
 
-
-
-
     /**
      * Fetching user's information name, email, profile pic
-     * */
+     */
     private void getProfileInformation() {
-       // mIsResolving=true;
+        // mIsResolving=true;
         ringProgressDialog.dismiss();
         mGoogleApiClient.connect();
-        if(mGoogleApiClient.isConnected()) {
+        if (mGoogleApiClient.isConnected()) {
             if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-
 
 
                 mCurrentPerson = Plus.PeopleApi
@@ -693,7 +701,15 @@ public class LoginActivity extends AppCompatActivity implements
                 session.createGplusLogin(mCurrentPerson, mEmailId, mUser);
                 //setPersonalInfo(currentPerson);
 
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                //Below Code Modified by SS
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("promo_images", mPromoImages);
+                intent.putExtras(bundle);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);    //Clear stack; for exiting activity
+                startActivity(intent);
+                LoginActivity.this.finish();    //for exiting activity
+
 
 
 
@@ -718,13 +734,10 @@ public class LoginActivity extends AppCompatActivity implements
                 Toast.makeText(getApplicationContext(),
                         "Person information is null", Toast.LENGTH_LONG).show();
             }
-        }
-        else
-        {
+        } else {
             //ResolveSignInError();
         }
     }
-
 
 
     /**
@@ -800,46 +813,45 @@ public class LoginActivity extends AppCompatActivity implements
 //          oAuthTokenService.deleteAllToken();
         credential = oAuthTokenService.getAccessTokenWithID("default");
 
-        if(credential == null || credential.getAccess_token()==null || oAuthTokenService.isExpired("default"))
-        {
-            oAuthTokenService.authenticateUsingOAuth( new Controller.MethodsCallback<Credential>()
-            {
-                @Override public void failure(Throwable throwable)
-                {
-                    Toast.makeText(LoginActivity.this, throwable.getMessage(),Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+        if (credential == null || credential.getAccess_token() == null || oAuthTokenService.isExpired("default")) {
+            oAuthTokenService.authenticateUsingOAuth(new Controller.MethodsCallback<Credential>() {
+                @Override
+                public void failure(Throwable throwable) {
+                    Toast.makeText(LoginActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
                 }
-                @Override public void success(Credential credential)
-                {
-                    if(credential != null)
-                    {
+
+                @Override
+                public void success(Credential credential) {
+                    if (credential != null) {
                         oAuthTokenService.saveTokenWithID(credential, "default");
 
                         getUserId(indicator);
 
                     }
                 }
-                @Override public void responseBody(Call<Credential> call)
-                {
+
+                @Override
+                public void responseBody(Call<Credential> call) {
 
                 }
             });
-        }else {
+        } else {
 
             getUserId(indicator);
 
         }
     }
 
-    private void getUserId(int indicator){          // By ssahu
+    private void getUserId(int indicator) {          // By ssahu
 
         Controller.GetUserId retrofitSingleton = RetrofitSingleton.getInstance().create(Controller.GetUserId.class);
-        Call<User> call = retrofitSingleton.getUserId("Bearer " + credential.getAccess_token(), mId,indicator,mEmailId,mFirstName,mLastName);
+        Call<User> call = retrofitSingleton.getUserId("Bearer " + credential.getAccess_token(), mId, indicator, mEmailId, mFirstName, mLastName);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
 
-                    mUser=response.body();
+                    mUser = response.body();
                     session.setUserId(mUser);       //Set user_id in sessionn : ssahu
 
 
@@ -875,7 +887,6 @@ public class LoginActivity extends AppCompatActivity implements
             mGoogleApiClient.disconnect();
         }
     }
-
 
 
 }

@@ -11,6 +11,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<StringItem> mPromotionalScreens;
     private ProgressBar mProgressBar;
     private int mCurrentPage;
-    private List<String> mPromoImages;
+    private ArrayList<String> mPromoImages;
 
 
 // ------------------------------LoginActivity - End-----------------------------//
@@ -130,9 +131,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
-        mPromoImages.add(bundle.getString("promo_image1"));
-        mPromoImages.add(bundle.getString("promo_image2"));
-        mPromoImages.add(bundle.getString("promo_image3"));
+//      If MainActivity is returning/starting from activity other than splashactivity; Since Images are coming from splashactivity
+        if(bundle != null) {
+            mPromoImages = bundle.getStringArrayList("promo_images");
+        }
 
 //------------------------------LoginActivity -Start-----------------------------//
 
@@ -342,11 +344,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static class GalleryPagerAdapter extends FragmentPagerAdapter {
         private static int NUM_ITEMS = 3;
-        private final List<String> mPromoImages;
-        private static Fragment galleryFragment1;
-        private static Fragment galleryFragment2;
-        private static Fragment galleryFragment3;
-
+        private static List<String> mPromoImages;
 
         public GalleryPagerAdapter(FragmentManager fragmentManager, List<String> promoImages) {
             super(fragmentManager);
@@ -366,21 +364,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             switch (position) {
                 case 0:
-                    if (galleryFragment1 == null)
-                        galleryFragment1 = GalleryFragment.newInstance(mPromoImages.get(0));
-
-                    return galleryFragment1;
-
+                    return GalleryFragment.newInstance(mPromoImages.get(0));
                 case 1:
-                    if (galleryFragment2 == null)
-                        galleryFragment2 = GalleryFragment.newInstance(mPromoImages.get(1));
-
-                        return galleryFragment2;
+                      return GalleryFragment.newInstance(mPromoImages.get(1));
                 case 2:
-                    if (galleryFragment3 == null)
-                        galleryFragment3 = GalleryFragment.newInstance(mPromoImages.get(2));
-
-                        return galleryFragment3;
+                    return GalleryFragment.newInstance(mPromoImages.get(2));
                 default:
                     return null;
             }
@@ -431,7 +419,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.LogBtn:
 
                 if (allAccountLogOut()) {
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArrayList("promo_images", mPromoImages);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                 }
                 break;
             default:
@@ -569,18 +562,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-//        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-//            mDrawerLayout.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();
-//        }
-
-        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            super.onBackPressed();
-            //additional code
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            getSupportFragmentManager().popBackStack();
+            super.onBackPressed();
         }
+//
+//        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+//            super.onBackPressed();
+//            //additional code
+//        } else {
+//            getSupportFragmentManager().popBackStack();
+//        }
 
     }
 
@@ -656,7 +649,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     break;
                 } else {
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArrayList("promo_images", mPromoImages);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                 }
 
         }

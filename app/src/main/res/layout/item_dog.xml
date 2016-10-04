@@ -31,11 +31,11 @@
 
         android:layout_alignParentRight="true"
         android:gravity="right"
-        android:paddingTop="16.0dip"
         android:paddingRight="4.0dip"
+        android:paddingTop="16.0dip"
+        android:text="1.3k"
         android:textColor="@color/black"
         android:textSize="10.0sp"
-        android:text="1.3k"
         app:customTypeface="@string/typeface_regular" />
 
     <!--android:layout_below="@id/iv_product_list_item"-->
@@ -116,10 +116,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/tv_item_unit_price"
-        android:paddingLeft="10.0dip"
         android:paddingBottom="8.0dip"
-        android:textSize="@dimen/item_description_text_size"
+        android:paddingLeft="10.0dip"
         android:textColor="@color/item_description_color"
+        android:textSize="@dimen/item_description_text_size"
         app:customTypeface="@string/typeface_light" />
 
 
