@@ -25,6 +25,11 @@
             <!--android:title="@string/drawer_feedback" />-->
 
         <item
+            android:id="@id/share_app"
+            android:icon="@drawable/ic_share_app"
+            android:title="@string/drawer_share_app" />
+
+        <item
             android:id="@id/contact_us"
             android:icon="@drawable/ic_contact_us"
             android:title="@string/drawer_contact_us" />

@@ -107,6 +107,13 @@
     <string name="text_service_location">Hyderabad</string>
     <string name="dialog_message_service_location">We\'re launching soon in other cities</string>
     <string name="dialog_title_service_location">Service Location : Hyderabad</string>
+    <string name="dialog_logout_question">Do you want to logout of your account?</string>
+    <string name="dialog_title_logout">Logout</string>
+    <string name="dialog_button_logout">LOGOUT</string>
+    <string name="dialog_button_cancel">CANCEL</string>
+    <string name="drawer_share_app">Share App</string>
+    <!--<string name="share_app_text">Hey,  Check out this new app called GoPetting! It\'s a 1 stop for all your Pet care need. Try their Android app from https://goo.gl/1cs4ov</string>-->
+    <string name="share_app_text">Hey Check out this new app called GoPetting</string>
 
 
 </resources>

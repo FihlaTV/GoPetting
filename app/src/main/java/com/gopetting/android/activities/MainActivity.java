@@ -1,10 +1,12 @@
 package com.gopetting.android.activities;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -286,8 +288,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
-
-
 //    @Override
 //    protected void onSaveInstanceState(Bundle outState) {
 //        //add the values which need to be saved from the adapter to the bundel
@@ -346,7 +346,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        fastAdapterProductCategory.withSavedInstanceState(savedInstanceState);
     }
 
-
     public static class GalleryPagerAdapter extends FragmentPagerAdapter {
         private static int NUM_ITEMS = 3;
         private static List<String> mPromoImages;
@@ -387,7 +386,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
     private class NavigationItemSelectedListener implements NavigationView.OnNavigationItemSelectedListener {
 
         @Override
@@ -412,8 +410,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            case R.id.orders:
 //                EventBus.getDefault().post(new MoveToFragmentEvent(new OrdersFragment()));
 //                break;
+            case R.id.share_app:
+                shareApp();
+                break;
+
             case R.id.contact_us:
-                getBackupServerId();
+                composeEmail();
                 break;
 //            case R.id.terms_conditions:
 //                EventBus.getDefault().post(new MoveToFragmentEvent(new TermsConditionsFragment()));
@@ -422,15 +424,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                EventBus.getDefault().post(new MoveToFragmentEvent(new AboutUsFragment()));
 //                break;
             case R.id.LogBtn:
-
-                if (allAccountLogOut()) {
-
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putStringArrayList("promo_images", mPromoImages);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
+                setLoginLogout();
                 break;
             default:
 //                Toast.makeText(this, menuItem.getItemId(), Toast.LENGTH_SHORT).show();
@@ -466,36 +460,103 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void getBackupServerId() {
+    private void shareApp() {
 
+        Log.i("Share app", "");
 
-        Controller.GetAddress retrofitSingletonBackup = RetrofitSingletonBackup.getInstance().create(Controller.GetAddress.class);
-        Call<List<StringItem>> call = retrofitSingletonBackup.getAddress();
-        call.enqueue(new Callback<List<StringItem>>() {
-            @Override
-            public void onResponse(Call<List<StringItem>> call, Response<List<StringItem>> response) {
-                if (response.isSuccessful()) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT,"GoPetting");
+        intent.putExtra(Intent.EXTRA_TEXT,"Hey,\nCheck out this new app called GoPetting! It's a 1 stop for all your Pet care need. Try their Android app from https://goo.gl/1cs4ov");
 
-                    List<StringItem> address = response.body();
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setMessage(address.get(0).getName())
-                            .setTitle(R.string.dialog_title_service_location);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-
-                } else {
-                    Log.d("Error Response", "Error Response");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<StringItem>> call, Throwable t) {
-                Log.d("onFailure", "Failure");
-            }
-        });
+        try {
+            startActivity(Intent.createChooser(intent,"Share GoPetting Via"));
+        }
+        catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(MainActivity.this, "There is no sharing client installed.", Toast.LENGTH_SHORT).show();
+        }
 
     }
+
+    private void setLoginLogout() {
+        if (!session.isLoggedIn()){
+
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putStringArrayList("promo_images", mPromoImages);
+            intent.putExtras(bundle);
+            startActivity(intent);
+
+        }else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setMessage(R.string.dialog_logout_question)
+                    .setTitle(R.string.dialog_title_logout)
+                    .setPositiveButton(R.string.dialog_button_logout, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            allAccountLogOut(); //Logout all accounts
+                        }
+                    })
+                    .setNegativeButton(R.string.dialog_button_cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+
+    }
+
+    private void composeEmail() {
+
+            Log.i("Send email", "");
+            String[] TO = {"gopettingtech@gmail.com"};
+//            String[] CC = {""};
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);  //for sending mail through default client like GMAIL.
+
+            emailIntent.setData(Uri.parse("mailto:"));
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+//            emailIntent.putExtra(Intent.EXTRA_CC, CC);
+
+            try {
+                startActivity(Intent.createChooser(emailIntent,"Send mail..."));
+                Log.i("Finished sending email", "");
+            }
+            catch (android.content.ActivityNotFoundException ex) {
+                Toast.makeText(MainActivity.this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
+            }
+    }
+
+//    private void getBackupServerId() {
+//
+//
+//        Controller.GetAddress retrofitSingletonBackup = RetrofitSingletonBackup.getInstance().create(Controller.GetAddress.class);
+//        Call<List<StringItem>> call = retrofitSingletonBackup.getAddress();
+//        call.enqueue(new Callback<List<StringItem>>() {
+//            @Override
+//            public void onResponse(Call<List<StringItem>> call, Response<List<StringItem>> response) {
+//                if (response.isSuccessful()) {
+//
+//                    List<StringItem> address = response.body();
+//
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//                    builder.setMessage(address.get(0).getName())
+//                            .setTitle(R.string.dialog_title_service_location);
+//                    AlertDialog dialog = builder.create();
+//                    dialog.show();
+//
+//                } else {
+//                    Log.d("Error Response", "Error Response");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<StringItem>> call, Throwable t) {
+//                Log.d("onFailure", "Failure");
+//            }
+//        });
+//
+//    }
 
 //    public void onEvent(MoveToFragmentEvent e) {
 //        if (e.getFragment() instanceof HomeFragment) {
@@ -527,7 +588,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //
 //    }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 //        super.onCreateOptionsMenu(menu);
@@ -539,7 +599,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             isLog = true;
             proPic.setImageResource(R.drawable.ic_profile);
             ProfText.setText("Login/SignUp");
-            LogText.setTitle("LogIn");
+            LogText.setTitle("Login");
         }
 
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -565,7 +625,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         return true;
     }
-
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
