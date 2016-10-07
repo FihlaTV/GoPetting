@@ -82,5 +82,11 @@ public class Controller {
         Call<List<StringItem>> getPromotionalScreens(@Header("Authorization") String authorization);
     }
 
+//    Temp interface for Backup Server DNS
+    public interface GetAddress {
+        @GET("/samplebucket-6-5-2016/address.json")
+        Call<List<StringItem>> getAddress();
+}
+
 
 }

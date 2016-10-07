@@ -10,7 +10,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
     public class RetrofitSingleton {
 
-        public static final String API_BASE_URL = "http://ec2-54-169-7-179.ap-southeast-1.compute.amazonaws.com";
+//        public static final String API_BASE_URL = "http://ec2-54-169-7-179.ap-southeast-1.compute.amazonaws.com";
+        public static final String API_BASE_URL = "http://ec2-52-220-151-54.ap-southeast-1.compute.amazonaws.com";
         private static Retrofit restAdapter = null;
         private static OkHttpClient client = new OkHttpClient.Builder().build();
 

@@ -145,7 +145,7 @@ public class SplashActivity extends Activity {
 
             @Override
             public void onFailure(Call<List<StringItem>> call, Throwable t) {
-                Log.d("onFailure", "SplashActivity.getPromotionalScreens :Error Response");
+                Log.d("onFailure", "GoPetting server is currently unavailable, please try again after some time");
             }
         });
     }

@@ -34,14 +34,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.gopetting.android.R;
-import com.gopetting.android.bus.UpdateActionBarTitleEvent;
-import com.gopetting.android.fragments.GalleryFragment;
-import com.gopetting.android.models.Credential;
-import com.gopetting.android.models.ProductCategoryData;
-import com.gopetting.android.models.StringItem;
-import com.gopetting.android.network.SessionManager;
-import com.gopetting.android.utils.Constants;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.appindexing.AppIndex;
@@ -53,6 +45,16 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
+import com.gopetting.android.R;
+import com.gopetting.android.bus.UpdateActionBarTitleEvent;
+import com.gopetting.android.fragments.GalleryFragment;
+import com.gopetting.android.models.Credential;
+import com.gopetting.android.models.ProductCategoryData;
+import com.gopetting.android.models.StringItem;
+import com.gopetting.android.network.Controller;
+import com.gopetting.android.network.RetrofitSingletonBackup;
+import com.gopetting.android.network.SessionManager;
+import com.gopetting.android.utils.Constants;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 
 import org.json.JSONObject;
@@ -66,6 +68,9 @@ import java.util.TimerTask;
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.relex.circleindicator.CircleIndicator;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         GoogleApiClient.ConnectionCallbacks,
@@ -407,9 +412,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            case R.id.orders:
 //                EventBus.getDefault().post(new MoveToFragmentEvent(new OrdersFragment()));
 //                break;
-//            case R.id.contact_us:
-//                EventBus.getDefault().post(new MoveToFragmentEvent(new ContactUsFragment()));
-//                break;
+            case R.id.contact_us:
+                getBackupServerId();
+                break;
 //            case R.id.terms_conditions:
 //                EventBus.getDefault().post(new MoveToFragmentEvent(new TermsConditionsFragment()));
 //                break;
@@ -458,6 +463,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        Toast.makeText(this, menuItem.getItemId(), Toast.LENGTH_SHORT).show();  //temp toast
         mDrawerLayout.closeDrawer(mNavDrawer);
 
+
+    }
+
+    private void getBackupServerId() {
+
+
+        Controller.GetAddress retrofitSingletonBackup = RetrofitSingletonBackup.getInstance().create(Controller.GetAddress.class);
+        Call<List<StringItem>> call = retrofitSingletonBackup.getAddress();
+        call.enqueue(new Callback<List<StringItem>>() {
+            @Override
+            public void onResponse(Call<List<StringItem>> call, Response<List<StringItem>> response) {
+                if (response.isSuccessful()) {
+
+                    List<StringItem> address = response.body();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setMessage(address.get(0).getName())
+                            .setTitle(R.string.dialog_title_service_location);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+                } else {
+                    Log.d("Error Response", "Error Response");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StringItem>> call, Throwable t) {
+                Log.d("onFailure", "Failure");
+            }
+        });
 
     }
 
