@@ -27,14 +27,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.gopetting.android.R;
-import com.gopetting.android.models.Credential;
-import com.gopetting.android.models.User;
-import com.gopetting.android.network.Controller;
-import com.gopetting.android.network.OAuthTokenService;
-import com.gopetting.android.network.RetrofitSingleton;
-import com.gopetting.android.network.SessionManager;
-import com.gopetting.android.utils.Constants;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -43,12 +35,21 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
+import com.gopetting.android.R;
+import com.gopetting.android.models.Credential;
+import com.gopetting.android.models.User;
+import com.gopetting.android.network.Controller;
+import com.gopetting.android.network.OAuthTokenService;
+import com.gopetting.android.network.RetrofitSingleton;
+import com.gopetting.android.network.SessionManager;
+import com.gopetting.android.utils.Constants;
 
 import org.json.JSONObject;
 
@@ -154,6 +155,7 @@ public class LoginActivity extends AppCompatActivity implements
             mPromoImages = bundle.getStringArrayList("promo_images");
         }
 
+
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         setContentView(R.layout.activity_login);
@@ -245,6 +247,9 @@ public class LoginActivity extends AppCompatActivity implements
 
         mFbSignInButton = (Button) findViewById(R.id.btn_login_fb);
         facebookLoginButton = (LoginButton) findViewById(R.id.btn_fb_native);
+
+        //Placed this line here since it wasn't requesting email at first login
+        facebookLoginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
 
         mFbSignInButton.setOnClickListener(this);
 
@@ -524,14 +529,12 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     private void fbRegisterCallback() {
-
-        facebookLoginButton.setReadPermissions(Arrays.asList("public_profile, email"));
+        
 
         // Callback registration
         facebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
             @Override
-
-
             public void onSuccess(LoginResult loginResult) {
                 // App code
                 GraphRequest request = GraphRequest.newMeRequest(

@@ -1,6 +1,5 @@
 buildscript {
     repositories {
-        0
         maven { url 'https://maven.fabric.io/public' }
     }
 
