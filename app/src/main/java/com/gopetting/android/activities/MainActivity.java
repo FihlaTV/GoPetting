@@ -53,8 +53,6 @@ import com.gopetting.android.fragments.GalleryFragment;
 import com.gopetting.android.models.Credential;
 import com.gopetting.android.models.ProductCategoryData;
 import com.gopetting.android.models.StringItem;
-import com.gopetting.android.network.Controller;
-import com.gopetting.android.network.RetrofitSingletonBackup;
 import com.gopetting.android.network.SessionManager;
 import com.gopetting.android.utils.Constants;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
@@ -70,9 +68,6 @@ import java.util.TimerTask;
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.relex.circleindicator.CircleIndicator;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         GoogleApiClient.ConnectionCallbacks,
@@ -330,6 +325,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fastAdapterProductCategory = new FastItemAdapter();
         fastAdapterProductCategory.withSelectable(true);
         fastAdapterProductCategory.add(ProductCategoryData.getItems());
+
+//        fastAdapterProductCategory.withOnClickListener(new FastAdapter.OnClickListener<ProductCategory>() {
+//            @Override
+//            public boolean onClick(View v, IAdapter<ProductCategory> adapter, ProductCategory item, int position) {
+//
+//                switch (position) {
+//                    case 0:
+//                        Intent intent = new Intent(MainActivity.this,ServiceActivity.class);
+//                        Bundle b = new Bundle();
+//                        b.putInt("itemId", item.getItemId());
+//                        b.putString("name",item.getName());
+//                        b.putInt("unitPrice",item.getUnitPrice());
+//                        b.putInt("mrp",item.getMrp());
+//                        b.putInt("discount",item.getDiscount());
+//                        b.putInt("likes",item.getLikes());
+//                        b.putString("imageUrl",item.getImageUrl());
+//                        intent.putExtras(b);
+//                        startActivity(intent);
+//                        break;
+//                    case 1:
+//
+//                        break;
+//                    case 2:
+//
+//                        break;
+//                    case 3:
+//
+//                        break;
+//                    default:
+//                        Log.i(TAG, "onClick: Out of bound of adapter index "););
+//                }
+//
+//                return  false
+//            }
+//        });
+
 
         mRecyclerViewCategory.setAdapter(fastAdapterProductCategory);
 
