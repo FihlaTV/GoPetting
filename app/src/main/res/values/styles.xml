@@ -17,7 +17,10 @@
 
     <style name="ActionBarThemeOverlay" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-
+    <!--Below Theme is mainly introduced for ProgressBar TealAccent Color-->
+    <style name="ProgressBar" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorAccent">#009688</item>
+    </style>
 
     <style name="AppHorizontalSeparator">
         <item name="android:layout_gravity">center_vertical</item>
@@ -99,7 +102,7 @@
 
     <!--Button-->
 
-<!--Amit Login Activity-->
+    <!--Amit Login Activity-->
     <style name="SocialLoginButton">
         <!--<item name="android:textSize">@dimen/text_verysmall</item>-->
         <item name="android:textColor">@color/dark</item>
@@ -120,6 +123,10 @@
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:typeface">monospace</item>
     </style>
+
+    <style name="AppTheme.Base.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.Base.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>
 

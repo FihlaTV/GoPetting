@@ -5,6 +5,8 @@ import com.gopetting.android.models.DeliveryDetails;
 import com.gopetting.android.models.Dog;
 import com.gopetting.android.models.DogDetails;
 import com.gopetting.android.models.FilterSubCategory;
+import com.gopetting.android.models.ServiceCategory;
+import com.gopetting.android.models.ServiceSubCategory;
 import com.gopetting.android.models.StringItem;
 import com.gopetting.android.models.User;
 
@@ -86,7 +88,14 @@ public class Controller {
     public interface GetAddress {
         @GET("/samplebucket-6-5-2016/address.json")
         Call<List<StringItem>> getAddress();
-}
+    }
 
+//Get Service SubCategory and Service Packages
+//   /api/v1/service/service_category?service_category_id=<id>
+    public interface GetServiceCategory {
+    @GET("/api/v1/service/service_category")
+    Call<ServiceCategory> getServiceCategory(@Header("Authorization") String authorization,
+                                             @Query("service_category_id") int serviceCategoryId);
+    }
 
 }

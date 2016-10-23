@@ -51,12 +51,16 @@ import com.gopetting.android.R;
 import com.gopetting.android.bus.UpdateActionBarTitleEvent;
 import com.gopetting.android.fragments.GalleryFragment;
 import com.gopetting.android.models.Credential;
+import com.gopetting.android.models.ProductCategory;
 import com.gopetting.android.models.ProductCategoryData;
 import com.gopetting.android.models.StringItem;
 import com.gopetting.android.network.SessionManager;
 import com.gopetting.android.utils.Constants;
+import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -65,7 +69,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import de.greenrobot.event.EventBus;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.relex.circleindicator.CircleIndicator;
 
@@ -75,12 +79,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ResultCallback<People.LoadPeopleResult> {
 
     private static final int NUM_PAGES = 3; //Promotional Screens
+
+    private static final String PET_SALON = "pet_salon";
+    private static final String PET_SCHOOL = "pet_school";
+    private static final String PET_DOCTOR = "pet_doctor";
+    private static final String PET_HOTEL = "pet_hotel";
+
     private DrawerLayout mDrawerLayout;
     private Toolbar mToolbar;
     private NavigationView mNavDrawer;
     private CharSequence mTitle;
     private ActionBarDrawerToggle mDrawerToggle;
-    private FragmentManager mFragmentManager;
 
 //------------------------------LoginActivity - Start-----------------------------//
 
@@ -326,40 +335,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fastAdapterProductCategory.withSelectable(true);
         fastAdapterProductCategory.add(ProductCategoryData.getItems());
 
-//        fastAdapterProductCategory.withOnClickListener(new FastAdapter.OnClickListener<ProductCategory>() {
-//            @Override
-//            public boolean onClick(View v, IAdapter<ProductCategory> adapter, ProductCategory item, int position) {
-//
-//                switch (position) {
-//                    case 0:
-//                        Intent intent = new Intent(MainActivity.this,ServiceActivity.class);
-//                        Bundle b = new Bundle();
-//                        b.putInt("itemId", item.getItemId());
-//                        b.putString("name",item.getName());
-//                        b.putInt("unitPrice",item.getUnitPrice());
-//                        b.putInt("mrp",item.getMrp());
-//                        b.putInt("discount",item.getDiscount());
-//                        b.putInt("likes",item.getLikes());
-//                        b.putString("imageUrl",item.getImageUrl());
-//                        intent.putExtras(b);
-//                        startActivity(intent);
-//                        break;
-//                    case 1:
-//
-//                        break;
-//                    case 2:
-//
-//                        break;
-//                    case 3:
-//
-//                        break;
-//                    default:
-//                        Log.i(TAG, "onClick: Out of bound of adapter index "););
-//                }
-//
-//                return  false
-//            }
-//        });
+        fastAdapterProductCategory.withOnClickListener(new FastAdapter.OnClickListener<ProductCategory>() {
+            @Override
+            public boolean onClick(View v, IAdapter<ProductCategory> adapter, ProductCategory item, int position) {
+
+                switch (position) {
+                    case 0:
+
+
+                        Intent intent = new Intent(MainActivity.this,ServiceActivity.class);
+                        Bundle b = new Bundle();
+                        b.putString("service_category",PET_SALON);
+                        intent.putExtras(b);
+                        startActivity(intent);
+                        break;
+                    case 1:
+
+                        break;
+                    case 2:
+
+                        break;
+                    case 3:
+
+                        break;
+                    default:
+                        Log.i(TAG, "onClick: Out of bound of adapter index ");
+                }
+
+                return  false;
+            }
+        });
 
 
         mRecyclerViewCategory.setAdapter(fastAdapterProductCategory);
@@ -714,13 +719,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mGoogleApiClient.connect();
         }
         super.onStart();
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
 
     }
 
     @Override
     public void onStop() {
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
         super.onStop();
 
         if (mGoogleApiClient.isConnected()) {

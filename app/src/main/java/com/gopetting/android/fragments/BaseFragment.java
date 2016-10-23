@@ -2,7 +2,8 @@ package com.gopetting.android.fragments;
 
 import android.support.v4.app.Fragment;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * Created by Sumit on 2/2/2016.

@@ -11,7 +11,8 @@ import com.gopetting.android.R;
 import com.gopetting.android.activities.DogActivity;
 import com.gopetting.android.bus.UpdateActionBarTitleEvent;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * Created by Sumit on 1/24/2016.

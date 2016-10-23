@@ -7,7 +7,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.3'
 
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'  //For Parceler in app/build.gradle
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'  //For Parceler in app/build.gradle // 17/10/16: Now also for Butterknife
 
         classpath 'com.google.gms:google-services:3.0.0'        //Added for google+ authentication
 

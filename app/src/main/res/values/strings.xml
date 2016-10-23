@@ -114,6 +114,8 @@
     <string name="drawer_share_app">Share App</string>
     <!--<string name="share_app_text">Hey,  Check out this new app called GoPetting! It\'s a 1 stop for all your Pet care need. Try their Android app from https://goo.gl/1cs4ov</string>-->
     <string name="share_app_text">Hey Check out this new app called GoPetting</string>
+    <string name="title_activity_service">Services</string>
+    <string name="package_detail_title">What is included</string>
 
 
 </resources>

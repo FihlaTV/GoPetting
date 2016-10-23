@@ -78,6 +78,20 @@
     <item name="iv_splash" type="id" />
     <item name="progress_bar_medium" type="id" />
     <item name="share_app" type="id" />
+    <item name="view_pager_service" type="id" />
+    <item name="tab_layout_service" type="id" />
+    <item name="recycler_view" type="id" />
+    <item name="progress_bar" type="id" />
+    <item name="fastadapter_service_package_item_id" type="id" />
+    <item name="ll_select_service" type="id" />
+    <item name="tv_package_detail_title" type="id" />
+    <item name="iv_bullet" type="id" />
+    <item name="tv_package_detail_point1" type="id" />
+    <item name="tv_package_detail_point2" type="id" />
+    <item name="tv_package_detail_point3" type="id" />
+    <item name="tv_package_detail_point4" type="id" />
+    <item name="tv_package_detail_point5" type="id" />
+    <item name="fastadapter_service_package_detail_item_id" type="id" />
 
 
 </resources>

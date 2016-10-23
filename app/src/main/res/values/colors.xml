@@ -81,4 +81,10 @@
     <!--Profile Activity-->
     <color name="text_regular">#8829303f</color>
     <color name="text_dark">#ff29303f</color>
+
+    <color name="item_text_regular">#ff5a5a5a</color>
+    <color name="grey_100">#F5F5F5</color>
+
+
+
 </resources>

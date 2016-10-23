@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@color/grey_100">
+
+    <com.gopetting.android.views.TypefaceTextView
+        android:id="@id/tv_package_detail_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="@string/package_detail_title"
+        android:textColor="@color/item_text_regular"
+        android:textSize="@dimen/text_size_medium_special"
+        app:customTypeface="@string/typeface_regular"/>
+    android:padding="@dimen/common_left_margin"
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5.0dip"
+            android:paddingTop="5.0dip">
+
+            <ImageView
+                android:id="@id/iv_bullet"
+                android:layout_width="10.0dip"
+                android:layout_height="10.0dip"
+                android:layout_gravity="top"
+                android:layout_marginTop="5.0dip"
+                android:src="@drawable/ic_bullet" />
+
+            <com.gopetting.android.views.TypefaceTextView
+                android:id="@id/tv_package_detail_point1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginLeft="8.0dip"
+                android:layout_marginTop="4.0dip"
+                android:gravity="top"
+                android:textColor="@color/item_text_regular"
+                android:textSize="@dimen/text_size_small"
+                app:customTypeface="@string/typeface_light" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5.0dip"
+            android:paddingTop="5.0dip">
+
+            <ImageView
+                android:id="@id/iv_bullet"
+                android:layout_width="10.0dip"
+                android:layout_height="10.0dip"
+                android:layout_gravity="top"
+                android:layout_marginTop="5.0dip"
+                android:src="@drawable/ic_bullet" />
+
+            <com.gopetting.android.views.TypefaceTextView
+                android:id="@id/tv_package_detail_point2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginLeft="8.0dip"
+                android:layout_marginTop="4.0dip"
+                android:gravity="top"
+                android:textColor="@color/item_text_regular"
+                android:textSize="@dimen/text_size_small"
+                app:customTypeface="@string/typeface_light" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5.0dip"
+            android:paddingTop="5.0dip">
+
+            <ImageView
+                android:id="@id/iv_bullet"
+                android:layout_width="10.0dip"
+                android:layout_height="10.0dip"
+                android:layout_gravity="top"
+                android:layout_marginTop="5.0dip"
+                android:src="@drawable/ic_bullet" />
+
+            <com.gopetting.android.views.TypefaceTextView
+                android:id="@id/tv_package_detail_point3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginLeft="8.0dip"
+                android:layout_marginTop="4.0dip"
+                android:gravity="top"
+                android:textColor="@color/item_text_regular"
+                android:textSize="@dimen/text_size_small"
+                app:customTypeface="@string/typeface_light" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5.0dip"
+            android:paddingTop="5.0dip">
+
+            <ImageView
+                android:id="@id/iv_bullet"
+                android:layout_width="10.0dip"
+                android:layout_height="10.0dip"
+                android:layout_gravity="top"
+                android:layout_marginTop="5.0dip"
+                android:src="@drawable/ic_bullet" />
+
+            <com.gopetting.android.views.TypefaceTextView
+                android:id="@id/tv_package_detail_point4"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginLeft="8.0dip"
+                android:layout_marginTop="4.0dip"
+                android:gravity="top"
+                android:textColor="@color/item_text_regular"
+                android:textSize="@dimen/text_size_small"
+                app:customTypeface="@string/typeface_light" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5.0dip"
+            android:paddingTop="5.0dip">
+
+            <ImageView
+                android:id="@id/iv_bullet"
+                android:layout_width="10.0dip"
+                android:layout_height="10.0dip"
+                android:layout_gravity="top"
+                android:layout_marginTop="5.0dip"
+                android:src="@drawable/ic_bullet" />
+
+            <com.gopetting.android.views.TypefaceTextView
+                android:id="@id/tv_package_detail_point5"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginLeft="8.0dip"
+                android:layout_marginTop="4.0dip"
+                android:gravity="top"
+                android:textColor="@color/item_text_regular"
+                android:textSize="@dimen/text_size_small"
+                app:customTypeface="@string/typeface_light" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

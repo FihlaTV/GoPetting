@@ -19,9 +19,11 @@ import com.gopetting.android.bus.CheckMenuItemEvent;
 import com.gopetting.android.bus.UpdateActionBarTitleEvent;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
+
 
 /**
  * Created by Sumit on 1/24/2016.

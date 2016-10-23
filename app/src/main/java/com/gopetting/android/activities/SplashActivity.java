@@ -40,7 +40,7 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
-        setContentView(R.layout.splash_activity);
+        setContentView(R.layout.activity_splash);
 
         mPromoImages = new ArrayList<>();   //Initializing
 
