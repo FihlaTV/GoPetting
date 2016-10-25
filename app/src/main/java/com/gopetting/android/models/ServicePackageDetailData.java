@@ -65,9 +65,9 @@ public class ServicePackageDetailData extends AbstractItem<ServicePackageDetailD
 
         viewHolder.mPackageDetailPoint1.setText(mDetails.get(0));
         viewHolder.mPackageDetailPoint2.setText(mDetails.get(1));
-//        viewHolder.mPackageDetailPoint3.setText(mDetails.get(2));
-//        viewHolder.mPackageDetailPoint4.setText(mDetails.get(3));
-//        viewHolder.mPackageDetailPoint5.setText(mDetails.get(4));
+        viewHolder.mPackageDetailPoint3.setText(mDetails.get(2));
+        viewHolder.mPackageDetailPoint4.setText(mDetails.get(3));
+        viewHolder.mPackageDetailPoint5.setText(mDetails.get(4));
 
     }
 

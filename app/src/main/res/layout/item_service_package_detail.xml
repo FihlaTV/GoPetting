@@ -2,9 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="20.0dip"
+    android:paddingLeft="10.0dip"
+    android:paddingBottom="20.dip"
     android:background="@color/grey_100">
+    <!--android:background="@color/grey_100"-->
 
     <com.gopetting.android.views.TypefaceTextView
         android:id="@id/tv_package_detail_title"
@@ -35,7 +39,7 @@
                 android:layout_height="10.0dip"
                 android:layout_gravity="top"
                 android:layout_marginTop="5.0dip"
-                android:src="@drawable/ic_bullet" />
+                android:src="@drawable/ic_bullet_point" />
 
             <com.gopetting.android.views.TypefaceTextView
                 android:id="@id/tv_package_detail_point1"
@@ -62,7 +66,7 @@
                 android:layout_height="10.0dip"
                 android:layout_gravity="top"
                 android:layout_marginTop="5.0dip"
-                android:src="@drawable/ic_bullet" />
+                android:src="@drawable/ic_bullet_point" />
 
             <com.gopetting.android.views.TypefaceTextView
                 android:id="@id/tv_package_detail_point2"
@@ -89,7 +93,7 @@
                 android:layout_height="10.0dip"
                 android:layout_gravity="top"
                 android:layout_marginTop="5.0dip"
-                android:src="@drawable/ic_bullet" />
+                android:src="@drawable/ic_bullet_point" />
 
             <com.gopetting.android.views.TypefaceTextView
                 android:id="@id/tv_package_detail_point3"
@@ -116,7 +120,7 @@
                 android:layout_height="10.0dip"
                 android:layout_gravity="top"
                 android:layout_marginTop="5.0dip"
-                android:src="@drawable/ic_bullet" />
+                android:src="@drawable/ic_bullet_point" />
 
             <com.gopetting.android.views.TypefaceTextView
                 android:id="@id/tv_package_detail_point4"
@@ -143,7 +147,7 @@
                 android:layout_height="10.0dip"
                 android:layout_gravity="top"
                 android:layout_marginTop="5.0dip"
-                android:src="@drawable/ic_bullet" />
+                android:src="@drawable/ic_bullet_point" />
 
             <com.gopetting.android.views.TypefaceTextView
                 android:id="@id/tv_package_detail_point5"

@@ -1,0 +1,29 @@
+Index: app/src/main/java/com/gopetting/android/fragments/ServiceFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/gopetting/android/fragments/ServiceFragment.java	(revision )
++++ app/src/main/java/com/gopetting/android/fragments/ServiceFragment.java	(revision )
+@@ -165,6 +165,21 @@
+ 
+     }
+ 
++    @Override
++    public void onStart() {
++        super.onStart();
++    }
++
++    @Override
++    public void onStop() {
++        super.onStop();
++    }
++
++    @Override
++    public void onDestroy() {
++        super.onDestroy();
++    }
++
+     private void initFragmentData() {
+ 
+ //        mServicePackages = ((ServiceActivity)getActivity()).getServicePackages(serviceSubCategoryIndex);

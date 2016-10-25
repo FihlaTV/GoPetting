@@ -83,7 +83,7 @@
     <item name="recycler_view" type="id" />
     <item name="progress_bar" type="id" />
     <item name="fastadapter_service_package_item_id" type="id" />
-    <item name="ll_select_service" type="id" />
+    <item name="ll_price_container" type="id" />
     <item name="tv_package_detail_title" type="id" />
     <item name="iv_bullet" type="id" />
     <item name="tv_package_detail_point1" type="id" />
@@ -92,6 +92,12 @@
     <item name="tv_package_detail_point4" type="id" />
     <item name="tv_package_detail_point5" type="id" />
     <item name="fastadapter_service_package_detail_item_id" type="id" />
+    <item name="ll_footer_button" type="id" />
+    <item name="rl_footer_button_container" type="id" />
+    <item name="btn_footer_text" type="id" />
+    <item name="iv_cart" type="id" />
+    <item name="tv_cart_count" type="id" />
+    <item name="shopping_cart" type="id" />
 
 
 </resources>

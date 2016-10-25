@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/ll_select_service"
+            android:layout_toLeftOf="@id/ll_price_container"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
@@ -57,34 +57,40 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@id/ll_select_service"
-            android:layout_width="50.0dip"
+            android:id="@id/ll_price_container"
+            android:layout_width="70.0dip"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10.0dip"
-            android:layout_marginRight="10.0dip"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
 
+            android:layout_marginLeft="10.0dip"
+
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:clickable="false">
+            <!--android:layout_centerVertical="true"-->
             <com.gopetting.android.views.TypefaceTextView
                 android:id="@+id/tv_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
+                android:layout_gravity="center_horizontal"
                 android:text=""
                 android:textColor="@color/item_text_regular"
                 android:textSize="@dimen/text_size_medium"
-                app:customTypeface="@string/typeface_regular" />
+                app:customTypeface="@string/typeface_regular"
+                android:clickable="false"/>
 
             <ImageView
                 android:id="@+id/iv_basket"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_price"
-
-                android:src="@drawable/ic_basket" />
+                android:paddingRight="15.0dip"
+                android:layout_gravity="center"
+                android:src="@drawable/selector_basket"
+                android:clickable="true"/>
             <!--android:layout_marginTop="3.0dip"-->
+            <!--android:layout_gravity="center"-->
         </LinearLayout>
 
 

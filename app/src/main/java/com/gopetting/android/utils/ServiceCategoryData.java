@@ -24,4 +24,5 @@ public class ServiceCategoryData {
     public static List<ServicePackage> getServicePackages(int serviceSubCategoryIndex){
         return mServiceCategoryData.mServiceSubCategories.get(serviceSubCategoryIndex).getServicePackages();
     }
+
 }

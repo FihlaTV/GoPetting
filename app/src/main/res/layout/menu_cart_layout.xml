@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="40.dip"
+    android:layout_height="wrap_content"
+    >
+
+    <!--android:paddingRight="10.dip"-->
+
+    <ImageView
+        android:id="@id/iv_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+        android:clickable="true"
+
+        android:src="@drawable/ic_cart_outline" />
+
+    <com.gopetting.android.views.TypefaceTextView
+        android:id="@id/tv_cart_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+
+        android:layout_marginRight="5.0dip"
+        android:layout_marginTop="12.0dip"
+        android:background="@drawable/cart_count_circle"
+        android:gravity="center"
+        android:minHeight="15.0dip"
+        android:minWidth="15.0dip"
+        android:paddingLeft="3.0dip"
+        android:paddingRight="3.0dip"
+        android:textColor="@color/item_text_regular"
+        android:textSize="@dimen/text_size_xsmall"
+        android:textStyle="bold"
+        app:customTypeface="@string/typeface_regular" />
+    <!--android:layout_above="@+id/iv_cart"-->
+    <!--android:layout_alignTop="@+id/iv_cart"-->
+</RelativeLayout><!--android:layout_alignTop="@id/iv_cart"--><!--android:layout_alignRight="@id/iv_cart"-->

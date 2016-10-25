@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
+        android:paddingBottom="@dimen/footer_height"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <ProgressBar
@@ -17,6 +18,41 @@
         android:layout_height="36.0dip"
         android:layout_gravity="center" />
 
+    <RelativeLayout
+        android:id="@id/rl_footer_button_container"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/footer_height"
+        android:layout_gravity="bottom"
+        android:background="@drawable/selector_footer_button"
+        android:clickable="true"
+       >
+
+
+        <LinearLayout
+            android:id="@id/ll_footer_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical"
+            android:padding="10.0dip"
+            android:clickable="false">
+
+            <Button
+                android:id="@id/btn_footer_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/continue_text"
+                android:textColor="@color/item_text_regular"
+                android:textSize="@dimen/text_size_medium_special"
+                android:background="@android:color/transparent"
+                android:clickable="false"/>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -32,3 +68,6 @@
     </android.support.design.widget.AppBarLayout>
 
 </android.support.design.widget.CoordinatorLayout>
+
+
+

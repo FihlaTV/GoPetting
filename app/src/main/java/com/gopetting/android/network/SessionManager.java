@@ -199,6 +199,13 @@ public class SessionManager {
         editor.commit();
         Log.d("Toast", "Not an error: Toast");
     }
+
+    public String getUserId(){              //By ssahu
+
+        String userId = pref.getString(KEY_USER_ID, null);
+        return  userId;
+
+    }
 }
 
 

@@ -1,5 +1,6 @@
 package com.gopetting.android.network;
 
+import com.gopetting.android.models.Cart;
 import com.gopetting.android.models.Credential;
 import com.gopetting.android.models.DeliveryDetails;
 import com.gopetting.android.models.Dog;
@@ -96,6 +97,13 @@ public class Controller {
     @GET("/api/v1/service/service_category")
     Call<ServiceCategory> getServiceCategory(@Header("Authorization") String authorization,
                                              @Query("service_category_id") int serviceCategoryId);
+    }
+
+    //Get cart items
+    public interface GetCartItems {
+        @GET("/api/v1/service/cart")
+        Call<Cart> getCartItems(@Header("Authorization") String authorization,
+                                @Query("user_id") String userId);
     }
 
 }

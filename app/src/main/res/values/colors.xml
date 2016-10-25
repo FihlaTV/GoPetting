@@ -6,9 +6,9 @@
     <!--<color name="colorAccent">#FFFF00</color>-->
     <color name="colorAccent">#FFC107</color>
 
-    <!--<color name="colorPrimary">#3F51B5</color>-->
-    <!--<color name="colorPrimaryDark">#303F9F</color>-->
-    <!--<color name="colorAccent">#FF4081</color>-->
+    <!--Colors for View State-->
+    <color name="colorAccent_secondary">#FFD740</color>
+    <color name="colorPrimary_secondary">#64FFDA</color>
 
     <!-- TODO: Change these names to Blue-Grey when u're fine with color; Check these color codes again, they may be incorrect; These color codes are available at the bottom also-->
     <!-- Name is Blue, but it's 'Blue-Grey'; Just a temp check-->
@@ -73,7 +73,7 @@
 
 
 <!--Login Activity-->
-    <color name="grey_0">#ffffff</color>
+    <color name="grey_0">#ffffff</color>zzzz
     <color name="grey_1000">#000000</color>
     <color name="login_google_button_color">#ffdb4b38</color>
     <color name="login_fb_button_color">#ff48629b</color>
@@ -85,6 +85,7 @@
     <color name="item_text_regular">#ff5a5a5a</color>
     <color name="grey_100">#F5F5F5</color>
 
-
+    <color name="secondary_color">#ff3b4b56</color>
+    <color name="secondary_color_selected">#808ba1b5</color>
 
 </resources>

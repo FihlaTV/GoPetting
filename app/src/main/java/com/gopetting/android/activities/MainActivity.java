@@ -81,9 +81,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int NUM_PAGES = 3; //Promotional Screens
 
     private static final String PET_SALON = "pet_salon";
-    private static final String PET_SCHOOL = "pet_school";
-    private static final String PET_DOCTOR = "pet_doctor";
-    private static final String PET_HOTEL = "pet_hotel";
 
     private DrawerLayout mDrawerLayout;
     private Toolbar mToolbar;

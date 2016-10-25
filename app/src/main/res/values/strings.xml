@@ -116,6 +116,7 @@
     <string name="share_app_text">Hey Check out this new app called GoPetting</string>
     <string name="title_activity_service">Services</string>
     <string name="package_detail_title">What is included</string>
+    <string name="continue_text">Continue</string>
 
 
 </resources>
