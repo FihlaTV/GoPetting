@@ -215,14 +215,14 @@ public class ServicePackageData extends AbstractItem<ServicePackageData, Service
         protected TextView mItemServicePackageName;
         protected TextView mItemServicePackageDesc;
         protected TextView mItemPrice;
-        protected ImageView mItemBasket;
+//        protected ImageView mItemBasket;
 
         public ViewHolder(View view) {
             super(view);
             this.mItemServicePackageName = (TextView) view.findViewById(R.id.tv_service_package_name);
             this.mItemServicePackageDesc = (TextView) view.findViewById(R.id.tv_service_package_desc);
             this.mItemPrice = (TextView) view.findViewById(R.id.tv_price);
-            this.mItemBasket = (ImageView) view.findViewById(R.id.iv_basket);
+//            this.mItemBasket = (ImageView) view.findViewById(R.id.iv_basket);
         }
     }
 

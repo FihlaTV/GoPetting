@@ -98,6 +98,7 @@
     <item name="iv_cart" type="id" />
     <item name="tv_cart_count" type="id" />
     <item name="shopping_cart" type="id" />
+    <item name="progress_bar_container" type="id" />
 
 
 </resources>

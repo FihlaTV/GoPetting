@@ -11,33 +11,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.gopetting.android.R;
 import com.gopetting.android.activities.ServiceActivity;
-import com.gopetting.android.bus.ActivityToFragment;
-import com.gopetting.android.models.FilterSubCategoryData;
 import com.gopetting.android.models.ServicePackage;
 import com.gopetting.android.models.ServicePackageData;
-import com.gopetting.android.models.ServicePackageDetailData;
-import com.gopetting.android.utils.Animators.SlideDownAlphaAnimator;
 import com.gopetting.android.utils.Communicator;
 import com.gopetting.android.utils.ServiceCategoryData;
 import com.gopetting.android.utils.SimpleDividerItemDecoration;
 import com.mikepenz.fastadapter.FastAdapter;
-import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.mikepenz.fastadapter.helpers.ClickListenerHelper;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-import org.parceler.Parcels;
-
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -207,6 +193,8 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
         fastAdapterService = new FastItemAdapter();
         fastAdapterService.withSelectable(true);
         fastAdapterService.withOnlyOneExpandedItem(true);
+//        fastAdapterService.withPositionBasedStateManagement(false);
+
 
         //init the ClickListenerHelper which simplifies custom click listeners on views of the Adapter
         mClickListenerHelper = new ClickListenerHelper<>(fastAdapterService);
@@ -248,18 +236,27 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
             public RecyclerView.ViewHolder onPostCreateViewHolder(final RecyclerView.ViewHolder viewHolder) {
                 //we do this for our ServicePackage.ViewHolder
                 if (viewHolder instanceof ServicePackage.ViewHolder) {
-                    //if we click on the iv_basket (mItemBasket)
-                    mClickListenerHelper.listen(viewHolder, ((ServicePackage.ViewHolder) viewHolder).mItemBasket, new ClickListenerHelper.OnClickListener<ServicePackage>() {
+                    //if we click on the rl_basket_container (mItemBasketContainer)
+                    mClickListenerHelper.listen(viewHolder, ((ServicePackage.ViewHolder) viewHolder).mItemBasketContainer, new ClickListenerHelper.OnClickListener<ServicePackage>() {
                         @Override
                         public void onClick(View v, int position, ServicePackage item) {
-//                            item.withStarred(!item.mStarred);
+
+//                            for(int i=0;i<ServiceCategoryData.getServicePackages(serviceSubCategoryIndex).size();i++){
+//
+//                                ServiceCategoryData.getServicePackages(serviceSubCategoryIndex).get(i).setItemSelected(false);
+//
+//                                ServiceCategoryData.getServicePackages(serviceSubCategoryIndex).get(i).animateHeart(((ViewGroup) v).getChildAt(0), ((ViewGroup) v).getChildAt(1), ServiceCategoryData.getServicePackages(serviceSubCategoryIndex).get(i).mItemSelected);
+//
+//                            }
+//                            fastAdapterService.notifyAdapterDataSetChanged();
+//                            item.setItemSelected(!item.mItemSelected);
                             //we animate the heart
-//                            item.animateHeart(((ViewGroup) v).getChildAt(0), ((ViewGroup) v).getChildAt(1), item.mStarred);
+//                            item.animateHeart(((ViewGroup) v).getChildAt(0), ((ViewGroup) v).getChildAt(1), item.mItemSelected);
 
                             //we display the info about the click
-                            Toast.makeText(getContext(), item.mServicePackageName, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getContext(), item.mServicePackageName + serviceSubCategoryIndex, Toast.LENGTH_SHORT).show();
 
-//                            mListener.onServiceFragmentClick(item); //Send back clicked Service Package
+                            mListener.onServiceFragmentClick(item,serviceSubCategoryIndex); //Send back clicked Service Package
 
 
                         }
@@ -299,13 +296,13 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
 
 
     public interface ServiceFragmentListener {
-        void onServiceFragmentClick(ServicePackage servicePackage);
+        void onServiceFragmentClick(ServicePackage servicePackage, int serviceSubCategoryIndex);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(ServicePackage servicePackage) {
         if (mListener != null) {
-            mListener.onServiceFragmentClick(servicePackage);
+            mListener.onServiceFragmentClick(servicePackage, serviceSubCategoryIndex);
         }
     }
 

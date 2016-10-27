@@ -80,17 +80,36 @@
                 app:customTypeface="@string/typeface_regular"
                 android:clickable="false"/>
 
-            <ImageView
-                android:id="@+id/iv_basket"
+            <RelativeLayout
+                android:id="@+id/rl_basket_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_price"
-                android:paddingRight="15.0dip"
+
                 android:layout_gravity="center"
-                android:src="@drawable/selector_basket"
-                android:clickable="true"/>
-            <!--android:layout_marginTop="3.0dip"-->
-            <!--android:layout_gravity="center"-->
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true">
+                <!--android:padding="24dp"-->
+                <!--android:paddingRight="15.0dip"-->
+
+
+            <ImageView
+                android:id="@+id/iv_basket_selected_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_basket_selected_no"
+                />
+
+                <ImageView
+                    android:id="@+id/iv_basket_selected_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_basket_normal"
+                    />
+                <!--android:visibility="gone"-->
+
+            </RelativeLayout>
+
         </LinearLayout>
 
 

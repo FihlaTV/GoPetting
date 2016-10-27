@@ -117,6 +117,14 @@
     <string name="title_activity_service">Services</string>
     <string name="package_detail_title">What is included</string>
     <string name="continue_text">Continue</string>
+    <string name="dialog_question_login">Help us serve you better :)\nPlease login</string>
+    <string name="dialog_title_login">Login</string>
+    <string name="dialog_button_login">LOGIN</string>
+    <string name="dialog_question_cart_item_change_part1">"You already have one package under "</string>
+    <string name="dialog_question_cart_item_change_part2">" category\n\n1 package per category can be ordered"</string>
+    <string name="dialog_question_cart_item_change_part3">\n\nWould you like to replace it with this?</string>
+    <string name="dialog_button_cart_item_change">Yes</string>
+    <string name="dialog_button_no">NO</string>
 
 
 </resources>

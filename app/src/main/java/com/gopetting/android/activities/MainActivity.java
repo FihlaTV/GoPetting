@@ -714,7 +714,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onStart() {
         if (session.isLoggedIn()) {
             mGoogleApiClient.connect();
-        }
+
+            //Set Profile Picture and Text when MainActicity comes from other activities and was not logged in when app started
+                HashMap<String, String> user = session.getUserDetails();
+
+                Glide.with(getApplicationContext())
+                        .load(user.get(SessionManager.KEY_PICTURE))
+                        .into(proPic);
+                ProfText.setText(user.get(SessionManager.KEY_NAME));
+
+            }
+
         super.onStart();
 //        EventBus.getDefault().register(this);
 

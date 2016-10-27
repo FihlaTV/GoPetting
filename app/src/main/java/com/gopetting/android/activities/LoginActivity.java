@@ -1,6 +1,7 @@
 package com.gopetting.android.activities;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.LoaderManager;
 import android.app.ProgressDialog;
 import android.content.CursorLoader;
@@ -25,6 +26,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -58,6 +61,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.BindView;
 import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,6 +76,7 @@ public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
+
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -142,6 +147,9 @@ public class LoginActivity extends AppCompatActivity implements
     private User mUser;
     private Button mFbSignInButton;
     private ArrayList<String> mPromoImages;
+    private int mOtherActivityFlag;
+    private JSONObject mObject;     //By ssahu; workaround for delay in update of UserId
+    private FrameLayout mProgressBarContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +163,10 @@ public class LoginActivity extends AppCompatActivity implements
         Bundle bundle = intent.getExtras();
 
         if (bundle != null) {
+
+            //To identify, it's launched by activity other than MainActivity; This is mainly not to interfere in already working code
+            mOtherActivityFlag = bundle.getInt("other_activity_flag");          //Code by ssahu;
+
             mPromoImages = bundle.getStringArrayList("promo_images");
         }
 
@@ -171,6 +183,7 @@ public class LoginActivity extends AppCompatActivity implements
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);        //Hide Actionbar title
 
+        mProgressBarContainer = (FrameLayout) findViewById(R.id.progress_bar_container);   //By ssahu
 
         //Taking reference of UserName and Password Fiedls
 
@@ -494,10 +507,12 @@ public class LoginActivity extends AppCompatActivity implements
 
         switch (v.getId()) {
             case R.id.btn_login_google:
+                mProgressBarContainer.setVisibility(View.VISIBLE);
                 onSignInClicked();
                 break;
 
             case R.id.btn_login_fb:
+                mProgressBarContainer.setVisibility(View.VISIBLE);
                 facebookLoginButton.performClick();
                 fbRegisterCallback();
                 break;
@@ -561,7 +576,9 @@ public class LoginActivity extends AppCompatActivity implements
                                     getServerData(2);       //Indicator=2 for facebook_id;  By ssahu
 
                                     session.createLoginSession(object);
-                                    handleSignInResult(object);
+
+                                    mObject = object;   //By ssahu; workaround for delay in update of UserId
+//                                    handleSignInResult(object); //Disabled by ssahu
                                 }
 
                             }
@@ -575,12 +592,17 @@ public class LoginActivity extends AppCompatActivity implements
 
             @Override
             public void onCancel() {
+
+                mProgressBarContainer.setVisibility(View.GONE);
 //                Toast.makeText(LoginActivity.this, "Login cancelled", Toast.LENGTH_SHORT).show();
 //                Snackbar.make(findViewById(R.id.ll_login), R.string.login_cancelled, Snackbar.LENGTH_LONG).show();
             }
 
             @Override
             public void onError(FacebookException exception) {
+
+                mProgressBarContainer.setVisibility(View.GONE);
+
                 Toast.makeText(LoginActivity.this, "Error on Login, check your facebook app_id", Toast.LENGTH_LONG).show();
                 Crashlytics.logException(exception);
             }
@@ -591,20 +613,30 @@ public class LoginActivity extends AppCompatActivity implements
     // handles the sign in functionality
     public void handleSignInResult(JSONObject userInfo) {
 
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        //Code by ssahu
+        if (mOtherActivityFlag == 10){          //mOtherActivityFlag = 10; This means login activity is started by activity other than MainActivity;
 
-        //TODO: This flow should be optimised : This Iscorrect we are using there in MainActivity to check if it returned from Login scree
-        intent.putExtra("FromLoginActivity", true);
-        intent.putExtra("User_profile", userInfo.toString());
+            Intent returnIntent = new Intent();
+            setResult(Activity.RESULT_CANCELED, returnIntent);      //Finishing Acticity as login is done and UserId is saved in sharedpreference
+            finish();
 
-        //Below Code Modified by SS
-        Bundle bundle = new Bundle();
-        bundle.putStringArrayList("promo_images", mPromoImages);
-        intent.putExtras(bundle);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);    //Clear stack; for exiting activity
-        startActivity(intent);
-        LoginActivity.this.finish();    //for exiting activity
+        }else {
 
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
+            //TODO: This flow should be optimised : This Iscorrect we are using there in MainActivity to check if it returned from Login scree
+            intent.putExtra("FromLoginActivity", true);
+            intent.putExtra("User_profile", userInfo.toString());
+
+            //Below Code Modified by SS
+            Bundle bundle = new Bundle();
+            bundle.putStringArrayList("promo_images", mPromoImages);
+            intent.putExtras(bundle);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);    //Clear stack; for exiting activity
+            startActivity(intent);
+            LoginActivity.this.finish();    //for exiting activity
+
+        }
 
     }
 
@@ -639,6 +671,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     public void onConnectionSuspended(int arg0) {
+//        mProgressBarContainer.setVisibility(View.GONE);
         ringProgressDialog.dismiss();
         mGoogleApiClient.connect();
     }
@@ -649,6 +682,8 @@ public class LoginActivity extends AppCompatActivity implements
         // grant permissions or resolve an error in order to sign in. Refer to the javadoc for
         // ConnectionResult to see possible error codes.
         Log.d(Constants.TAG_LOGIN, "onConnectionFailed:" + connectionResult);
+
+        mProgressBarContainer.setVisibility(View.GONE);    //By ssahu
         ringProgressDialog.dismiss();
 
         if (!mIsResolving && mShouldResolve) {
@@ -706,18 +741,26 @@ public class LoginActivity extends AppCompatActivity implements
                 session.createGplusLogin(mCurrentPerson, mEmailId, mUser);
                 //setPersonalInfo(currentPerson);
 
-                //Below Code Modified by SS
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putStringArrayList("promo_images", mPromoImages);
-                intent.putExtras(bundle);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);    //Clear stack; for exiting activity
-                startActivity(intent);
-                LoginActivity.this.finish();    //for exiting activity
 
+                //Disabled this code; Have moved this code to sendbackGPlusResult method; Workaround for calling login activity from other activities.
 
-
-
+//                //Code by ssahu
+//                if (mOtherActivityFlag == 10){          //mOtherActivityFlag = 10; This means login activity is started by activity other than MainActivity;
+//
+//                    Intent returnIntent = new Intent();
+//                    setResult(Activity.RESULT_CANCELED, returnIntent);
+//                    finish();   //Finishing Acticity as login is done and UserId is saved in sharedpreference
+//
+//                }
+//
+//                //Below Code Modified by SS
+//                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putStringArrayList("promo_images", mPromoImages);
+//                intent.putExtras(bundle);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);    //Clear stack; for exiting activity
+//                startActivity(intent);
+//                LoginActivity.this.finish();    //for exiting activity
 
             /*String personName = currentPerson.getDisplayName();
             String personPhotoUrl = currentPerson.getImage().getUrl();
@@ -847,7 +890,7 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
-    private void getUserId(int indicator) {          // By ssahu
+    private void getUserId(final int indicator) {          // By ssahu
 
         Controller.GetUserId retrofitSingleton = RetrofitSingleton.getInstance().create(Controller.GetUserId.class);
         Call<User> call = retrofitSingleton.getUserId("Bearer " + credential.getAccess_token(), mId, indicator, mEmailId, mFirstName, mLastName);
@@ -857,8 +900,16 @@ public class LoginActivity extends AppCompatActivity implements
                 if (response.isSuccessful()) {
 
                     mUser = response.body();
-                    session.setUserId(mUser);       //Set user_id in sessionn : ssahu
 
+                    session.setUserId(mUser);       //Set user_id in sessinn : ssahu
+
+                    if(indicator == 2) {                  //Indicator=2 for facebook;
+                    handleSignInResult(mObject);     //By ssahu; workaround for delay in update of UserId when logging from other activities.
+                    }
+
+                    if(indicator == 1){
+                        sendbackGPlusResult();      //By ssahu;
+                    }
 
                 } else {
                     Log.d("Error Response", "LoginActivity :Error Response");
@@ -871,6 +922,30 @@ public class LoginActivity extends AppCompatActivity implements
             }
         });
 
+
+    }
+
+//    Workaround for calling login activity from other activities.
+    private void sendbackGPlusResult() {
+
+        //Code by ssahu
+        if (mOtherActivityFlag == 10){          //mOtherActivityFlag = 10; This means login activity is started by activity other than MainActivity;
+
+            Intent returnIntent = new Intent();
+            setResult(Activity.RESULT_CANCELED, returnIntent);
+            finish();   //Finishing Acticity as login is done and UserId is saved in sharedpreference
+
+        }else {
+
+            //Below Code Modified by SS
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putStringArrayList("promo_images", mPromoImages);
+            intent.putExtras(bundle);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);    //Clear stack; for exiting activity
+            startActivity(intent);
+            LoginActivity.this.finish();    //for exiting activity
+        }
 
     }
 
@@ -887,6 +962,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     protected void onStop() {
+
         super.onStop();
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();

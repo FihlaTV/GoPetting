@@ -8,6 +8,7 @@ import com.gopetting.android.models.DogDetails;
 import com.gopetting.android.models.FilterSubCategory;
 import com.gopetting.android.models.ServiceCategory;
 import com.gopetting.android.models.ServiceSubCategory;
+import com.gopetting.android.models.Status;
 import com.gopetting.android.models.StringItem;
 import com.gopetting.android.models.User;
 
@@ -104,6 +105,19 @@ public class Controller {
         @GET("/api/v1/service/cart")
         Call<Cart> getCartItems(@Header("Authorization") String authorization,
                                 @Query("user_id") String userId);
+    }
+
+
+    public interface GetCartStatus {
+        @GET("/api/v1/service/cart/u")
+        Call<Status> getCartStatus(@Header("Authorization") String authorization,
+                                           @Query("user_id") String userId,
+                                           @Query("service_package_id_1") int servicePackageId1,
+                                           @Query("service_package_id_2") int servicePackageId2,
+                                           @Query("service_package_id_3") int servicePackageId3,
+                                           @Query("service_package_id_4") int servicePackageId4,
+                                           @Query("service_package_id_5") int servicePackageId5
+                                            );
     }
 
 }

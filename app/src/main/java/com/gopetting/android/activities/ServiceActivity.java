@@ -1,6 +1,9 @@
 package com.gopetting.android.activities;
 
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.MenuItemCompat;
@@ -21,9 +24,11 @@ import com.gopetting.android.R;
 import com.gopetting.android.adapters.ViewPagerAdapter;
 import com.gopetting.android.fragments.ServiceFragment;
 import com.gopetting.android.models.Cart;
+import com.gopetting.android.models.CartItem;
 import com.gopetting.android.models.Credential;
 import com.gopetting.android.models.ServiceCategory;
 import com.gopetting.android.models.ServicePackage;
+import com.gopetting.android.models.Status;
 import com.gopetting.android.network.Controller;
 import com.gopetting.android.network.OAuthTokenService;
 import com.gopetting.android.network.RetrofitSingleton;
@@ -32,6 +37,7 @@ import com.gopetting.android.utils.Communicator;
 import com.gopetting.android.utils.ServiceCategoryData;
 import com.mikepenz.fastadapter.IItem;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,6 +50,7 @@ import retrofit2.Response;
 
 public class ServiceActivity extends AppCompatActivity implements ServiceFragment.ServiceFragmentListener {
 
+
     @BindView(R.id.toolbar_headerbar)
     Toolbar mToolbar;
     @BindView(R.id.view_pager_service)
@@ -55,6 +62,8 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBarMedium;
 
+    private static final String OTHER_ACTIVITY_FLAG = "other_activity_flag";  //Used for starting login activity
+    private static final int IDENTIFIER = 100; //100 value to Identify ServiceActivity
     private static final int SERVICE_CATEGORY_ID = 11;  //Pet Salon
     private static String sUserId;
     private Credential mCredential;
@@ -65,8 +74,12 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
     private SessionManager mSessionManager;
     private Cart mCart;
     private TextView mTextView;
+    private String mNotifyCount = "";
+    private int mSelectedServicePackageId;
+    private int mSelectedServiceSubCategoryId;
+    private String mSelectedServiceSubCategoryName;
+    private Status mStatus;
 
-//    private List<ServicePackage> mServicePackages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,11 +101,10 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        getSupportActionBar().setTitle("Pet Salon");
 
 
     }
-
 
     private void getServerData(final int dataRequestId) {
 
@@ -134,14 +146,17 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
         switch (dataRequestId) {
             case 1: //Get Whole Data
-                getServiceCategoryData();
-                getCartItemsData();
+                getServiceCategoryData(dataRequestId);
+                getCartItemsData(dataRequestId);
                 break;
             case 2: //Get only ServiceCategoryData
-                getServiceCategoryData();
+                getServiceCategoryData(dataRequestId);
                 break;
             case 3: //Get only Cart Data
-                getCartItemsData();
+                getCartItemsData(dataRequestId);
+                break;
+            case 4: //Cart Status
+                getCartStatus(dataRequestId);
                 break;
             default:
                 Log.i("ServiceActivity", "getServerData datarequestid: Out of range value ");
@@ -150,8 +165,53 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
     }
 
+    private void getCartStatus(final int dataRequestId) {
 
-    private void getServiceCategoryData(){
+        List<Integer> cartServicePackageIds = new ArrayList<>();
+        for (int i=0;i<5;i++){        //Assuming only service packages can be allowed
+
+            if(i>=mCart.mCartItems.size()) {        //To avoid ArrayOutofBoundException
+                cartServicePackageIds.add(0);
+            }else{
+                cartServicePackageIds.add(mCart.mCartItems.get(i).getServicePackageId());
+            }
+        }
+
+
+        Controller.GetCartStatus retrofitSingleton = RetrofitSingleton.getInstance().create(Controller.GetCartStatus.class);
+
+        Call<Status> call = retrofitSingleton.getCartStatus(
+                "Bearer " + mCredential.getAccess_token()
+                ,sUserId
+                ,cartServicePackageIds.get(0)
+                ,cartServicePackageIds.get(1)
+                ,cartServicePackageIds.get(2)
+                ,cartServicePackageIds.get(3)
+                ,cartServicePackageIds.get(4)
+        );
+
+        call.enqueue(new Callback<Status>() {
+            @Override
+            public void onResponse(Call<Status> call, Response<Status> response) {
+                if (response.isSuccessful()) {
+
+                    mStatus = response.body();
+
+                } else {
+                    Log.d("onResponse", "getCartItems :onResponse:notSuccessful");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Status> call, Throwable t) {
+                Toast.makeText(ServiceActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+            }
+        });
+
+
+    }
+
+    private void getServiceCategoryData(int dataRequestId){
 
         Controller.GetServiceCategory retrofitSingleton = RetrofitSingleton.getInstance().create(Controller.GetServiceCategory.class);
         Call<ServiceCategory> call = retrofitSingleton.getServiceCategory("Bearer " + mCredential.getAccess_token(),SERVICE_CATEGORY_ID);
@@ -175,7 +235,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         });
     }
 
-    private void getCartItemsData() {
+    private void getCartItemsData(final int dataRequestId) {
 
         Controller.GetCartItems retrofitSingleton = RetrofitSingleton.getInstance().create(Controller.GetCartItems.class);
         Call<Cart> call = retrofitSingleton.getCartItems("Bearer " + mCredential.getAccess_token(),sUserId);
@@ -186,9 +246,21 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
                     mCart = response.body();
 
-                    //set Shopping Cart Item Count
-                    mTextView.setVisibility(View.VISIBLE);
-                    mTextView.setText(Integer.toString(mCart.mCartItems.size()));
+//                    Toast.makeText(ServiceActivity.this,Integer.toString(mCart.mCartItems.size()), Toast.LENGTH_SHORT).show();
+
+
+                        switch (dataRequestId) {
+                            case 1: //User Already logged in; User started ServiceActivity, so Just update Cart Items count
+                                mNotifyCount = Integer.toString(mCart.mCartItems.size());
+                                invalidateOptionsMenu();
+                                break;
+                            case 3: //Add selected service package to cart
+                                addItemToCart();
+                                break;
+                            default:
+                                Log.i("ServiceActivity", "datarequestid: Out of range value ");
+                        }
+
 
                 } else {
                     Log.d("onResponse", "getCartItems :onResponse:notSuccessful");
@@ -204,6 +276,114 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
     }
 
+    private void addItemToCart() {
+
+        int flag = 1; //Just a default value to check whether any package is already available in cart for selected service subcategory
+
+        //Check whether cart is empty for user
+        if (mCart.mCartItems.size()<=0){
+
+                addAndRefreshCart();
+
+        }else {
+
+            //Loop through all Cart items
+            for (int i = 0; i < mCart.mCartItems.size(); i++) {
+                //check if select service subcategory item are already available in cart
+                if (mSelectedServiceSubCategoryId == mCart.mCartItems.get(i).getServiceSubCategoryId()) {
+                    //Yes it's available, now check selected service package is already available in cart
+                    if (mSelectedServicePackageId == mCart.mCartItems.get(i).getServicePackageId()) {
+                        //Don't do anything as Service Package is already available in Cart and we don't allow more than 1 service package per service subcategory as of now.
+
+                        Toast.makeText(ServiceActivity.this, "Package is already in cart",Toast.LENGTH_SHORT).show(); //Show to user, package is already in cart
+
+                        flag = 2;
+                        break;      //Break loop as service package is added/replaced
+
+                    } else {
+                        //Other service package is already available under this service sub category; Ask user to replace it with this package
+
+                        flag =2;
+//
+//                        String dialogQuestion = getResources().getString(R.string.dialog_question_cart_item_change_part1 )
+//                                                + mSelectedServiceSubCategoryName
+//                                                + getResources().getString(R.string.dialog_question_cart_item_change_part2)
+//                                                + getResources().getString(R.string.dialog_question_cart_item_change_part3);
+
+                        mCart.mCartItems.remove(i); //Remove old service package
+
+                        //add currently selected service package to Cart
+                        mCart.mCartItems.add(new CartItem().setServicePackageId(mSelectedServicePackageId).setServiceSubCategoryId(mSelectedServiceSubCategoryId));
+
+                        //Refresh Shopping Cart Icon Count; Logically Count is going to be same as we're removing 1 package and adding 1 package :)
+                        mNotifyCount = Integer.toString(mCart.mCartItems.size());
+                        invalidateOptionsMenu();
+
+                        Toast.makeText(ServiceActivity.this, "Package is added to cart",Toast.LENGTH_SHORT).show(); //Show to user, package is added
+/*
+                        final int j = i;
+
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ServiceActivity.this);
+
+                        builder.setMessage(dialogQuestion)
+//                            .setTitle(R.string.dialog_title_cart_item_change)
+                                .setPositiveButton(R.string.dialog_button_cart_item_change, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        mCart.mCartItems.remove(j); //Remove old service package
+
+                                        //add currently selected service package to Cart
+                                        mCart.mCartItems.add(new CartItem().setServicePackageId(mSelectedServicePackageId).setServiceSubCategoryId(mSelectedServiceSubCategoryId));
+
+                                        //Refresh Shopping Cart Icon Count; Logically Count is going to be same as we're removing 1 package and adding 1 package :)
+                                        mNotifyCount = Integer.toString(mCart.mCartItems.size());
+                                        invalidateOptionsMenu();
+
+                                        Toast.makeText(ServiceActivity.this, "Package is added to cart",Toast.LENGTH_SHORT).show(); //Show to user, package is added
+
+                                    }
+                                })
+                                .setNegativeButton(R.string.dialog_button_no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // User cancelled the dialog
+
+                                    }
+                                });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                        //Set Dialog text size and font
+                        TextView textView = (TextView) dialog.findViewById(android.R.id.message);
+                        textView.setTextSize(14);
+//                        textView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/DIN-Regular.otf"));
+*/
+                        break; //Break loop as service package is added/replaced
+                    }
+                }
+            }
+        }
+
+        if (flag == 1){
+
+            addAndRefreshCart();
+
+        }
+
+    }
+
+    //Add selected service package and refresh the cart
+    private void addAndRefreshCart() {
+
+        //add currently selected service package to Cart
+        mCart.mCartItems.add(new CartItem().setServicePackageId(mSelectedServicePackageId).setServiceSubCategoryId(mSelectedServiceSubCategoryId));
+
+        //Refresh Shopping Cart Icon Count;
+        mNotifyCount = Integer.toString(mCart.mCartItems.size());
+        invalidateOptionsMenu();
+
+        Toast.makeText(ServiceActivity.this, "Package is added to cart",Toast.LENGTH_SHORT).show(); //Show to user, package is added
+
+    }
 
     private void initServiceData() {
 
@@ -261,7 +441,6 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         mProgressBarMedium.setVisibility(View.GONE);
     }
 
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         mViewPagerAdapter.onSaveInstanceState(outState);
@@ -269,40 +448,72 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
     }
 
     @Override
-    public void onServiceFragmentClick(ServicePackage servicePackage){
+    public void onServiceFragmentClick(ServicePackage servicePackage, int serviceSubCategoryIndex){
         Log.i("logs", "onServiceFragmentClick: ");
+
+        //Initializing fields for Selected Service Package
+        mSelectedServicePackageId = servicePackage.getServicePackageId();
+        mSelectedServiceSubCategoryId = mServiceCategoryData.mServiceSubCategories.get(serviceSubCategoryIndex).getServiceSubCategoryId();
+        mSelectedServiceSubCategoryName = mServiceCategoryData.mServiceSubCategories.get(serviceSubCategoryIndex).getServiceSubcategoryName();
 
         if (!mSessionManager.isLoggedIn()){
 
-//            setupLogin();
+            setupLogin();
 
         }else {
-//            sUserId =mSessionManager.getUserId();       //Extract unique UserId
-//            getServerData(1);   //Sending DATA_REQUEST_ID=1; Whole Data includes ServiceSategoryData & CartItems
+
+            addItemToCart();
         }
 
     }
 
-//    private void setupLogin() {
-//
-//        //Request user to login; Cart services will be provided only for logged in users
-//        AlertDialog.Builder builder = new AlertDialog.Builder(ServiceActivity.this);
-//        builder.setMessage(R.string.dialog_logout_question)
-//                .setTitle(R.string.dialog_title_logout)
-//                .setPositiveButton(R.string.dialog_button_logout, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        allAccountLogOut(); //Logout all accounts
-//                    }
-//                })
-//                .setNegativeButton(R.string.dialog_button_cancel, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        // User cancelled the dialog
-//                    }
-//                });
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-//    }
+    private void setupLogin() {
 
+        //Request user to login; Cart services will be provided only for logged in users
+        AlertDialog.Builder builder = new AlertDialog.Builder(ServiceActivity.this);
+        builder.setMessage(R.string.dialog_question_login)
+                .setTitle(R.string.dialog_title_login)
+                .setPositiveButton(R.string.dialog_button_login, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        Intent intent = new Intent(ServiceActivity.this, LoginActivity.class);
+                        Bundle b = new Bundle();
+                        b.putInt(OTHER_ACTIVITY_FLAG, 10);    //OTHER_ACTIVITY_FLAG = 10; This means login activity is started by activity other than MainActivity;
+                        intent.putExtras(b);
+                        startActivityForResult(intent,IDENTIFIER);
+
+                    }
+                })
+                .setNegativeButton(R.string.dialog_button_cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == IDENTIFIER) {
+            if(resultCode == Activity.RESULT_OK){
+                Log.i("Info","RESULT_OK code was not expected");
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+
+                if(mSessionManager.isLoggedIn()) {
+                    sUserId = mSessionManager.getUserId();       //Extract unique UserId
+                    getServerData(3);   //Sending DATA_REQUEST_ID=3; //Get only Cart Data
+                }
+
+            }
+        }
+
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -314,9 +525,9 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         MenuItemCompat.setActionView(item, R.layout.menu_cart_layout);
         RelativeLayout relativeLayout = (RelativeLayout) MenuItemCompat.getActionView(item);
         mTextView = (TextView) relativeLayout.findViewById(R.id.tv_cart_count);
-        mTextView.setVisibility(View.INVISIBLE);
+//        mTextView.setVisibility(View.GONE);
 
-//        mTextView.setText("6");
+        mTextView.setText(mNotifyCount);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -355,6 +566,13 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
     @Override
     public void onStop() {
+        try{
+        if ( mCart.mCartItems.size()>0) {
+            getServerData(4);   //Cart Status
+        }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         super.onStop();
     }
 

@@ -1,9 +1,11 @@
 package com.gopetting.android.models;
 
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewPropertyAnimator;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.annotations.SerializedName;
@@ -38,6 +40,8 @@ public class ServicePackage extends AbstractItem<ServicePackage, ServicePackage.
     @SerializedName("price")
     public int mPrice;
 
+    public boolean mItemSelected = false;
+
     public List<IItem> mSubItems;
     public boolean mExpanded = false;
     public FastAdapter.OnClickListener<ServicePackage> mOnClickListener;
@@ -51,6 +55,10 @@ public class ServicePackage extends AbstractItem<ServicePackage, ServicePackage.
 
     public int getServicePackageId() {
         return mServicePackageId;
+    }
+
+    public void setItemSelected(boolean itemSelected) {
+        this.mItemSelected = itemSelected;
     }
 
 
@@ -127,6 +135,50 @@ public class ServicePackage extends AbstractItem<ServicePackage, ServicePackage.
 //
 
     /**
+     * helper method to style the image view(Basket Image)
+     *
+     * @param view
+     * @param value
+     */
+    private void style(View view, int value) {
+        view.setScaleX(value);
+        view.setScaleY(value);
+        view.setAlpha(value);
+    }
+
+    /**
+     * helper method to animate the image view(Basket Image)
+     *
+     * @param imageSelectedYes
+     * @param imageSelectedNo
+     * @param on
+     */
+    public void animateHeart(View imageSelectedYes, View imageSelectedNo, boolean on) {
+        imageSelectedYes.setVisibility(View.VISIBLE);
+        imageSelectedNo.setVisibility(View.VISIBLE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
+            viewPropertyStartCompat(imageSelectedNo.animate().scaleX(on ? 0 : 1).scaleY(on ? 0 : 1).alpha(on ? 0 : 1));
+            viewPropertyStartCompat(imageSelectedYes.animate().scaleX(on ? 1 : 0).scaleY(on ? 1 : 0).alpha(on ? 1 : 0));
+        }
+    }
+
+    /**
+     * helper method for the animator on APIs < 14
+     *
+     * @param animator
+     */
+    public static void viewPropertyStartCompat(ViewPropertyAnimator animator) {
+        if (Build.VERSION.SDK_INT >= 14) {
+            animator.start();
+        }
+    }
+
+
+
+
+
+    /**
      * our ItemFactory implementation which creates the ViewHolder for our adapter.
      * It is highly recommended to implement a ViewHolderFactory as it is 0-1ms faster for ViewHolder creation,
      * and it is also many many times more efficient if you define custom listeners on views within your item.
@@ -172,6 +224,9 @@ public class ServicePackage extends AbstractItem<ServicePackage, ServicePackage.
         viewHolder.mItemServicePackageName.setText(mServicePackageName);
         viewHolder.mItemServicePackageDesc.setText(mDescription);
         viewHolder.mItemPrice.setText("Rs."+ mPrice);
+        viewHolder.mItemBasketSelectedYes.setVisibility(View.GONE);
+
+
 
     }
 
@@ -181,16 +236,22 @@ public class ServicePackage extends AbstractItem<ServicePackage, ServicePackage.
         protected TextView mItemServicePackageName;
         protected TextView mItemServicePackageDesc;
         protected TextView mItemPrice;
-        public ImageView mItemBasket;
-//        public LinearLayout mItemLinearLayoutPriceContainer;
+        public ImageView mItemBasketSelectedYes;
+        public ImageView mItemBasketSelectedNo;
+        public RelativeLayout mItemBasketContainer;
+
 
         public ViewHolder(View view) {
             super(view);
             this.mItemServicePackageName = (TextView) view.findViewById(R.id.tv_service_package_name);
             this.mItemServicePackageDesc = (TextView) view.findViewById(R.id.tv_service_package_desc);
             this.mItemPrice = (TextView) view.findViewById(R.id.tv_price);
-            this.mItemBasket = (ImageView) view.findViewById(R.id.iv_basket);
-//            this.mItemLinearLayoutPriceContainer = (LinearLayout) view.findViewById(R.id.ll_price_container);
+            this.mItemBasketSelectedYes = (ImageView) view.findViewById(R.id.iv_basket_selected_yes);
+            this.mItemBasketSelectedNo = (ImageView) view.findViewById(R.id.iv_basket_selected_no);
+            this.mItemBasketContainer = (RelativeLayout) view.findViewById(R.id.rl_basket_container);
+
+
+
         }
     }
 

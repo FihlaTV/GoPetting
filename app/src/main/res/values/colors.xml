@@ -88,4 +88,8 @@
     <color name="secondary_color">#ff3b4b56</color>
     <color name="secondary_color_selected">#808ba1b5</color>
 
+    <!--70% Opaque, Secondary text for Dark Background-->
+    <color name="white_secondary">#B3FFFFFF</color>
+    <!--87% Opaque; Primary text for light background-->
+    <color name="black_primary">#DE000000</color>
 </resources>
