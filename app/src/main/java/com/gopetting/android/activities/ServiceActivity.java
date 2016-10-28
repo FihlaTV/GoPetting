@@ -155,14 +155,12 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         switch (dataRequestId) {
             case 1: //Get Whole Data
                 getServiceCategoryData(dataRequestId);
-//                getCartItemsData(dataRequestId);
                 getCartItemsDataV2(dataRequestId);
                 break;
             case 2: //Get only ServiceCategoryData
                 getServiceCategoryData(dataRequestId);
                 break;
             case 3: //Get only Cart Data
-//                getCartItemsData(dataRequestId);
                 getCartItemsDataV2(dataRequestId);
                 break;
             case 4: //Cart Status
@@ -249,48 +247,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         });
     }
 
-    private void getCartItemsData(final int dataRequestId) {
-
-        Controller.GetCartItems retrofitSingleton = RetrofitSingleton.getInstance().create(Controller.GetCartItems.class);
-        Call<Cart> call = retrofitSingleton.getCartItems("Bearer " + mCredential.getAccess_token(),sUserId);
-        call.enqueue(new Callback<Cart>() {
-            @Override
-            public void onResponse(Call<Cart> call, Response<Cart> response) {
-                if (response.isSuccessful()) {
-
-                    mCart = response.body();
-
-//                    Toast.makeText(ServiceActivity.this,Integer.toString(mCart.mCartItems.size()), Toast.LENGTH_SHORT).show();
-
-
-                        switch (dataRequestId) {
-                            case 1: //User Already logged in; User started ServiceActivity, so Just update Cart Items count
-                                mNotifyCount = Integer.toString(mCart.mCartItems.size());
-                                invalidateOptionsMenu();
-                                break;
-                            case 3: //Add selected service package to cart
-                                addItemToCart();
-                                break;
-                            default:
-                                Log.i("ServiceActivity", "datarequestid: Out of range value ");
-                        }
-
-
-                } else {
-                    Log.d("onResponse", "getCartItems :onResponse:notSuccessful");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Cart> call, Throwable t) {
-                Toast.makeText(ServiceActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
-            }
-        });
-
-
-    }
-
-//backup
+    //backup
     private void getCartItemsDataV2(final int dataRequestId) {
 
         Controller.GetCartItemsV2 retrofitSingleton = RetrofitSingleton.getInstance().create(Controller.GetCartItemsV2.class);
@@ -486,7 +443,6 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         ServiceCategoryData.setServiceCategoryData(mServiceCategoryData);
 
 
-
         for (int l = 0; l <mServiceCategoryData.mServiceSubCategories.size() ; l++) {
 
             //Send ServicePackages to ServiceFragment
@@ -564,7 +520,6 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         dialog.show();
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -622,12 +577,10 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_cart, menu);
-
         MenuItem item = menu.findItem(R.id.shopping_cart);
         MenuItemCompat.setActionView(item, R.layout.menu_cart_layout);
         RelativeLayout relativeLayout = (RelativeLayout) MenuItemCompat.getActionView(item);
         mTextView = (TextView) relativeLayout.findViewById(R.id.tv_cart_count);
-//        mTextView.setVisibility(View.GONE);
         mTextView.setText(mNotifyCount);
 
         relativeLayout.setOnClickListener(new View.OnClickListener() {
@@ -648,9 +601,6 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
             case android.R.id.home:
                 onBackPressed();
                 return true;
-//            case R.id.shopping_cart:
-//
-//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -669,8 +619,6 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
             intent.putExtras(bundle);
 
             startActivityForResult(intent,SERVICE_IDENTIFIER_1);
-
-
 
         }
 
