@@ -3,7 +3,6 @@ package com.gopetting.android.activities;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.MenuItemCompat;
@@ -25,7 +24,6 @@ import com.gopetting.android.adapters.ViewPagerAdapter;
 import com.gopetting.android.fragments.ServiceFragment;
 import com.gopetting.android.models.Cart;
 import com.gopetting.android.models.CartItem;
-import com.gopetting.android.models.CartScreen;
 import com.gopetting.android.models.Credential;
 import com.gopetting.android.models.ServiceCategory;
 import com.gopetting.android.models.ServicePackage;
@@ -67,8 +65,9 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
     ProgressBar mProgressBarMedium;
 
     private static final String OTHER_ACTIVITY_FLAG = "other_activity_flag";  //Used for starting login activity
-    private static final int IDENTIFIER = 100; //100 value to Identify ServiceActivity
-    private static final int SERVICE_IDENTIFIER_1 = 200 ; ////one of the ServiceActivity identifiers
+    private static final int SERVICE_IDENTIFIER_1 = 201 ; ////Intent Identifier; for Starting CartActivity
+    private static final int SERVICE_IDENTIFIER_2 = 202; //Intent Identifier, when Basket icon clicked and user not logged in
+    private static final int SERVICE_IDENTIFIER_3 = 203; //Intent Identifier; Cart icon clicked and user not logged in
     private static final int SERVICE_CATEGORY_ID = 11;  //Pet Salon
     private static String sUserId;
     private Credential mCredential;
@@ -156,18 +155,21 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         switch (dataRequestId) {
             case 1: //Get Whole Data
                 getServiceCategoryData(dataRequestId);
-//                getCartItemsData(dataRequestId);      //Temporary
+//                getCartItemsData(dataRequestId);
                 getCartItemsDataV2(dataRequestId);
                 break;
             case 2: //Get only ServiceCategoryData
                 getServiceCategoryData(dataRequestId);
                 break;
             case 3: //Get only Cart Data
-//                getCartItemsData(dataRequestId);      //Temporary
+//                getCartItemsData(dataRequestId);
                 getCartItemsDataV2(dataRequestId);
                 break;
             case 4: //Cart Status
                 getCartStatus(dataRequestId);
+                break;
+            case 5: //5=dataRequestId; Cart Icon Clicked, User was not logged in; Asked to login, now logged in; Get Cart Data; Start CartActivity
+                getCartItemsDataV2(dataRequestId);
                 break;
             default:
                 Log.i("ServiceActivity", "getServerData datarequestid: Out of range value ");
@@ -310,6 +312,9 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                             break;
                         case 3: //Add selected service package to cart
                             addItemToCart();
+                            break;
+                        case 5: //5=dataRequestId; Cart Icon Clicked, User was not logged in; Asked to login, now logged in; Get Cart Data; Start CartActivity
+                            startCartActivity(SERVICE_IDENTIFIER_3); //Sending SERVICE_IDENTIFIER_3 just as a parameter value; As user is already logged in, CartActivity will be started.
                             break;
                         default:
                             Log.i("ServiceActivity", "datarequestid: Out of range value ");
@@ -523,7 +528,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
         if (!mSessionManager.isLoggedIn()){
 
-            setupLogin();
+            setupLogin(SERVICE_IDENTIFIER_2);   //Intent Identifier, when Basket icon clicked and user not logged in
 
         }else {
 
@@ -532,7 +537,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
     }
 
-    private void setupLogin() {
+    private void setupLogin(final int intentIdentifier) {
 
         //Request user to login; Cart services will be provided only for logged in users
         AlertDialog.Builder builder = new AlertDialog.Builder(ServiceActivity.this);
@@ -545,7 +550,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                         Bundle b = new Bundle();
                         b.putInt(OTHER_ACTIVITY_FLAG, 10);    //OTHER_ACTIVITY_FLAG = 10; This means login activity is started by activity other than MainActivity;
                         intent.putExtras(b);
-                        startActivityForResult(intent,IDENTIFIER);
+                        startActivityForResult(intent, intentIdentifier);
 
                     }
                 })
@@ -563,20 +568,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == IDENTIFIER) {
-            if (resultCode == Activity.RESULT_OK) {
-                Log.i("Info", "RESULT_OK code was not expected");
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-
-                if (mSessionManager.isLoggedIn()) {
-                    sUserId = mSessionManager.getUserId();       //Extract unique UserId
-                    getServerData(3);   //Sending DATA_REQUEST_ID=3; //Get only Cart Data
-                }
-
-            }
-        }
-
+        //Intent Identifier; for Starting CartActivity when user logged in
         if (requestCode == SERVICE_IDENTIFIER_1) {
             if (resultCode == Activity.RESULT_OK) {
                 mCart = (Cart) Parcels.unwrap(data.getParcelableExtra("cart"));
@@ -589,8 +581,40 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                 Log.i("Info", "RESULT_CANCELED code was not expected");
             }
 
-
         }
+
+
+        //Intent Identifier, when Basket icon clicked and user not logged in
+        if (requestCode == SERVICE_IDENTIFIER_2) {
+            if (resultCode == Activity.RESULT_OK) {
+                Log.i("Info", "RESULT_OK code was not expected");
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+
+                if (mSessionManager.isLoggedIn()) {
+                    sUserId = mSessionManager.getUserId();       //Extract unique UserId
+                    getServerData(3);   //Sending DATA_REQUEST_ID=3; //Get only Cart Data, when Basket icon clicked
+                }
+
+            }
+        }
+
+        //Intent Identifier; Cart icon clicked and user not logged in
+        if (requestCode == SERVICE_IDENTIFIER_3) {
+            if (resultCode == Activity.RESULT_OK) {
+                Log.i("Info", "RESULT_OK code was not expected");
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+
+                if (mSessionManager.isLoggedIn()) {
+                    sUserId = mSessionManager.getUserId();   //Extract unique UserId
+                    getServerData(5);
+                }
+
+            }
+        }
+
+
     }
 
     @Override
@@ -609,7 +633,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startCartActivity();
+                startCartActivity(SERVICE_IDENTIFIER_3);    //Intent Identifier; This will be passed to 'setupLogin' method; Cart icon clicked and user not logged in
 
 
             }
@@ -633,10 +657,10 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
     }
 
-    private void startCartActivity() {
+    private void startCartActivity(int intentIdentifier) {
 
         if (!mSessionManager.isLoggedIn()){
-            setupLogin();   //Ask user to login
+            setupLogin(intentIdentifier);   //Ask user to login
 
         }else {
             Intent intent = new Intent(ServiceActivity.this, CartActivity.class);
@@ -645,7 +669,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
             intent.putExtras(bundle);
 
             startActivityForResult(intent,SERVICE_IDENTIFIER_1);
-//            startActivity(intent);
+
 
 
         }
