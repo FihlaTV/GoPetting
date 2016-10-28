@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_100"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_with_headerbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@id/ll_main_cart_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!--android:layout_toRightOf="@id/img_icon"-->
+
+                <com.gopetting.android.views.TypefaceTextView
+                    android:id="@id/tv_category_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:paddingBottom="10.0dip"
+                    android:paddingLeft="5.0dip"
+                    android:paddingRight="5.0dip"
+                    android:paddingTop="10.0dip"
+                    android:textColor="@color/item_text_regular"
+                    android:textSize="18.0sp"
+                    app:customTypeface="@string/typeface_bold" />
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/footer_height">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@id/rl_footer_button_container"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/footer_height"
+                android:layout_gravity="bottom"
+                android:background="@drawable/selector_footer_button"
+                android:clickable="true">
+
+                <LinearLayout
+                    android:id="@id/ll_footer_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:clickable="false"
+                    android:orientation="vertical"
+                    android:padding="10.0dip">
+
+                    <Button
+                        android:id="@id/btn_footer_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:clickable="false"
+                        android:gravity="center"
+                        android:text="@string/continue_text"
+                        android:textColor="@color/item_text_regular"
+                        android:textSize="@dimen/text_size_medium_special" />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@id/progress_bar_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <!--android:visibility="gone"-->
+            <ProgressBar
+                android:id="@id/progress_bar"
+                android:layout_width="36.0dip"
+                android:layout_height="36.0dip"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@id/ll_empty_cart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="15.0dip"
+            android:paddingRight="15.0dip"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_empty_cart" />
+
+            <com.gopetting.android.views.TypefaceTextView
+                android:id="@id/tv_empty_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10.0dip"
+                android:gravity="center"
+                android:lineSpacingExtra="3.0dip"
+                android:text="@string/empty_cart_text"
+                android:textColor="@color/item_text_regular"
+                android:textSize="@dimen/text_size_medium_special"
+                app:customTypeface="@string/typeface_regular" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>

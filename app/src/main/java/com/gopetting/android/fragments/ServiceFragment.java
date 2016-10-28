@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import com.gopetting.android.R;
 import com.gopetting.android.activities.ServiceActivity;
 import com.gopetting.android.models.ServicePackage;
-import com.gopetting.android.models.ServicePackageData;
 import com.gopetting.android.utils.Communicator;
 import com.gopetting.android.utils.ServiceCategoryData;
 import com.gopetting.android.utils.SimpleDividerItemDecoration;
@@ -23,7 +22,6 @@ import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.mikepenz.fastadapter.helpers.ClickListenerHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -43,8 +41,6 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
     private int serviceSubCategoryIndex;
     private FastItemAdapter fastAdapterService;
     private LinearLayoutManager mLayoutManagerService;
-    private List<ServicePackage> mServicePackages;
-    private List<ServicePackageData> mServicePackageData = new ArrayList<>();
     private ClickListenerHelper<ServicePackage> mClickListenerHelper;
 
 
@@ -165,36 +161,9 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
 
     private void initFragmentData(Bundle savedInstanceState) {
 
-//        mServicePackages = ((ServiceActivity)getActivity()).getServicePackages(serviceSubCategoryIndex);
-
-//        mServicePackages = ServiceCategoryData.getServicePackages(serviceSubCategoryIndex);
-
-//        for (ServicePackage servicePackage : mServicePackages) {
-////        for(int i=0;i<=mServicePackages.size();i++){
-//
-//            ServicePackageData servicePackageData = new ServicePackageData();
-//            servicePackageData.setServicePackageId(servicePackage.getServicePackageId());
-//            servicePackageData.setServicePackageName(servicePackage.getServicePackageName());
-//            servicePackageData.setDescription(servicePackage.getDescription());
-//            servicePackageData.setPrice(servicePackage.getPrice());
-//
-//            ServicePackageDetailData servicePackageDetailData = new ServicePackageDetailData();
-//            servicePackageDetailData.setServicePackageId(servicePackage.getServicePackageId());
-//            servicePackageDetailData.setDetails(servicePackage.getServicePackageDetails());
-//
-//            List<IItem> subItems = new LinkedList<>();
-//            subItems.add(servicePackageDetailData);
-//            servicePackageData.setSubItems(subItems);
-//
-//            mServicePackageData.add(servicePackageData);
-//        }
-
-
         fastAdapterService = new FastItemAdapter();
         fastAdapterService.withSelectable(true);
         fastAdapterService.withOnlyOneExpandedItem(true);
-//        fastAdapterService.withPositionBasedStateManagement(false);
-
 
         //init the ClickListenerHelper which simplifies custom click listeners on views of the Adapter
         mClickListenerHelper = new ClickListenerHelper<>(fastAdapterService);
@@ -208,9 +177,6 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
 
         }
 
-//        fastAdapterService.add(ServiceCategoryData.getServicePackages());
-//        fastAdapterService.add(mServicePackageData); //Fetch ServicePackages from ServiceActivity
-//fastAdapterService.add(FilterSubCategoryData.getBreedTypeData());
         mRecyclerViewService.setAdapter(fastAdapterService);
 
         mLayoutManagerService = new LinearLayoutManager(getContext());

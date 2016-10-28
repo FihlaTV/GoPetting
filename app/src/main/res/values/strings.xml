@@ -125,6 +125,7 @@
     <string name="dialog_question_cart_item_change_part3">\n\nWould you like to replace it with this?</string>
     <string name="dialog_button_cart_item_change">Yes</string>
     <string name="dialog_button_no">NO</string>
+    <string name="empty_cart_text">Your cart is empty!</string>
 
 
 </resources>

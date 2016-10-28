@@ -99,6 +99,13 @@
     <item name="tv_cart_count" type="id" />
     <item name="shopping_cart" type="id" />
     <item name="progress_bar_container" type="id" />
+    <item name="tv_category_name" type="id" />
+    <item name="rl_delete_container" type="id" />
+    <item name="fastadapter_cart_screen_item_id" type="id" />
+    <item name="tv_service_package_name" type="id" />
+    <item name="ll_empty_cart" type="id" />
+    <item name="tv_empty_cart" type="id" />
+    <item name="ll_main_cart_container" type="id" />
 
 
 </resources>

@@ -49,9 +49,7 @@
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/login"
-            android:theme="@style/AppTheme.Base"></activity>
-
-
+            android:theme="@style/AppTheme.Base" />
         <activity
             android:name=".activities.DogActivity"
             android:label="@string/title_activity_dog"
@@ -104,6 +102,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gopetting.android.activities.MainActivity" />
         </activity>
+        <activity android:name=".activities.CartActivity"></activity>
     </application>
 
 </manifest>

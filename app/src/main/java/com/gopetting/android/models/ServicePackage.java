@@ -224,7 +224,7 @@ public class ServicePackage extends AbstractItem<ServicePackage, ServicePackage.
         viewHolder.mItemServicePackageName.setText(mServicePackageName);
         viewHolder.mItemServicePackageDesc.setText(mDescription);
         viewHolder.mItemPrice.setText("Rs."+ mPrice);
-        viewHolder.mItemBasketSelectedYes.setVisibility(View.GONE);
+
 
 
 

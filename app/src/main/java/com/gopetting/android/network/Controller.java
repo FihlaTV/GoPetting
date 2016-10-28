@@ -1,6 +1,7 @@
 package com.gopetting.android.network;
 
 import com.gopetting.android.models.Cart;
+import com.gopetting.android.models.CartScreen;
 import com.gopetting.android.models.Credential;
 import com.gopetting.android.models.DeliveryDetails;
 import com.gopetting.android.models.Dog;
@@ -116,8 +117,17 @@ public class Controller {
                                            @Query("service_package_id_2") int servicePackageId2,
                                            @Query("service_package_id_3") int servicePackageId3,
                                            @Query("service_package_id_4") int servicePackageId4,
-                                           @Query("service_package_id_5") int servicePackageId5
-                                            );
+                                           @Query("service_package_id_5") int servicePackageId5,
+                                           @Query("server_request_id") int requestId);
     }
+
+
+    //Get cart screen items
+    public interface GetCartScreenItems {
+        @GET("/api/v1/service/cart/screen")
+        Call<CartScreen> getCartScreenItems(@Header("Authorization") String authorization,
+                                            @Query("user_id") String userId);
+    }
+
 
 }

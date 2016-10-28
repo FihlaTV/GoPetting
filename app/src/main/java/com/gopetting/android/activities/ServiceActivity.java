@@ -79,6 +79,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
     private int mSelectedServiceSubCategoryId;
     private String mSelectedServiceSubCategoryName;
     private Status mStatus;
+    private int mServerRequestId = 10; //Default value
 
 
     @Override
@@ -188,6 +189,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                 ,cartServicePackageIds.get(2)
                 ,cartServicePackageIds.get(3)
                 ,cartServicePackageIds.get(4)
+                ,mServerRequestId
         );
 
         call.enqueue(new Callback<Status>() {
@@ -526,8 +528,16 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         RelativeLayout relativeLayout = (RelativeLayout) MenuItemCompat.getActionView(item);
         mTextView = (TextView) relativeLayout.findViewById(R.id.tv_cart_count);
 //        mTextView.setVisibility(View.GONE);
-
         mTextView.setText(mNotifyCount);
+
+        relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startCartActivity();
+
+
+            }
+        });
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -538,9 +548,30 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
             case android.R.id.home:
                 onBackPressed();
                 return true;
-
+//            case R.id.shopping_cart:
+//
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    private void startCartActivity() {
+
+        if (!mSessionManager.isLoggedIn()){
+            setupLogin();   //Ask user to login
+
+        }else {
+            Intent intent = new Intent(ServiceActivity.this, CartActivity.class);
+//            Bundle b = new Bundle();
+//            b.putInt(OTHER_ACTIVITY_FLAG, 10);    //OTHER_ACTIVITY_FLAG = 10; This means login activity is started by activity other than MainActivity;
+//            intent.putExtras(b);
+
+//            startActivityForResult(intent,IDENTIFIER);
+            startActivity(intent);
+
+
         }
 
     }
