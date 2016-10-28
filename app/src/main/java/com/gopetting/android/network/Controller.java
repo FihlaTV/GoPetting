@@ -108,6 +108,13 @@ public class Controller {
                                 @Query("user_id") String userId);
     }
 
+    //Backup
+    //Get cart items version v2
+    public interface GetCartItemsV2 {
+        @GET("/api/v1/service/cart/screen")
+        Call<Cart> getCartItemsV2(@Header("Authorization") String authorization,
+                                  @Query("user_id") String userId);
+    }
 
     public interface GetCartStatus {
         @GET("/api/v1/service/cart/u")
@@ -128,6 +135,7 @@ public class Controller {
         Call<CartScreen> getCartScreenItems(@Header("Authorization") String authorization,
                                             @Query("user_id") String userId);
     }
+
 
 
 }

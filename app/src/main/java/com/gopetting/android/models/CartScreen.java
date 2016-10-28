@@ -31,6 +31,18 @@ public class CartScreen {
             return mCartScreenItems;
         }
 
+
+    public void setStatus(int status) {
+        this.mStatus = status;
+    }
+
+    public void setServiceCategoryName(String serviceCategoryName) {
+        this.mServiceCategoryName = serviceCategoryName;
+    }
+
+    public void setCartScreenItems(List<CartScreenItem> cartScreenItems) {
+        this.mCartScreenItems = cartScreenItems;
+    }
 }
 
 

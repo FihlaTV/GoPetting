@@ -17,10 +17,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.gopetting.android.R;
+import com.gopetting.android.models.Cart;
+import com.gopetting.android.models.CartItem;
 import com.gopetting.android.models.CartScreen;
 import com.gopetting.android.models.CartScreenItem;
 import com.gopetting.android.models.Credential;
@@ -33,6 +37,8 @@ import com.gopetting.android.utils.SimpleDividerItemDecoration;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.mikepenz.fastadapter.helpers.ClickListenerHelper;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +63,8 @@ public class CartActivity extends AppCompatActivity {
     LinearLayout mLinearLayoutEmptyCart;
     @BindView(R.id.ll_main_cart_container)
     LinearLayout mLinearLayoutCartContainer;
+    @BindView(R.id.rl_footer_button_container)
+    RelativeLayout mRelativeLayoutFooterButtonContainer;
 
 
     private static final String OTHER_ACTIVITY_FLAG = "other_activity_flag";  //Used for starting login activity
@@ -72,6 +80,7 @@ public class CartActivity extends AppCompatActivity {
     private ClickListenerHelper mClickListenerHelper;
     private int mServerRequestId = 10;  //Default Value
     private Status mStatus;
+    private Cart mCart;
 
 
     @Override
@@ -83,6 +92,21 @@ public class CartActivity extends AppCompatActivity {
         //Saving this so that it could be used in fastadapter.withSavedInstanceState
         mSavedInstanceState = savedInstanceState; //Check if this could cause any issue
 
+        //Get
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        if(bundle != null) {
+//            mCartItems = (List<CartItem>) Parcels.unwrap(intent.getParcelableExtra("cart_items"));
+            mCart = (Cart) Parcels.unwrap(intent.getParcelableExtra("cart"));
+        }
+
+        initCartScreenObject();
+        
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("My Cart");
+        
         mSessionManager = new SessionManager(getApplicationContext());
 
         if (!mSessionManager.isLoggedIn()){
@@ -90,14 +114,123 @@ public class CartActivity extends AppCompatActivity {
             setupLogin();
         }else {
             sUserId =mSessionManager.getUserId();       //Extract unique UserId
-            getServerData(1);   //Sending DATA_REQUEST_ID=1; Get Cart Screen Data
+//            getServerData(1);   //Sending DATA_REQUEST_ID=1; Get Cart Screen Data
+
+            initCartData();
+            
         }
 
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("My Cart");
+
+        
 
 
+    }
+
+    private void initCartScreenObject() {
+
+    List<CartScreenItem> cartScreenItems = new ArrayList<>();
+
+        for (CartItem cartItem:mCart.mCartItems
+             ) {
+            CartScreenItem cartScreenItem = new CartScreenItem();
+            cartScreenItem.setServicePackageId(cartItem.getServicePackageId());
+            cartScreenItem.setServicePackageName(cartItem.getServicePackageName());
+            cartScreenItem.setPrice(cartItem.getPrice());
+            cartScreenItem.setServiceSubCategoryId(cartItem.getServiceSubCategoryId());
+
+            cartScreenItems.add(cartScreenItem);
+        }
+
+        mCartScreen = new CartScreen();
+
+        mCartScreen.setStatus(mCart.getStatus());
+        mCartScreen.setServiceCategoryName(mCart.getServiceCategoryName());
+        mCartScreen.setCartScreenItems(cartScreenItems);
+        
+    }
+
+    private void initCartData() {
+        
+        //check whether cart is empty; If yes, then show empty cart
+        if(mCartScreen.getCartScreenItems().size() <= 0){
+                mLinearLayoutCartContainer.setVisibility(View.GONE);
+                mProgressBar.setVisibility(View.GONE);
+                mRelativeLayoutFooterButtonContainer.setVisibility(View.GONE);
+                mLinearLayoutEmptyCart.setVisibility(View.VISIBLE);
+            }
+
+            mTextViewCategoryName.setText(mCartScreen.getServiceCategoryName());
+
+            mFastAdapterCart = new FastItemAdapter();
+            mFastAdapterCart.withSelectable(true);
+
+            //init the ClickListenerHelper which simplifies custom click listeners on views of the Adapter
+            mClickListenerHelper = new ClickListenerHelper<>(mFastAdapterCart);
+
+
+            try {
+                mFastAdapterCart.add(mCartScreen.getCartScreenItems());
+            } catch (Exception e) {
+                Log.e("CartActivity", e.toString());
+            }
+
+            mRecyclerViewCart.setAdapter(mFastAdapterCart);
+
+            mLayoutManagerCart = new LinearLayoutManager(this);
+            mLayoutManagerCart.setOrientation(LinearLayoutManager.VERTICAL);
+
+            mRecyclerViewCart.setLayoutManager(mLayoutManagerCart);
+            mRecyclerViewCart.setItemAnimator(new DefaultItemAnimator());
+            mRecyclerViewCart.addItemDecoration(new SimpleDividerItemDecoration(this)); //Adding item divider
+
+            mProgressBar.setVisibility(View.GONE);
+
+            //restore selections (this has to be done after the items were added
+            mFastAdapterCart.withSavedInstanceState(mSavedInstanceState);
+
+            //a custom OnCreateViewHolder listener class which is used to create the viewHolders
+            //we define the listener for the imageLovedContainer here for better performance
+            //you can also define the listener within the items bindView method but performance is better if you do it like this
+            mFastAdapterCart.withOnCreateViewHolderListener(new FastAdapter.OnCreateViewHolderListener() {
+                @Override
+                public RecyclerView.ViewHolder onPreCreateViewHolder(ViewGroup parent, int viewType) {
+                    return mFastAdapterCart.getTypeInstance(viewType).getViewHolder(parent);
+                }
+
+                @Override
+                public RecyclerView.ViewHolder onPostCreateViewHolder(final RecyclerView.ViewHolder viewHolder) {
+                    //we do this for our ServicePackage.ViewHolder
+                    if (viewHolder instanceof CartScreenItem.ViewHolder) {
+                        //if we click on the  (mItemBasketContainer)
+                        mClickListenerHelper.listen(viewHolder, ((CartScreenItem.ViewHolder) viewHolder).mRelativeLayoutDeleteContainer, new ClickListenerHelper.OnClickListener<CartScreenItem>() {
+                            @Override
+                            public void onClick(View v, int position, CartScreenItem item) {
+                                for (int i=0;i<mCartScreen.getCartScreenItems().size();i++){
+                                    if (mCartScreen.getCartScreenItems().get(i).getServicePackageId() == item.getServicePackageId()){
+                                        mCartScreen.getCartScreenItems().remove(i);
+                                    }
+                                }
+
+                                mFastAdapterCart.remove(position);
+
+                                //check whether cart is empty; If yes, then show empty cart
+                                if(mCartScreen.getCartScreenItems().size() <= 0){
+                                    mLinearLayoutCartContainer.setVisibility(View.GONE);
+                                    mProgressBar.setVisibility(View.GONE);
+                                    mRelativeLayoutFooterButtonContainer.setVisibility(View.GONE);
+                                    mLinearLayoutEmptyCart.setVisibility(View.VISIBLE);
+                                }
+
+                            }
+                        });
+                    }
+
+                    return viewHolder;
+                }
+            });
+
+        
+        
     }
 
     private void getServerData(final int dataRequestId) {
@@ -160,12 +293,15 @@ public class CartActivity extends AppCompatActivity {
                 .setTitle(R.string.dialog_title_login)
                 .setPositiveButton(R.string.dialog_button_login, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
+                    try {
                         Intent intent = new Intent(CartActivity.this, LoginActivity.class);
                         Bundle b = new Bundle();
                         b.putInt(OTHER_ACTIVITY_FLAG, 10);    //OTHER_ACTIVITY_FLAG = 10; This means login activity is started by activity other than MainActivity;
                         intent.putExtras(b);
-                        startActivityForResult(intent,IDENTIFIER);
+                        startActivityForResult(intent, IDENTIFIER);
+                    }catch (Exception exception){
+                        Crashlytics.logException(exception);
+                    }
 
                     }
                 })
@@ -188,11 +324,11 @@ public class CartActivity extends AppCompatActivity {
             public void onResponse(Call<CartScreen> call, Response<CartScreen> response) {
                 if (response.isSuccessful()) {
 
-                    mCartScreen = response.body();
+//                    mCartScreen = response.body();
 
 
                     //initialize cart with data
-                    initCart();
+//                    initCart();
 
                 } else {
                     Log.d("onResponse", "getCartItems :onResponse:notSuccessful");
@@ -381,14 +517,40 @@ public class CartActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-//        Intent returnIntent = new Intent();
-//        setResult(Activity.RESULT_CANCELED, returnIntent);
-//        finish();   //Finishing Acticity as user press back button and want to update ServiceActivity Cart icon count if there's any change in that using onActivityResult
+        Intent returnIntent = new Intent();
+        updateCartObject();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("cart", Parcels.wrap(mCart));
+        returnIntent.putExtras(bundle);
+        setResult(Activity.RESULT_OK,returnIntent);
+        finish();   //Finishing Activity as user press back button and want to update ServiceActivity Cart icon count if there's any change in that using onActivityResult
+
         super.onBackPressed();
+    }
+
+    private void updateCartObject() {
+
+        List<CartItem> cartItems = new ArrayList<>();
+
+        for (CartScreenItem cartScreenItem:mCartScreen.getCartScreenItems()
+                ) {
+            CartItem cartItem = new CartItem();
+            cartItem.setServicePackageId(cartScreenItem.getServicePackageId());
+            cartItem.setServicePackageName(cartScreenItem.getServicePackageName());
+            cartItem.setPrice(cartScreenItem.getPrice());
+            cartItem.setServiceSubCategoryId(cartScreenItem.getServiceSubCategoryId());
+
+            cartItems.add(cartItem);
+        }
+        mCart.setStatus(mCartScreen.getStatus());
+        mCart.setServiceCategoryName(mCartScreen.getServiceCategoryName());
+        mCart.setCartItems(cartItems);
+        
     }
 
     @Override
     public void onStop() {
+
         try{
             if ( mCartScreen.getCartScreenItems().size()>0) {
                 mServerRequestId = 10;

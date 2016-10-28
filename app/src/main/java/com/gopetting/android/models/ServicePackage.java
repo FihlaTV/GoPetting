@@ -57,6 +57,15 @@ public class ServicePackage extends AbstractItem<ServicePackage, ServicePackage.
         return mServicePackageId;
     }
 
+
+    public String getServicePackageName() {
+        return mServicePackageName;
+    }
+
+    public int getPrice() {
+        return mPrice;
+    }
+
     public void setItemSelected(boolean itemSelected) {
         this.mItemSelected = itemSelected;
     }

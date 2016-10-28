@@ -53,6 +53,21 @@ public class CartScreenItem extends AbstractItem<CartScreenItem, CartScreenItem.
     }
 
 
+    public void setServicePackageId(int servicePackageId) {
+        this.mServicePackageId = servicePackageId;
+    }
+
+    public void setServicePackageName(String servicePackageName) {
+        this.mServicePackageName = servicePackageName;
+    }
+
+    public void setPrice(int price) {
+        this.mPrice = price;
+    }
+
+    public void setServiceSubCategoryId(int serviceSubCategoryId) {
+        this.mServiceSubCategoryId = serviceSubCategoryId;
+    }
 
     //The unique ID for this type of item
     @Override
