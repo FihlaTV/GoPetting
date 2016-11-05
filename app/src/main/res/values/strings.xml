@@ -134,7 +134,7 @@
     <string name="full_address">%1$s\n%2$s %3$s\n%4$s %5$s\n%6$s</string>
 
     <string name="done_text">Done</string>
-    <string name="submit_text">Done</string>
+    <string name="submit_text">Submit</string>
     <string name="add_address_text">Add a new address</string>
     <string name="select_date_time_text"><![CDATA[Select Date & Time]]></string>
     <string name="snackbar_services">Please add a service to cart to continue</string>

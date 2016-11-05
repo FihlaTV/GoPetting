@@ -96,7 +96,7 @@ public class AddressListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Disable footer button click until data is loaded
-        mRelativeLayoutFooterButton.setEnabled(false);
+        mRelativeLayoutFooterButton.setEnabled(true);
 
         mSavedInstanceState = savedInstanceState;
 //        mRelativeLayoutInnerContainer.setVisibility(View.GONE);
@@ -125,6 +125,8 @@ public class AddressListActivity extends AppCompatActivity {
             mRelativeLayoutFooterButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    footerButtonClick();
 
 //                    //Send back selected address only when there's at least one address available(When user will delete address,all address might be deleted
 //                    if (mAddressList.getAddresses().size()>0) {
