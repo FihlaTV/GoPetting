@@ -40,10 +40,11 @@
         <!--<item name="app:customTypeface">@string/typeface_bold</item>-->
     </style>
 
-
-    <!--App EditText Style-->
-    <style name="AppEditText">
-        <item name="android:background">@drawable/edittext_login</item>
+    <!--Edit Text Style to change line color-->
+    <style name="AppEditText" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">@color/grey_300</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
     </style>
 
 

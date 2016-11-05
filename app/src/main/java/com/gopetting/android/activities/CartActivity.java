@@ -92,7 +92,7 @@ public class CartActivity extends AppCompatActivity {
         //Saving this so that it could be used in fastadapter.withSavedInstanceState
         mSavedInstanceState = savedInstanceState; //Check if this could cause any issue
 
-        //Get
+        //Get Cart Data
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 

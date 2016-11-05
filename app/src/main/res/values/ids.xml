@@ -106,6 +106,44 @@
     <item name="ll_empty_cart" type="id" />
     <item name="tv_empty_cart" type="id" />
     <item name="ll_main_cart_container" type="id" />
+    <item name="fastadapter_service_date_item_id" type="id" />
+    <item name="tv_add_address" type="id" />
+    <item name="ll_default_address_container" type="id" />
+    <item name="ic_add_address" type="id" />
+    <item name="ll_main_address_container" type="id" />
+    <item name="ic_calender" type="id" />
+    <item name="tv_select_date" type="id" />
+    <item name="recycler_view_date" type="id" />
+    <item name="recycler_view_time" type="id" />
+    <item name="ll_date_time_container" type="id" />
+    <item name="ll_main_appointment_container" type="id" />
+    <item name="tv_select_date_time" type="id" />
+    <item name="ll_activity_container" type="id" />
+    <item name="fastadapter_dateslot_item_id" type="id" />
+    <item name="tv_month" type="id" />
+    <item name="tv_date" type="id" />
+    <item name="tv_day" type="id" />
+    <item name="fastadapter_timeslot_item_id" type="id" />
+    <item name="tv_timeslot" type="id" />
+    <item name="ll_add_address" type="id" />
+    <item name="edit_text_full_name" type="id" />
+    <item name="edit_text_address" type="id" />
+    <item name="edit_text_area" type="id" />
+    <item name="edit_text_landmark" type="id" />
+    <item name="edit_text_city" type="id" />
+    <item name="edit_text_state" type="id" />
+    <item name="edit_text_pincode" type="id" />
+    <item name="edit_text_mobile" type="id" />
+    <item name="ll_add_address_container" type="id" />
+    <item name="ll_radio_button_container" type="id" />
+    <item name="ll_delete_container" type="id" />
+    <item name="radio_button" type="id" />
+    <item name="fastadapter_address_item_id" type="id" />
+    <item name="rl_main_container" type="id" />
+    <item name="rl_inner_container" type="id" />
+    <item name="iv_delete" type="id" />
+    <item name="ll_address" type="id" />
+
 
 
 </resources>

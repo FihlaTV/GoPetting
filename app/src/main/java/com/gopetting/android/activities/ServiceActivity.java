@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
@@ -18,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.gopetting.android.R;
 import com.gopetting.android.adapters.ViewPagerAdapter;
@@ -45,13 +47,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ServiceActivity extends AppCompatActivity implements ServiceFragment.ServiceFragmentListener {
-
-
 
     @BindView(R.id.toolbar_headerbar)
     Toolbar mToolbar;
@@ -95,6 +96,9 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         setContentView(R.layout.activity_service);
         ButterKnife.bind(this);
 
+        //Disable footer button click until data is loaded into mCart Object
+        mRelativeLayoutFooterButton.setEnabled(false);
+
         mSessionManager = new SessionManager(getApplicationContext());
 
         if (!mSessionManager.isLoggedIn()){
@@ -111,6 +115,24 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Pet Salon");
 
+        mRelativeLayoutFooterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (mSessionManager.isLoggedIn() && mCart.mCartItems.size()>0){
+
+                    Intent intent = new Intent(ServiceActivity.this, AppointmentActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("cart", Parcels.wrap(mCart));
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+
+                }else {
+                    Snackbar.make(findViewById(R.id.coordinator_layout), R.string.snackbar_services, Snackbar.LENGTH_LONG).show();
+                }
+
+            }
+        });
 
     }
 
@@ -235,6 +257,10 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                     mServiceCategoryData = response.body();
                     initServiceData();
 
+                    //Enable footer button click, since if no items are added into cart and user tries to click button; It should work and give snackbar message "Add items to cart"
+                    mRelativeLayoutFooterButton.setEnabled(true);
+
+
                 } else {
                     Log.d("onResponse", "getServiceCategoryData :onResponse:notSuccessful");
                 }
@@ -258,6 +284,9 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                 if (response.isSuccessful()) {
 
                     mCart = response.body();
+
+                    //Enable footer button click since data is loaded into mCart Object
+                    mRelativeLayoutFooterButton.setEnabled(true);
 
 //                    Toast.makeText(ServiceActivity.this,Integer.toString(mCart.mCartItems.size()), Toast.LENGTH_SHORT).show();
 

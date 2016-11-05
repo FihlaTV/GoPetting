@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@id/ll_activity_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_50"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_with_headerbar" />
+
+    <RelativeLayout
+        android:id="@+id/rl_appointment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/rl_address_date_time_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/footer_height">
+
+                <LinearLayout
+                    android:id="@id/ll_main_address_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="20.0dip"
+                    >
+
+                    <LinearLayout
+                        android:id="@id/ll_add_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="15.0dip"
+                        android:paddingLeft="5.0dip">
+
+                        <ImageView
+                        android:id="@id/ic_add_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_add"
+                        android:layout_gravity="center_vertical" />
+
+                    <com.gopetting.android.views.TypefaceTextView
+                        android:id="@id/tv_add_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10.0dip"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/add_address_text"
+                        android:textColor="@color/item_text_regular"
+                        android:textSize="@dimen/text_size_large"
+                        app:customTypeface="@string/typeface_regular"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1.0dip"
+                        android:background="@color/grey_300"/>
+
+                    <LinearLayout
+                        android:id="@id/ll_default_address_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingTop="10.0dip"
+                        android:paddingLeft="39.dip"
+                        android:paddingRight="5.0dip"
+                        android:paddingBottom="10.0dip"
+                        android:background="@color/grey_50"
+                        android:visibility="gone">
+
+                        <com.gopetting.android.views.TypefaceTextView
+                            android:id="@+id/tv_full_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:textColor="@color/item_text_regular"
+                            android:textSize="@dimen/text_size_medium_special"
+                            app:customTypeface="@string/typeface_regular" />
+
+                        <com.gopetting.android.views.TypefaceTextView
+
+                            android:id="@+id/tv_full_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5.0dip"
+                            android:layout_marginBottom="5.dip"
+                            android:maxLines="7"
+                            android:textColor="@color/item_text_regular"
+                            android:textSize="@dimen/text_size_medium_special"
+                            app:customTypeface="@string/typeface_light" />
+
+                        <com.gopetting.android.views.TypefaceTextView
+                            android:id="@+id/tv_phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:textColor="@color/item_text_regular"
+                            android:textSize="@dimen/text_size_medium_special"
+                            app:customTypeface="@string/typeface_regular" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1.0dip"
+                        android:background="@color/grey_300"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@id/ll_date_time_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10.0dip"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="10.0dip"
+                        android:paddingBottom="5.0dip"
+                        android:paddingLeft="10.0dip"
+                        android:paddingRight="5.0dip">
+
+                        <ImageView
+                            android:id="@id/ic_calender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/ic_calendar"
+                            android:layout_gravity="center_vertical" />
+
+                        <com.gopetting.android.views.TypefaceTextView
+                            android:id="@id/tv_select_date_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="10.0dip"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/select_date_time_text"
+                            android:textColor="@color/item_text_regular"
+                            android:textSize="@dimen/text_size_medium_special"
+                            app:customTypeface="@string/typeface_regular"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1.0dip"
+                        android:background="@color/grey_100"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@id/recycler_view_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                      />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1.0dip"
+                        android:background="@color/grey_100"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@id/recycler_view_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5.0dip"
+                        android:background="@color/grey_50"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@id/rl_footer_button_container"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/footer_height"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/selector_footer_button"
+                android:clickable="true">
+
+                <LinearLayout
+                    android:id="@id/ll_footer_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:clickable="false"
+                    android:orientation="vertical"
+                    android:padding="10.0dip">
+
+                    <Button
+                        android:id="@id/btn_footer_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:clickable="false"
+                        android:gravity="center"
+                        android:text="@string/done_text"
+                        android:textColor="@color/item_text_regular"
+                        android:textSize="@dimen/text_size_medium_special" />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <FrameLayout
+            android:id="@id/progress_bar_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@id/progress_bar"
+                android:layout_width="36.0dip"
+                android:layout_height="36.0dip"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

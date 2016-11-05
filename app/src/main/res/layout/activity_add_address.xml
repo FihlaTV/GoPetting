@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@id/ll_activity_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_50"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_with_headerbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@id/ll_add_address_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/footer_height"
+                android:paddingLeft="10.0dip"
+                android:paddingRight="10.0dip"
+                android:paddingTop="20.0dip">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <com.gopetting.android.views.TypefaceEditText
+                            android:id="@id/edit_text_full_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5.0dip"
+                            android:layout_marginTop="10.0dip"
+                            android:hint="@string/hint_full_name"
+                            android:inputType="textCapWords"
+                            android:maxLength="50"
+                            android:textColor="@color/item_text_regular"
+                            android:theme="@style/AppEditText" />
+
+                        <com.gopetting.android.views.TypefaceEditText
+                            android:id="@id/edit_text_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5.0dip"
+                            android:layout_marginTop="5.0dip"
+                            android:inputType="textCapWords"
+                            android:hint="@string/hint_address"
+                            android:maxLength="100"
+                            android:textColor="@color/item_text_regular"
+                            android:theme="@style/AppEditText" />
+
+
+                        <com.gopetting.android.views.TypefaceEditText
+                            android:id="@id/edit_text_area"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5.0dip"
+                            android:layout_marginTop="5.0dip"
+                            android:hint="@string/hint_area"
+                            android:inputType="textCapWords"
+                            android:maxLength="45"
+                            android:textColor="@color/item_text_regular"
+                            android:theme="@style/AppEditText" />
+
+
+                        <com.gopetting.android.views.TypefaceEditText
+                            android:id="@id/edit_text_landmark"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5.0dip"
+                            android:layout_marginTop="5.0dip"
+                            android:hint="@string/hint_landmark"
+                            android:inputType="textCapWords"
+                            android:maxLength="45"
+                            android:textColor="@color/item_text_regular"
+                            android:theme="@style/AppEditText" />
+
+                        <com.gopetting.android.views.TypefaceEditText
+                            android:id="@id/edit_text_city"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5.0dip"
+                            android:layout_marginTop="5.0dip"
+                            android:hint="@string/hint_city"
+                            android:inputType="textCapWords"
+                            android:maxLength="45"
+                            android:textColor="@color/item_text_regular"
+                            android:theme="@style/AppEditText" />
+
+
+                        <com.gopetting.android.views.TypefaceEditText
+                            android:id="@id/edit_text_state"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5.0dip"
+                            android:layout_marginTop="5.0dip"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:hint="@string/hint_state"
+                            android:inputType="textCapWords"
+                            android:maxLength="23"
+                            android:text="Telangana"
+                            android:textColor="@color/item_text_regular"
+                            android:theme="@style/AppEditText" />
+
+
+                        <com.gopetting.android.views.TypefaceEditText
+                            android:id="@id/edit_text_pincode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5.0dip"
+                            android:layout_marginTop="5.0dip"
+                            android:hint="@string/hint_pincode"
+                            android:inputType="number"
+                            android:maxLength="6"
+                            android:textColor="@color/item_text_regular"
+                            android:theme="@style/AppEditText" />
+
+                        <com.gopetting.android.views.TypefaceEditText
+                            android:id="@id/edit_text_mobile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5.0dip"
+                            android:layout_marginTop="5.0dip"
+                            android:hint="@string/hint_mobile"
+                            android:inputType="number"
+                            android:maxLength="10"
+                            android:textColor="@color/item_text_regular"
+                            android:theme="@style/AppEditText" />
+
+
+                    </LinearLayout>
+
+
+                </ScrollView>
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@id/rl_footer_button_container"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/footer_height"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/selector_footer_button"
+                android:clickable="true">
+
+                <LinearLayout
+                    android:id="@id/ll_footer_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:clickable="false"
+                    android:orientation="vertical"
+                    android:padding="10.0dip">
+
+                    <Button
+                        android:id="@id/btn_footer_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:clickable="false"
+                        android:gravity="center"
+                        android:text="@string/done_text"
+                        android:textColor="@color/item_text_regular"
+                        android:textSize="@dimen/text_size_medium_special" />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <FrameLayout
+            android:id="@id/progress_bar_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@id/progress_bar"
+                android:layout_width="36.0dip"
+                android:layout_height="36.0dip"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
+
+
+    </RelativeLayout>
+</LinearLayout>

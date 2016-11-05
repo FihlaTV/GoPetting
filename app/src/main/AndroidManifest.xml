@@ -102,7 +102,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gopetting.android.activities.MainActivity" />
         </activity>
-        <activity android:name=".activities.CartActivity"></activity>
+        <activity android:name=".activities.CartActivity" />
+        <activity
+            android:name=".activities.AppointmentActivity"
+            android:label="@string/title_activity_appointment" />
+        <activity
+            android:name=".activities.AddAddressActivity"
+            android:label="@string/title_activity_add_address" />
+        <activity android:name=".activities.AddressListActivity"
+            android:label="@string/title_activity_address_list" />
+
+
     </application>
 
 </manifest>

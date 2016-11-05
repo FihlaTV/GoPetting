@@ -1,14 +1,18 @@
 package com.gopetting.android.network;
 
+import com.gopetting.android.models.Address;
+import com.gopetting.android.models.AddressList;
+import com.gopetting.android.models.Appointment;
 import com.gopetting.android.models.Cart;
 import com.gopetting.android.models.CartScreen;
 import com.gopetting.android.models.Credential;
+import com.gopetting.android.models.DateTimeSlot;
+import com.gopetting.android.models.Dateslot;
 import com.gopetting.android.models.DeliveryDetails;
 import com.gopetting.android.models.Dog;
 import com.gopetting.android.models.DogDetails;
 import com.gopetting.android.models.FilterSubCategory;
 import com.gopetting.android.models.ServiceCategory;
-import com.gopetting.android.models.ServiceSubCategory;
 import com.gopetting.android.models.Status;
 import com.gopetting.android.models.StringItem;
 import com.gopetting.android.models.User;
@@ -101,14 +105,7 @@ public class Controller {
                                              @Query("service_category_id") int serviceCategoryId);
     }
 
-    //Get cart items
-    public interface GetCartItems {
-        @GET("/api/v1/service/cart")
-        Call<Cart> getCartItems(@Header("Authorization") String authorization,
-                                @Query("user_id") String userId);
-    }
 
-    //Backup
     //Get cart items version v2
     public interface GetCartItemsV2 {
         @GET("/api/v1/service/cart/screen")
@@ -134,6 +131,61 @@ public class Controller {
         @GET("/api/v1/service/cart/screen")
         Call<CartScreen> getCartScreenItems(@Header("Authorization") String authorization,
                                             @Query("user_id") String userId);
+    }
+
+
+
+    public interface GetAppointmentDetails {
+
+        @GET("/api/v1/appointment/address_date_time")
+        Call<Appointment> getAppointmentDetails(@Header("Authorization") String authorization,
+                                                @Query("user_id") String userId);
+
+    }
+
+
+    public interface GetAddressFirstStatus {
+        @GET("/api/v1/appointment/address/u1")
+        Call<Status> getAddressFirstStatus(@Header("Authorization") String authorization,
+                                   @Query("user_id") String userId,
+                                   @Query("full_name") String  fullName,
+                                   @Query("address") String address,
+                                   @Query("area") String area,
+                                   @Query("landmark") String landmark,
+                                   @Query("city") String city,
+                                   @Query("state") String state,
+                                   @Query("pincode") int pincode,
+                                   @Query("phone") String phone);
+    }
+
+
+    public interface GetDateTimeItems {
+
+        @GET("/api/v1/appointment/date_time")
+        Call<DateTimeSlot> getDateTimeData(@Header("Authorization") String authorization,
+                                           @Query("user_id") String userId,
+                                           @Query("pincode") String pincode);
+
+    }
+
+
+    public interface GetAddressListItems {
+
+        @GET("/api/v1/appointment/address_list")
+        Call<AddressList> getAddressListItems(@Header("Authorization") String authorization,
+                                          @Query("user_id") String userId);
+
+    }
+
+
+
+    public interface GetAddressSecondStatus {
+        @GET("/api/v1/appointment/address/u2")
+        Call<Status> getAddressSecondStatus(@Header("Authorization") String authorization,
+                                           @Query("user_id") String userId,
+                                           @Query("address_id") int  addressId,
+                                           @Query("address_id_list") String  addressIdList,
+                                           @Query("indicator") int  indicator); //2 for AddressId List; indicator=3 for AddressId ; Now both options removed
     }
 
 

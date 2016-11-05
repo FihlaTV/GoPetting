@@ -8,6 +8,17 @@ import com.google.gson.annotations.SerializedName;
 public class Status {
 
     @SerializedName("status")
-    private String mStatus;
+    private int mStatus;
 
+    @SerializedName("id")
+    private int mId;
+
+    public int getStatus() {
+        return mStatus;
+    }
+
+    public int getId() {
+        return mId;
+    }
 }
+
