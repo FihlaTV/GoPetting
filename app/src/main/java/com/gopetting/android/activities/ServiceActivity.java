@@ -69,8 +69,11 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
     private static final int SERVICE_IDENTIFIER_1 = 201 ; ////Intent Identifier; for Starting CartActivity
     private static final int SERVICE_IDENTIFIER_2 = 202; //Intent Identifier, when Basket icon clicked and user not logged in
     private static final int SERVICE_IDENTIFIER_3 = 203; //Intent Identifier; Cart icon clicked and user not logged in
+    private static final int SERVICE_IDENTIFIER_4 = 204; //Intent Identifier; for starting Appointment Activity
     private static final int SERVICE_CATEGORY_ID = 11;  //Pet Salon
     private static String sUserId;
+
+
     private Credential mCredential;
     private ViewPagerAdapter mViewPagerAdapter;
     private ServiceCategory mServiceCategoryData;
@@ -125,7 +128,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("cart", Parcels.wrap(mCart));
                     intent.putExtras(bundle);
-                    startActivity(intent);
+                    startActivityForResult(intent,SERVICE_IDENTIFIER_4);
 
                 }else {
                     Snackbar.make(findViewById(R.id.coordinator_layout), R.string.snackbar_services, Snackbar.LENGTH_LONG).show();
@@ -596,6 +599,23 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                 }
 
             }
+        }
+
+
+        //Intent Identifier; for Starting AppointmentActivity
+        //For saving latest cart when moving between activities like service,cart,appointment and ordersummary.
+        if (requestCode == SERVICE_IDENTIFIER_4) {
+            if (resultCode == Activity.RESULT_OK) {
+                mCart = (Cart) Parcels.unwrap(data.getParcelableExtra("cart"));
+
+                //Refresh Shopping Cart Icon Count;
+                mNotifyCount = Integer.toString(mCart.mCartItems.size());
+                invalidateOptionsMenu();
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("Info", "RESULT_CANCELED code was not expected");
+            }
+
         }
 
 

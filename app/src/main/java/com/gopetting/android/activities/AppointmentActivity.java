@@ -74,10 +74,14 @@ public class AppointmentActivity extends AppCompatActivity {
     RecyclerView mRecyclerViewTimeslot;
     @BindView(R.id.ll_add_address)
     LinearLayout mLinearLayoutAddAddress;
+    @BindView(R.id.rl_footer_button_container)
+    RelativeLayout mRelativeLayoutFooterButton;
 
 
     private static final int APPOINTMENT_INTENT_IDENTIFIER_1 = 301 ; //INTENT IDENTIFIER; Start AddAddressActivity and Get New Address
     private static final int APPOINTMENT_INTENT_IDENTIFIER_2 = 302 ; //INTENT IDENTIFIER; Start AddressListActivity and Get Address
+    private static final int APPOINTMENT_INTENT_IDENTIFIER_3 = 303 ; //INTENT IDENTIFIER; Start OrderSummaryActivity; Mainly will be used for
+                                                                     //moving 'mCart' object.
     private static String sUserId;
 
 
@@ -91,7 +95,8 @@ public class AppointmentActivity extends AppCompatActivity {
     private FastItemAdapter mFastItemAdapterTimeslot;
     private LinearLayoutManager mLayoutManagerTimeslot;
     private String mSelectedDateslot;
-    private int mSelectedTimeslot;
+    private int mSelectedTimeslotId;
+    private String mSelectedTimeslot;
     private String mFullName;
     private String mAddress;
     private String mArea;
@@ -104,6 +109,10 @@ public class AppointmentActivity extends AppCompatActivity {
     private List<Dateslot> mDateslots;
     private int mDateTimeslotStatus;        //To be used as a Status flag for correctly starting activity when 'Add Address' button clicked
     private int mDefaultAddressId;
+    private String mSelectedFullName;
+    private String mSelectedFullAddress;
+    private String mSelectedPhone;
+    private int mSelectedAddressId;
 
 
     @Override
@@ -391,9 +400,42 @@ public class AppointmentActivity extends AppCompatActivity {
         });
 
 
+        mRelativeLayoutFooterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (View.VISIBLE ==  mLinearLayoutDefaultAddressContainer.getVisibility()){
+                Intent intent = new Intent(AppointmentActivity.this, OrderSummaryActivity.class);
+                Bundle bundle = new Bundle();
+
+                bundle.putParcelable("cart", Parcels.wrap(mCart)); //Send cart data;
+
+                //Send Date, Time and Address Details
+                bundle.putString("selected_date", mSelectedDateslot);
+                bundle.putInt("selected_timeslot_id", mSelectedTimeslotId);
+                bundle.putString("selected_timeslot", mSelectedTimeslot);
+                bundle.putString("selected_full_name", mSelectedFullName);
+                bundle.putInt("selected_address_id", mSelectedAddressId);
+                bundle.putString("selected_full_address", mSelectedFullAddress);
+                bundle.putString("selected_phone", mSelectedPhone);
+
+                intent.putExtras(bundle);
+                startActivityForResult(intent,APPOINTMENT_INTENT_IDENTIFIER_3); //Mainly for transporting 'mCart' object
+
+
+
+
+            }else {
+                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_appointment, Snackbar.LENGTH_LONG).show();
+            }
+
+            }
+        });
+
     }
 
     private void initAppointment() {
+
 
         mTextViewFullName.setText(mAppointment.getAddresses().get(0).getFullName());
         Resources res = getResources();
@@ -409,6 +451,14 @@ public class AppointmentActivity extends AppCompatActivity {
 
         mTextViewFullAddress.setText(fullAddress);
         mTextViewPhone.setText(mAppointment.getAddresses().get(0).getPhone());
+
+
+        //Save selected address details for SummaryActivity
+        mSelectedFullName = mAppointment.getAddresses().get(0).getFullName();
+        mSelectedAddressId = mAppointment.getAddresses().get(0).getAddressId();
+        mSelectedFullAddress = fullAddress;
+        mSelectedPhone = mAppointment.getAddresses().get(0).getPhone();
+
 
         //Initialize mDateslots object for DateTimeLayout setup;
         mDateslots = mAppointment.getDateslots();
@@ -465,7 +515,8 @@ public class AppointmentActivity extends AppCompatActivity {
 
         //Save currently selected Dateslot and Timeslot
         mSelectedDateslot = mDateslots.get(0).getDateslot();
-        mSelectedTimeslot = mDateslots.get(0).mTimeslots.get(0).getTimeslotId();
+        mSelectedTimeslotId = mDateslots.get(0).mTimeslots.get(0).getTimeslotId();
+        mSelectedTimeslot = mDateslots.get(0).mTimeslots.get(0).getTimeslot();
 
 
         //Dateslot Fastadapter Click listener
@@ -490,9 +541,11 @@ public class AppointmentActivity extends AppCompatActivity {
             public boolean onClick(View v, IAdapter<Timeslot> adapter, Timeslot item, int position) {
 
                 //Save currently selected Timeslot
-                mSelectedTimeslot = item.getTimeslotId();
+                mSelectedTimeslotId = item.getTimeslotId();
+                mSelectedTimeslot = item.getTimeslot();
 
-//                Toast.makeText(AppointmentActivity.this, mSelectedDateslot+mSelectedTimeslot, Toast.LENGTH_SHORT).show();
+
+//                Toast.makeText(AppointmentActivity.this, mSelectedDateslot+mSelectedTimeslotId, Toast.LENGTH_SHORT).show();
 
                 return false;
             }
@@ -512,6 +565,7 @@ public class AppointmentActivity extends AppCompatActivity {
                 //Enable Progressbar as need to get DateTime data from server
                 mProgressBar.setVisibility(View.VISIBLE);
 
+                mAddressId = data.getExtras().getInt("address_id");
                 mFullName = data.getExtras().getString("full_name");
                 mAddress = data.getExtras().getString("address");
                 mArea = data.getExtras().getString("area");
@@ -584,6 +638,21 @@ public class AppointmentActivity extends AppCompatActivity {
 
         }
 
+
+        //Intent Identifier; for Starting OrderSummaryActivity
+        //For saving latest cart when moving between activities like service,cart,appointment and ordersummary.
+        if (requestCode == APPOINTMENT_INTENT_IDENTIFIER_3) {
+            if (resultCode == Activity.RESULT_OK) {
+                mCart = (Cart) Parcels.unwrap(data.getParcelableExtra("cart")); //Update mCart object
+
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("Info", "RESULT_CANCELED code was not expected");
+            }
+
+        }
+
+
 }
 
     private void setDefaultAddressLayout() {
@@ -601,6 +670,12 @@ public class AppointmentActivity extends AppCompatActivity {
 
         mTextViewFullAddress.setText(fullAddress);
         mTextViewPhone.setText(mPhone);
+
+        //Save selected address details for SummaryActivity
+        mSelectedFullName = mFullName;
+        mSelectedAddressId = mAddressId;
+        mSelectedFullAddress = fullAddress;
+        mSelectedPhone = mPhone;
 
     }
 
@@ -623,9 +698,25 @@ public class AppointmentActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+
+        Intent returnIntent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("cart", Parcels.wrap(mCart));
+        returnIntent.putExtras(bundle);
+        setResult(Activity.RESULT_OK,returnIntent);
+        finish();   //Finishing Activity as user press back button and want to update ServiceActivity Cart icon count if there's any change in that using onActivityResult
+
+        super.onBackPressed();
+    }
+
+
+    @Override
     public void onStop() {
         super.onStop();
     }
+
+
 
     @Override
     public void onDestroy() {

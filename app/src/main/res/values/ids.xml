@@ -143,7 +143,35 @@
     <item name="rl_inner_container" type="id" />
     <item name="iv_delete" type="id" />
     <item name="ll_address" type="id" />
-
+    <item name="ll_promo_code" type="id" />
+    <item name="rl_apply_promo_code" type="id" />
+    <item name="edit_text_apply_promo" type="id" />
+    <item name="tv_apply_promo" type="id" />
+    <item name="rl_promo_code_applied" type="id" />
+    <item name="tv_promo_code_applied" type="id" />
+    <item name="tv_remove" type="id" />
+    <item name="cb_pickup_drop" type="id" />
+    <item name="rl_pickup_drop" type="id" />
+    <item name="tv_pickup_drop" type="id" />
+    <item name="tv_sub_total_amount" type="id" />
+    <item name="rl_sub_total" type="id" />
+    <item name="tv_promo_code_subtotal_amount" type="id" />
+    <item name="tv_pickup_drop_subtotal_amount" type="id" />
+    <item name="rl_pickup_drop_subtotal" type="id" />
+    <item name="rl_promo_code_subtotal" type="id" />
+    <item name="tv_grand_total_amount" type="id" />
+    <item name="rl_grand_total" type="id" />
+    <item name="tv_special_instructions" type="id" />
+    <item name="edit_text_special_instructions" type="id" />
+    <item name="ll_special_instructions" type="id" />
+    <item name="tv_time" type="id" />
+    <item name="tv_date_time" type="id" />
+    <item name="ll_address_container" type="id" />
+    <item name="rl_i_accept_terms_conditions" type="id" />
+    <item name="cb_i_accept_terms_conditions" type="id" />
+    <item name="tv_i_accept_terms_conditions" type="id" />
+    <item name="ll_content_container" type="id" />
+    <item name="tv_i_accept" type="id" />
 
 
 </resources>

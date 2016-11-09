@@ -109,9 +109,12 @@
         <activity
             android:name=".activities.AddAddressActivity"
             android:label="@string/title_activity_add_address" />
-        <activity android:name=".activities.AddressListActivity"
+        <activity
+            android:name=".activities.AddressListActivity"
             android:label="@string/title_activity_address_list" />
 
+        <activity android:name=".activities.OrderSummaryActivity"
+            android:label="@string/title_activity_order_summary" />
 
     </application>
 

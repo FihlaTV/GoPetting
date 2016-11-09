@@ -94,5 +94,6 @@
     <color name="black_primary">#DE000000</color>
 
     <color name="grey_50">#FAFAFA</color>
+    <color name="grey_200">#EEEEEE</color>
 
 </resources>

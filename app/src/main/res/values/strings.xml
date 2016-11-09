@@ -61,7 +61,7 @@
 
     <!--Filter Activity-->
     <string name="text_clear">CLEAR</string>
-    <string name="text_apply">APPLY</string>
+    <string name="text_apply">Apply</string>
     <string name="title_activity_filter">Filters</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -156,5 +156,43 @@
     <string name="snackbar_non_servicable_pincode">Currently we do not provide services at this area</string>
     <string name="title_activity_address_list">Choose an Address</string>
     <string name="snackbar_choose_address">Please choose an address and press submit</string>
+    <string name="text_promo_applied">Promo Code Applied Successfully</string>
+    <string name="text_remove">Remove</string>
+    <string name="hint_apply_promo">promo code</string>
+    <string name="text_pickup_drop">Pickup - Service - Drop Facility</string>
+    <string name="text_sub_total">Sub Total</string>
+    <string name="text_promo_code_subtotal">Promo</string>
+    <string name="text_pickup_drop_subtotal">Pickup-Service-Drop</string>
+    <string name="text_grand_total">Grand Total</string>
+    <string name="text_special_instructions">Tell us more about your wonderful pet!</string>
+    <string name="text_date_time"><![CDATA[Date & Time]]></string>
+    <string name="text_i_accept_terms_conditions"><![CDATA[terms & conditions]]></string>
+    <string name="title_activity_order_summary">Order Summary</string>
+    <string name="text_proceed_to_payment">Proceed to Payment</string>
+    <string name="snackbar_appointment">Please add an address</string>
+    <string name="text_address_details_title">Address Details</string>
+    <string name="hint_age_group">Choose Age</string>
+
+
+    <string-array name="string_array_age_group">
+        <item>Choose Age</item>
+        <item>New Born</item>
+        <item>3months - 6months</item>
+        <item>6months - 1year</item>
+        <item>1year - 2years</item>
+        <item>More than 2years</item>
+    </string-array>
+
+
+    <string name="sub_total_amount">Rs.%1$d</string>
+    <string name="pickup_drop_charges">(+)Rs.%1$d</string>
+    <string name="promo_code_amount">(-)Rs.%1$d</string>
+    <string name="grand_total_amount">Rs.%1$d</string>
+    <string name="timeslot">, %1$s</string>
+    <string name="terms_conditions_underlined">I accept %1$s</string>
+    <string name="snackbar_invalid_promo">Promo Code is invalid or expired</string>
+    <string name="hint_breed_type">Enter Breed Type</string>
+    <string name="text_i_accept">I accept</string>
+
 
 </resources>

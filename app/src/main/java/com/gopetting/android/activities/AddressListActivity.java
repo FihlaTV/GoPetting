@@ -519,7 +519,7 @@ public class AddressListActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v, int position, Address item) {
 
-                            Toast.makeText(AddressListActivity.this, "Delete button clicked", Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+//                            Toast.makeText(AddressListActivity.this, "Delete button clicked", Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
 
 //                            if (position != mAddressList.getAddresses().size()-1) {
                             if (mDefaultAddressId == item.getAddressId()) {
@@ -649,6 +649,7 @@ public class AddressListActivity extends AppCompatActivity {
         Intent returnIntent = new Intent();
         Bundle bundle = new Bundle();
 
+        bundle.putInt("address_id", mAddressList.getAddresses().get(mSelectedAddressPosition).getAddressId());
         bundle.putString("full_name", mAddressList.getAddresses().get(mSelectedAddressPosition).getFullName());
         bundle.putString("address", mAddressList.getAddresses().get(mSelectedAddressPosition).getAddress());
         bundle.putString("area", mAddressList.getAddresses().get(mSelectedAddressPosition).getArea());

@@ -33,6 +33,9 @@ public class Timeslot extends AbstractItem<Timeslot, Timeslot.ViewHolder> {
     }
 
 
+    public String getTimeslot() {
+        return mTimeslot;
+    }
 
     //The unique ID for this type of item
     @Override

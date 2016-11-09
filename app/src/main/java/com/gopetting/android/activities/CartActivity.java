@@ -49,6 +49,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+//TODO: Cart is getting data from ServiceActivity only, not from Server. So will have to remove unused code.
+
 public class CartActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar_headerbar)
@@ -101,6 +103,7 @@ public class CartActivity extends AppCompatActivity {
             mCart = (Cart) Parcels.unwrap(intent.getParcelableExtra("cart"));
         }
 
+        //Intialize cart screen model(fastadapter) using 'cart' bundle received from previous activity; This will be used to display cart items
         initCartScreenObject();
         
         setSupportActionBar(mToolbar);
