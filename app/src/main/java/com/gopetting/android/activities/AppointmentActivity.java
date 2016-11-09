@@ -3,6 +3,7 @@ package com.gopetting.android.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import org.parceler.Parcels;
 
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -527,8 +529,31 @@ public class AppointmentActivity extends AppCompatActivity {
                 //Set new Timeslots for selected dateslot
                 mFastItemAdapterTimeslot.setNewList(item.mTimeslots);
 
-                //Save currently selected Dateslot
+                //Select/highlight currently pressed item and Deselect rest (This is implemented for item correct state color)
+                    Set<Integer> selectionsDateslot = mFastItemAdapterDateslot.getSelections();
+                    if (!selectionsDateslot.isEmpty()) {
+                        int selectedPosition = selectionsDateslot.iterator().next();
+                        mFastItemAdapterDateslot.deselect();
+                        mFastItemAdapterDateslot.notifyItemChanged(selectedPosition);
+                    }
+                    mFastItemAdapterDateslot.select(position);
+
+
+                //Deselect all timeslots (so that only one item can be selected)
+                    Set<Integer> selectionsTimeslot = mFastItemAdapterTimeslot.getSelections();
+                    if (!selectionsTimeslot.isEmpty()) {
+                        int selectedPosition = selectionsTimeslot.iterator().next();
+                        mFastItemAdapterTimeslot.deselect();
+                        mFastItemAdapterTimeslot.notifyItemChanged(selectedPosition);
+                    }
+
+                //Default first timeslot selection on click of a date
+                mFastItemAdapterTimeslot.select(0);
+
+                //Save currently selected Dateslot/Timeslot
                 mSelectedDateslot = item.getDateslot();
+                mSelectedTimeslotId = item.mTimeslots.get(0).getTimeslotId();
+                mSelectedTimeslot = item.mTimeslots.get(0).getTimeslot();
 
                 return false;
             }
@@ -540,12 +565,20 @@ public class AppointmentActivity extends AppCompatActivity {
             @Override
             public boolean onClick(View v, IAdapter<Timeslot> adapter, Timeslot item, int position) {
 
+
+                //Select/highlight currently pressed item and Deselect rest (This is implemented for item correct state color: Teal or Transparent)
+                Set<Integer> selectionsDateslot = mFastItemAdapterTimeslot.getSelections();
+                if (!selectionsDateslot.isEmpty()) {
+                    int selectedPosition = selectionsDateslot.iterator().next();
+                    mFastItemAdapterTimeslot.deselect();
+                    mFastItemAdapterTimeslot.notifyItemChanged(selectedPosition);
+                }
+                mFastItemAdapterTimeslot.select(position);
+
+
                 //Save currently selected Timeslot
                 mSelectedTimeslotId = item.getTimeslotId();
                 mSelectedTimeslot = item.getTimeslot();
-
-
-//                Toast.makeText(AppointmentActivity.this, mSelectedDateslot+mSelectedTimeslotId, Toast.LENGTH_SHORT).show();
 
                 return false;
             }
