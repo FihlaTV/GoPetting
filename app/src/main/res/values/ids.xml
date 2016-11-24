@@ -172,6 +172,18 @@
     <item name="tv_i_accept_terms_conditions" type="id" />
     <item name="ll_content_container" type="id" />
     <item name="tv_i_accept" type="id" />
+    <item name="iv_order_status" type="id" />
+    <item name="tv_order_status" type="id" />
+    <item name="ll_status_id" type="id" />
+    <item name="tv_order_status_id_name" type="id" />
+    <item name="tv_order_status_id" type="id" />
+    <item name="tv_order_status_message" type="id" />
+    <item name="ll_schedule" type="id" />
+    <item name="tv_scheduled_text" type="id" />
+    <item name="tv_scheduled_slot" type="id" />
+    <item name="tv_order_failed_id" type="id" />
+    <item name="tv_order_failed_id_name" type="id" />
+    <item name="ll_failed_id" type="id" />
 
 
 </resources>

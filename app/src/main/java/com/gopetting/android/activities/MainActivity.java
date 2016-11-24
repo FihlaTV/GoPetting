@@ -56,6 +56,7 @@ import com.gopetting.android.models.ProductCategoryData;
 import com.gopetting.android.models.StringItem;
 import com.gopetting.android.network.SessionManager;
 import com.gopetting.android.utils.Constants;
+import com.gopetting.android.utils.SimpleDividerItemDecoration;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
@@ -332,6 +333,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fastAdapterProductCategory.withSelectable(true);
         fastAdapterProductCategory.add(ProductCategoryData.getItems());
 
+
         fastAdapterProductCategory.withOnClickListener(new FastAdapter.OnClickListener<ProductCategory>() {
             @Override
             public boolean onClick(View v, IAdapter<ProductCategory> adapter, ProductCategory item, int position) {
@@ -374,6 +376,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 //        Set Default Item Animator
         mRecyclerViewCategory.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerViewCategory.addItemDecoration(new SimpleDividerItemDecoration(this));//Adding item divider
 
 
 //        fastAdapterProductCategory.withSavedInstanceState(savedInstanceState);

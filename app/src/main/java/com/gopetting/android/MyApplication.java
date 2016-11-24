@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.instamojo.android.Instamojo;
 
 /**
  * Created by Sumit on 10/2/2016.
@@ -21,6 +22,8 @@ public class MyApplication extends Application {
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
+
+        Instamojo.initialize(this); //Initialize Instamojo
 
         singleton = this;
 

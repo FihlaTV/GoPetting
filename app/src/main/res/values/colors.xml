@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#009688</color>
-    <color name="colorPrimaryDark">#00796B</color>
-    <!--<color name="colorAccent">#FFFF00</color>-->
-    <color name="colorAccent">#FFC107</color>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#1976D2</color>
+    <color name="colorAccent">#FFEB3B</color>
 
     <!--Colors for View State-->
-    <color name="colorAccent_secondary">#FFD740</color>
-    <color name="colorPrimary_secondary">#64FFDA</color>
+    <color name="colorPrimary_secondary">#448AFF</color>        <!--A200-->
+    <color name="colorAccent_secondary">#FFEA00</color>         <!--A400-->
+
+
+    <!--<color name="colorPrimary">#009688</color>-->
+    <!--<color name="colorPrimaryDark">#00796B</color>-->
+    <!--&lt;!&ndash;<color name="colorAccent">#FFFF00</color>&ndash;&gt;-->
+    <!--<color name="colorAccent">#FFC107</color>-->
+
+    <!--Colors for View State-->
+    <!--<color name="colorAccent_secondary">#FFD740</color>-->
+    <!--<color name="colorPrimary_secondary">#64FFDA</color>-->
+
+
 
     <!-- TODO: Change these names to Blue-Grey when u're fine with color; Check these color codes again, they may be incorrect; These color codes are available at the bottom also-->
     <!-- Name is Blue, but it's 'Blue-Grey'; Just a temp check-->
@@ -95,5 +106,9 @@
 
     <color name="grey_50">#FAFAFA</color>
     <color name="grey_200">#EEEEEE</color>
+    <color name="blue_grey_900">#263238</color>
+    <color name="grey_900">#212121</color>
+
+    <color name="grey_900_primary">#DE212121</color> <!--87% Opacity-->
 
 </resources>

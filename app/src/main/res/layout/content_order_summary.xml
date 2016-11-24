@@ -378,7 +378,7 @@
                     android:layout_marginBottom="5.0dip"
                     android:layout_marginTop="5.0dip"
                     android:hint="@string/text_special_instructions"
-                    android:inputType="textCapWords"
+                    android:inputType="textCapSentences"
                     android:maxLength="100"
                     android:textColor="@color/item_text_regular"
                     android:textSize="@dimen/text_size_medium"

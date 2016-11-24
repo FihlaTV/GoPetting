@@ -1,20 +1,17 @@
 package com.gopetting.android.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -44,11 +42,20 @@ import com.gopetting.android.models.Credential;
 import com.gopetting.android.models.OrderSummary;
 import com.gopetting.android.models.Promo;
 import com.gopetting.android.models.Status;
+import com.gopetting.android.models.SummaryFirstStatus;
+import com.gopetting.android.models.SummarySecondStatus;
 import com.gopetting.android.network.Controller;
 import com.gopetting.android.network.OAuthTokenService;
 import com.gopetting.android.network.RetrofitSingleton;
 import com.gopetting.android.network.SessionManager;
 import com.gopetting.android.utils.SimpleDividerItemDecoration;
+import com.instamojo.android.Instamojo;
+import com.instamojo.android.activities.PaymentDetailsActivity;
+import com.instamojo.android.callbacks.OrderRequestCallBack;
+import com.instamojo.android.helpers.Constants;
+import com.instamojo.android.models.Errors;
+import com.instamojo.android.models.Order;
+import com.instamojo.android.network.Request;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.mikepenz.fastadapter.helpers.ClickListenerHelper;
@@ -125,8 +132,14 @@ public class OrderSummaryActivity extends AppCompatActivity {
     RelativeLayout mRelativeLayoutInnerContainer;
     @BindView(R.id.tv_i_accept_terms_conditions)
     TextView mTextViewTermsConditions;
+    @BindView(R.id.progress_bar_container)
+    FrameLayout mFrameLayoutProgressBarContainer;
+    @BindView(R.id.edit_text_special_instructions)
+    EditText mEditTextSpecialInstructions;
+
 
     private static String sUserId;
+
 
     private SessionManager mSessionManager;
     private Bundle mSavedInstanceState;
@@ -135,6 +148,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
     private String mSelectedTimeslot;
     private String mSelectedFullName;
     private String mSelectedFullAddress;
+    private String mSelectedPincode;
     private String mSelectedPhone;
     private int mSelectedAddressId;
     private Cart mCart;
@@ -151,9 +165,15 @@ public class OrderSummaryActivity extends AppCompatActivity {
     private int mPromoAmount = 0; //Initialize with 0
     private int mGrandTotal = 0; //Initialize with 0
     private String mSelectedAgeGroup;
-    private String mSelectedBreedType;
+    private String mSelectedBreedType = "";
     private int mServerRequestId = 10;  //Default Value
     private Status mStatus;
+    private SummarySecondStatus mSummarySecondStatus;
+    private SummaryFirstStatus mSummaryFirstStatus;
+    private ProgressDialog mProgressDialog;
+    private String mOrderID;
+    private String mTransactionID;
+    private String mPaymentID;
 
 
     @Override
@@ -166,7 +186,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
         mSavedInstanceState = savedInstanceState; //Check if this could cause any issue
 
         mRelativeLayoutInnerContainer.setVisibility(View.GONE);
-        mProgressBar.setVisibility(View.VISIBLE);
+        mFrameLayoutProgressBarContainer.setVisibility(View.VISIBLE);
 
         //Get Cart Data, Date, Time and Address Details
         Intent intent = getIntent();
@@ -181,6 +201,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
             mSelectedFullName = bundle.getString("selected_full_name");
             mSelectedAddressId = bundle.getInt("selected_address_id");
             mSelectedFullAddress = bundle.getString("selected_full_address");
+            mSelectedPincode = bundle.getString("selected_pincode");
             mSelectedPhone = bundle.getString("selected_phone");
 
         }
@@ -191,11 +212,13 @@ public class OrderSummaryActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+
         mSessionManager = new SessionManager(getApplicationContext());
 
         if (!mSessionManager.isLoggedIn()){
             //Ask user to login;
-            Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_not_logged_in, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_not_logged_in, Snackbar.LENGTH_SHORT).show();
         }else {
             sUserId =mSessionManager.getUserId();       //Extract unique UserId
             getServerData(1);   //Sending DATA_REQUEST_ID=1;
@@ -210,7 +233,6 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
 
     }
-
 
     private void getServerData(final int dataRequestId) {
 
@@ -259,6 +281,12 @@ public class OrderSummaryActivity extends AppCompatActivity {
                 break;
             case 3: //Get Cart Status
                 getCartStatus(dataRequestId);
+                break;
+            case 4: //Get Summary First Status
+                getSummaryFirstStatus(dataRequestId);
+                break;
+            case 5: //Get Summary Second Status
+                getSummarySecondStatus(dataRequestId);
                 break;
             default:
                 Log.i("OrderSummaryActivity", "getServerData datarequestid: Out of range value ");
@@ -329,16 +357,11 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
                     mPromo = response.body();
 
-                    mProgressBar.setVisibility(View.GONE);
-                    //Remove Background
-//                    mProgressBarContainer.setBackgroundResource(0);
-
-                    //To enable user interaction with background views; This was disable earlier for ProgressBar
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    showHideProgressBarContainer(2);  //Hide
 
                     if (mPromo.getStatus() == 10){
 
-                        Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_invalid_promo, Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_invalid_promo, Snackbar.LENGTH_SHORT).show();
 
                     }else if (mPromo.getStatus() == 12){
 
@@ -390,7 +413,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
                if( !mEditTextApplyPromo.getText().toString().trim().equals("")){
 
-                   mProgressBar.setVisibility(View.VISIBLE);
+                   mFrameLayoutProgressBarContainer.setVisibility(View.VISIBLE);
 
                    //To disable user interaction with background views
                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
@@ -514,9 +537,11 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                Toast.makeText(OrderSummaryActivity.this, "Spinner:Nothing Selected",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(OrderSummaryActivity.this, "Spinner:Nothing Selected",Toast.LENGTH_SHORT).show();
             }
         });
+
+
 
         //Set Date & Time
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -546,18 +571,6 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
 
         //Terms & Conditions hyperlink click listener
-//        Spanned underlinedText;
-//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-//            underlinedText = Html.fromHtml("Terms & Conditions",Html.FROM_HTML_MODE_LEGACY);
-//        } else {
-//            underlinedText = Html.fromHtml("Terms & Conditions");
-//        }
-
-//        String underlinedText = "Terms & Conditions";
-//        SpannableString content = new SpannableString(underlinedText);
-//        content.setSpan(new UnderlineSpan(), 0, underlinedText.length(), 0);
-//        String termsConditionsText = String.format(res.getString(R.string.terms_conditions_underlined),content);
-//        mTextViewTermsConditions.setText("content);
 
         mTextViewTermsConditions.setPaintFlags(mTextViewTermsConditions.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG); //Underline text
 
@@ -570,6 +583,41 @@ public class OrderSummaryActivity extends AppCompatActivity {
             }
         });
 
+
+        mRelativeLayoutFooterButtonContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
+                if (mGrandTotal > 0 && (!mSelectedBreedType.isEmpty()) && (!mSelectedAgeGroup.equalsIgnoreCase("Choose Age"))) {
+
+                      showHideProgressBarContainer(1);  //Show
+
+//                    mProgressDialog = new ProgressDialog(OrderSummaryActivity.this);
+//                    mProgressDialog.setIndeterminate(true);
+//                    mProgressDialog.setMessage("loading...");
+//                    mProgressDialog.setCancelable(false);
+
+
+                    //Get Summary First Status
+                    getServerData(4);
+
+
+                    //TODO: Remove below Debug code after deployment
+                    //let's set the log level to debug
+                    Instamojo.setLogLevel(Log.DEBUG);
+                    Instamojo.setBaseUrl("https://test.instamojo.com/");
+
+                }else if (mGrandTotal<=0){
+                    Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_check_details, Snackbar.LENGTH_SHORT).show();
+                }else {
+                    Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_mandatory_fields, Snackbar.LENGTH_SHORT).show();
+                }
+
+
+            }
+        });
 
     }
 
@@ -601,7 +649,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
         //check whether cart is empty; If yes, then show empty cart
         if(mCartScreen.getCartScreenItems().size() <= 0){
             mLinearLayoutCartContainer.setVisibility(View.GONE);
-            mProgressBar.setVisibility(View.GONE);
+            mFrameLayoutProgressBarContainer.setVisibility(View.GONE);
             mRelativeLayoutFooterButtonContainer.setVisibility(View.GONE);
             mLinearLayoutEmptyCart.setVisibility(View.VISIBLE);
         }
@@ -630,7 +678,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
         mRecyclerViewCart.setItemAnimator(new DefaultItemAnimator());
         mRecyclerViewCart.addItemDecoration(new SimpleDividerItemDecoration(this)); //Adding item divider
 
-        mProgressBar.setVisibility(View.GONE);
+        mFrameLayoutProgressBarContainer.setVisibility(View.GONE);
 
         //restore selections (this has to be done after the items were added
         mFastAdapterCart.withSavedInstanceState(mSavedInstanceState);
@@ -663,7 +711,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
                             //check whether cart is empty; If yes, then show empty cart
                             if(mCartScreen.getCartScreenItems().size() <= 0){
                                 mLinearLayoutCartContainer.setVisibility(View.GONE);
-                                mProgressBar.setVisibility(View.GONE);
+                                mFrameLayoutProgressBarContainer.setVisibility(View.GONE);
                                 mRelativeLayoutFooterButtonContainer.setVisibility(View.GONE);
                                 mLinearLayoutEmptyCart.setVisibility(View.VISIBLE);
                             }else { //
@@ -723,7 +771,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
         });
 
 
-        mProgressBar.setVisibility(View.GONE);
+        mFrameLayoutProgressBarContainer.setVisibility(View.GONE);
         mRelativeLayoutInnerContainer.setVisibility(View.VISIBLE);
 
 
@@ -856,4 +904,463 @@ public class OrderSummaryActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+//        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+//            mProgressDialog.dismiss();
+//        }
+
+        showHideProgressBarContainer(2);  //Hide
+
+
+
+
+        if (requestCode == Constants.REQUEST_CODE && data != null) {
+            String orderID = data.getStringExtra(Constants.ORDER_ID);
+            String transactionID = data.getStringExtra(Constants.TRANSACTION_ID);
+            String paymentID = data.getStringExtra(Constants.PAYMENT_ID);
+
+            // Check transactionID, orderID, and orderID for null before using them to check the Payment status.
+            if (orderID != null && transactionID != null && paymentID != null) {
+
+                showHideProgressBarContainer(1);  //Show
+
+                mOrderID = orderID;
+                mTransactionID = transactionID;
+                mPaymentID = paymentID;
+
+                //Get Summary Second Status
+                getServerData(5);
+
+//                 Toast.makeText(OrderSummaryActivity.this, "Check payment status",Toast.LENGTH_SHORT).show();
+            } else {
+//                Toast.makeText(OrderSummaryActivity.this, "Oops!! Payment was cancelled",Toast.LENGTH_SHORT).show();
+
+            }
+        }
+    }
+
+
+
+    /************           PAYMENT GATEWAY     ***************/
+
+
+private void getSummaryFirstStatus(int dataRequestId) {
+
+    if (mPromoAmount == 0){
+        mPromoCode = "";
+    }
+
+    int psdFacility = 0;        //False
+    if (mCheckBoxPickupDrop.isChecked()){
+        psdFacility = 1;        //True
+    }
+
+   String servicePackagesWithPrice = concatenate();
+
+
+    Controller.GetSummaryFirstStatus retrofitSingleton = RetrofitSingleton.getInstance().create(Controller.GetSummaryFirstStatus.class);
+
+    Call<SummaryFirstStatus> call = retrofitSingleton.getSummaryFirstStatus("Bearer " + mCredential.getAccess_token(),sUserId
+            ,mPromoCode,mPromoAmount,mSelectedPincode,mSelectedDateslot,mSelectedTimeslotId,mSelectedTimeslot,mSelectedAddressId
+            ,servicePackagesWithPrice,psdFacility,mSelectedBreedType,mSelectedAgeGroup
+            ,mEditTextSpecialInstructions.getText().toString());
+
+    call.enqueue(new Callback<SummaryFirstStatus>() {
+        @Override
+        public void onResponse(Call<SummaryFirstStatus> call, Response<SummaryFirstStatus> response) {
+
+            if (response.isSuccessful()) {
+
+                mSummaryFirstStatus = response.body();
+
+                if (mSummaryFirstStatus.getStatus() == 12) {
+
+                    createOrder();
+
+                } else if (mSummaryFirstStatus.getStatus() == 101) {
+                    //Disable ProgressDialog
+//                    if (mProgressDialog != null && mProgressDialog.isShowing()) {
+//                        mProgressDialog.dismiss();
+//                    }
+
+                    showHideProgressBarContainer(2);  //Hide
+
+                    Snackbar.make(findViewById(R.id.ll_activity_container), R.string.slot_not_available, Snackbar.LENGTH_SHORT).show();
+                } else {
+                    //Disable ProgressDialog
+//                    if (mProgressDialog != null && mProgressDialog.isShowing()) {
+//                        mProgressDialog.dismiss();
+//                    }
+
+                    showHideProgressBarContainer(2);  //Hide
+
+                    Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_something_went_wrong, Snackbar.LENGTH_SHORT).show();
+                }
+            }
+
+            else {
+                Log.d("onResponse", "getSummaryFirstStatus :onResponse:notSuccessful");
+
+//                if (mProgressDialog != null && mProgressDialog.isShowing()) {
+//                    mProgressDialog.dismiss();
+//                }
+
+                showHideProgressBarContainer(2);  //Hide
+
+                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_something_went_wrong, Snackbar.LENGTH_SHORT).show();
+
+            }
+        }
+
+        @Override
+        public void onFailure(Call<SummaryFirstStatus> call, Throwable throwable) {
+
+//            if (mProgressDialog != null && mProgressDialog.isShowing()) {
+//                mProgressDialog.dismiss();
+//            }
+
+            showHideProgressBarContainer(2);  //Hide
+
+            Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_something_went_wrong, Snackbar.LENGTH_SHORT).show();
+
+        }
+    });
+
+
+
+
+}
+    //Concatenate ServicePackageId and Price
+    private String concatenate() {
+
+        String concatenatedString = "";
+        int i = 0;
+
+        for (CartScreenItem cartScreenItem : mCartScreen.getCartScreenItems())
+        {
+            if (i==0){
+                concatenatedString += Integer.toString(cartScreenItem.getServicePackageId())  + "," + Integer.toString(cartScreenItem.getPrice());
+                i=1;
+            }else {
+                concatenatedString += "|" + Integer.toString(cartScreenItem.getServicePackageId()) + "," + Integer.toString(cartScreenItem.getPrice());
+            }
+        }
+
+        return concatenatedString;
+
+    }
+
+
+    private void createOrder() {
+
+        //Create the Order
+        Order order = new Order(mSummaryFirstStatus.getAt(), mSummaryFirstStatus.getId(),mSelectedFullName, mSummaryFirstStatus.getEmailId()
+                                ,mSelectedPhone,Integer.toString(mGrandTotal),mCartScreen.getServiceCategoryName());
+//
+//        Order order = new Order("Alh0W5NBPrQaCGx4oP5S6eGzuA1kOk","12345678979137195","Sumit Sharma", "sumitsharma@gmail.com"
+//                ,"8974512235","10","Salon");
+
+//        Order order = new Order("Mx7VBgKMBZhybDuHkrytzpA6zc6Jy1","12345678979137198","Sumit Sharma", "sumitsharma@gmail.com"
+//                ,"8974512235","10","Salon");
+
+
+        //set webhook
+        order.setWebhook("http://ec2-52-220-151-54.ap-southeast-1.compute.amazonaws.com/api/v1/t/wh");
+
+        //Validate the Order
+        if (!order.isValid()) {
+            //oops order validation failed. Pinpoint the issue(s).
+
+            if (!order.isValidName()) {
+//               showToast("Buyer name is invalid");
+                showSnackbar();
+            }
+
+            if (!order.isValidEmail()) {
+//                showToast("Buyer email is invalid");
+                showSnackbar();
+            }
+
+            if (!order.isValidPhone()) {
+//                showToast("Buyer phone is invalid");
+                showSnackbar();
+            }
+
+            if (!order.isValidAmount()) {
+//                showToast("Amount is invalid or has more than two decimal places");
+                showSnackbar();
+            }
+
+            if (!order.isValidDescription()) {
+//                showToast("Description is invalid");
+                showSnackbar();
+            }
+
+            if (!order.isValidTransactionID()) {
+//                showToast("Transaction is Invalid");
+                showSnackbar();
+            }
+
+            if (!order.isValidRedirectURL()) {
+//                showToast("Redirection URL is invalid");
+                showSnackbar();
+            }
+
+            if (!order.isValidWebhook()) {
+//                showToast("Webhook URL is invalid");
+                showSnackbar();
+            }
+
+            return;
+        }
+
+        //Validation is successful. Proceed
+//        mProgressDialog.show();
+
+        showHideProgressBarContainer(1);  //Show
+
+        Request request = new Request(order, new OrderRequestCallBack() {
+            @Override
+            public void onFinish(final Order order, final Exception error) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+//                        mProgressDialog.dismiss();
+                        showHideProgressBarContainer(2);  //Hide
+
+                        if (error != null) {
+                            if (error instanceof Errors.ConnectionError) {
+//                                showToast("No internet connection");
+                                showSnackbar();
+                            } else if (error instanceof Errors.ServerError) {
+//                                showToast("Server Error. Try again");
+                                showSnackbar();
+                            } else if (error instanceof Errors.AuthenticationError) {
+                                Toast.makeText(OrderSummaryActivity.this, "Access token is invalid or expired. Please Update the token!!",Toast.LENGTH_SHORT).show();
+//                                showToast("Access token is invalid or expired. Please Update the token!!");
+//                                showSnackbar();
+
+                            } else if (error instanceof Errors.ValidationError) {
+                                // Cast object to validation to pinpoint the issue
+                                Errors.ValidationError validationError = (Errors.ValidationError) error;
+
+                                if (!validationError.isValidTransactionID()) {
+                                    Toast.makeText(OrderSummaryActivity.this, "Transaction ID is not Unique",Toast.LENGTH_SHORT).show();
+//                                    showToast("Transaction ID is not Unique");
+                                    Crashlytics.log(1,"OrderSummaryActivity","Transaction ID is not Unique");
+                                    return;
+                                }
+
+                                if (!validationError.isValidRedirectURL()) {
+                                    showSnackbar();
+//                                    showToast("Redirect url is invalid");
+                                    return;
+                                }
+
+                                if (!validationError.isValidWebhook()) {
+//                                    showToast("Webhook url is invalid");
+                                    showSnackbar();
+                                    return;
+                                }
+
+                                if (!validationError.isValidPhone()) {
+//                                    showToast("Buyer's Phone Number is invalid/empty");
+                                    showSnackbar();
+                                    return;
+                                }
+
+                                if (!validationError.isValidEmail()) {
+//                                    showToast("Buyer's Email is invalid/empty");
+                                    showSnackbar();
+                                    return;
+                                }
+
+                                if (!validationError.isValidAmount()) {
+//                                    showToast("Amount is either less than Rs.9 or has more than two decimal places");
+                                    showSnackbar();
+                                    return;
+                                }
+
+                                if (!validationError.isValidName()) {
+//                                    showToast("Buyer's Name is required");
+                                    showSnackbar();
+                                    return;
+                                }
+                            } else {
+//                                showToast(error.getMessage());
+                                showSnackbar();
+                            }
+                            return;
+                        }
+
+                        startPreCreatedUI(order);
+
+                    }
+                });
+            }
+        });
+
+        request.execute();
+    }
+
+
+    private void showSnackbar() {
+
+        //Disable ProgressDialog
+//        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+//            mProgressDialog.dismiss();
+//        }
+
+        showHideProgressBarContainer(2);  //Hide
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_something_went_wrong, Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void startPreCreatedUI(Order order) {
+
+        Intent intent = new Intent(getBaseContext(), PaymentDetailsActivity.class);
+        intent.putExtra(Constants.ORDER, order);
+        startActivityForResult(intent, Constants.REQUEST_CODE);
+    }
+
+
+    private void getSummarySecondStatus(int dataRequestId) {
+
+        Controller.GetSummarySecondStatus retrofitSingleton = RetrofitSingleton.getInstance().create(Controller.GetSummarySecondStatus.class);
+
+        Call<SummarySecondStatus> call = retrofitSingleton.getSummarySecondStatus("Bearer " + mCredential.getAccess_token(),sUserId
+                                                                        ,mSummaryFirstStatus.getAt(),mTransactionID,mOrderID);
+
+        call.enqueue(new Callback<SummarySecondStatus>() {
+            @Override
+            public void onResponse(Call<SummarySecondStatus> call, Response<SummarySecondStatus> response) {
+
+                if (response.isSuccessful()) {
+
+                    mSummarySecondStatus = response.body();
+
+                    //Disable ProgressDialog
+//                    if (mProgressDialog != null && mProgressDialog.isShowing()) {
+//                        mProgressDialog.dismiss();
+//                    }
+
+                    showHideProgressBarContainer(2);  //Hide
+
+
+                    if (mSummarySecondStatus.getStatus() == 12) {
+//                          Toast.makeText(OrderSummaryActivity.this, "successful",Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(OrderSummaryActivity.this, OrderConfirmationActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("status", "success");
+                        bundle.putString("order_id", mSummarySecondStatus.getId());
+                        bundle.putString("selected_dateslot", mSelectedDateslot);
+                        bundle.putString("selected_timeslot", mSelectedTimeslot);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+
+
+
+                    } else if (mSummarySecondStatus.getStatus() == 102) {
+
+//                         Toast.makeText(OrderSummaryActivity.this, "failed",Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(OrderSummaryActivity.this, OrderConfirmationActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("status", "failed");
+                        bundle.putString("transaction_id", mSummarySecondStatus.getId());
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+
+                    }
+                }
+
+                else {
+                    Log.d("onResponse", "getSummarySecondStatus :onResponse:notSuccessful");
+
+//                    if (mProgressDialog != null && mProgressDialog.isShowing()) {
+//                        mProgressDialog.dismiss();
+//                    }
+
+                    showHideProgressBarContainer(2);  //Hide
+
+                    Intent intent = new Intent(OrderSummaryActivity.this, OrderConfirmationActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("status", "failed");
+                    bundle.putString("transaction_id", mSummaryFirstStatus.getId());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+
+                    //Show failure and show Refund is done.
+//                    Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_something_went_wrong, Snackbar.LENGTH_SHORT).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SummarySecondStatus> call, Throwable throwable) {
+
+//                if (mProgressDialog != null && mProgressDialog.isShowing()) {
+//                    mProgressDialog.dismiss();
+//                }
+
+                showHideProgressBarContainer(2);  //Hide
+
+
+                Intent intent = new Intent(OrderSummaryActivity.this, OrderConfirmationActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("status", "failed");
+                bundle.putString("transaction_id", mSummaryFirstStatus.getId());
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+//                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_something_went_wrong, Snackbar.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+
+
+    }
+
+
+    private void showHideProgressBarContainer(int flag){
+
+        //Show Progress Bar
+        if (flag == 1){
+
+            mFrameLayoutProgressBarContainer.setVisibility(View.VISIBLE);
+
+            //Set Background to Black with Opacity 50%
+            mFrameLayoutProgressBarContainer.setBackgroundResource(R.color.black);
+            mFrameLayoutProgressBarContainer.getBackground().setAlpha(50);
+
+            //To disable user interaction with background views
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+
+        }else if(flag ==2){  //Hide Progress Bar
+
+            //Show Progress Bar and Disable User Interaction
+            mFrameLayoutProgressBarContainer.setVisibility(View.GONE);
+            //Remove Background
+            mFrameLayoutProgressBarContainer.setBackgroundResource(0);
+            //To enable user interaction with background views; This was disable earlier for ProgressBar
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+        }
+
+    }
+
 }

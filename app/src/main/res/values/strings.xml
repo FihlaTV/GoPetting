@@ -193,6 +193,19 @@
     <string name="snackbar_invalid_promo">Promo Code is invalid or expired</string>
     <string name="hint_breed_type">Enter Breed Type</string>
     <string name="text_i_accept">I accept</string>
+    <string name="snackbar_something_went_wrong">Something went wrong, please try again</string>
+    <string name="snackbar_check_details">Please check details and try again</string>
+    <string name="snackbar_mandatory_fields">Please fill mandatory fields</string>
+    <string name="slot_not_available">Please choose other slots, this slot is booked</string>
 
-
+    <string name="text_book_another_service">Book Another Service</string>
+    <string name="order_confirmed">Order Confirmed</string>
+    <string name="transaction_failed">Transaction Failed</string>
+    <string name="txn_id">Transaction ID</string>
+    <string name="order_id">Order ID :</string>
+    <string name="order_confirmation_message">Congratulations! Your order has been confirmed.\nOur service provider will contact you prior to service time </string>
+    <string name="order_failed_message">We\'re sorry but the transaction failed.\nIf any money is deducted from your account, it\'ll be refunded back</string>
+    <string name="scheduled_on">Scheduled On</string>
+    <string name="scheduled_slot">%1$s, %2$s</string>
+    <string name="text_try_again">Try again</string>
 </resources>

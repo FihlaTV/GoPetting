@@ -6,9 +6,15 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission3.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Change to 'permission' from 'permission3' -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+
+    <!-- required for Juspay to read the OTP from the SMS sent to the device -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application
         android:name=".MyApplication"
@@ -112,10 +118,10 @@
         <activity
             android:name=".activities.AddressListActivity"
             android:label="@string/title_activity_address_list" />
-
-        <activity android:name=".activities.OrderSummaryActivity"
+        <activity
+            android:name=".activities.OrderSummaryActivity"
             android:label="@string/title_activity_order_summary" />
-
+        <activity android:name=".activities.OrderConfirmationActivity"></activity>
     </application>
 
 </manifest>

@@ -17,6 +17,8 @@ import com.gopetting.android.models.Promo;
 import com.gopetting.android.models.ServiceCategory;
 import com.gopetting.android.models.Status;
 import com.gopetting.android.models.StringItem;
+import com.gopetting.android.models.SummaryFirstStatus;
+import com.gopetting.android.models.SummarySecondStatus;
 import com.gopetting.android.models.User;
 
 import java.util.List;
@@ -210,6 +212,33 @@ public class Controller {
 
     }
 
+    public interface GetSummaryFirstStatus {
+        @GET("/api/v1/t/t1")
+        Call<SummaryFirstStatus> getSummaryFirstStatus(@Header("Authorization") String authorization,
+                                                @Query("user_id") String userId,
+                                                @Query("promo_code") String promoCode,
+                                                @Query("promo_discount") int promoDiscount,
+                                                @Query("pincode") String pincode,
+                                                @Query("dateslot") String dateslot,
+                                                @Query("timeslot_id") int timeslotId,
+                                                @Query("timeslot") String timeslot,
+                                                @Query("address_id") int addressId,
+                                                @Query("service_packages_with_price") String servicePackagesWithPrice,
+                                                @Query("psd_facility") int psdFacility,        //Pickup-Service-Drop
+                                                @Query("breed_type") String breedType,
+                                                @Query("age_group") String ageGroup,
+                                                @Query("additional_details") String additional_details
+                                                );
+    }
 
+    public interface GetSummarySecondStatus {
+        @GET("/api/v1/t/t2")
+        Call<SummarySecondStatus> getSummarySecondStatus(@Header("Authorization") String authorization,
+                                                         @Query("user_id") String userId,
+                                                         @Query("at") String at,
+                                                         @Query("t_id") String tId,
+                                                         @Query("o_id") String oId
+        );
+    }
 
 }

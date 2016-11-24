@@ -115,6 +115,7 @@ public class AppointmentActivity extends AppCompatActivity {
     private String mSelectedFullAddress;
     private String mSelectedPhone;
     private int mSelectedAddressId;
+    private String mSelectedPincode;
 
 
     @Override
@@ -419,6 +420,7 @@ public class AppointmentActivity extends AppCompatActivity {
                 bundle.putString("selected_full_name", mSelectedFullName);
                 bundle.putInt("selected_address_id", mSelectedAddressId);
                 bundle.putString("selected_full_address", mSelectedFullAddress);
+                bundle.putString("selected_pincode", mSelectedPincode);
                 bundle.putString("selected_phone", mSelectedPhone);
 
                 intent.putExtras(bundle);
@@ -459,6 +461,7 @@ public class AppointmentActivity extends AppCompatActivity {
         mSelectedFullName = mAppointment.getAddresses().get(0).getFullName();
         mSelectedAddressId = mAppointment.getAddresses().get(0).getAddressId();
         mSelectedFullAddress = fullAddress;
+        mSelectedPincode = mAppointment.getAddresses().get(0).getPincode();
         mSelectedPhone = mAppointment.getAddresses().get(0).getPhone();
 
 
@@ -708,6 +711,7 @@ public class AppointmentActivity extends AppCompatActivity {
         mSelectedFullName = mFullName;
         mSelectedAddressId = mAddressId;
         mSelectedFullAddress = fullAddress;
+        mSelectedPincode = mPincode;
         mSelectedPhone = mPhone;
 
     }
