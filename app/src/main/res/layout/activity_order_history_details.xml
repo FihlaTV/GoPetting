@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@id/ll_activity_container"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/order_toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/sv_outer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="10.dip"
+                android:paddingRight="10.0dip">
+
+
+                <include
+                    layout="@layout/order_detail_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/order_detail_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10.0dip"
+                    android:paddingLeft="5.0dip"
+                    android:paddingBottom="10.0dip"
+                     />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="@color/grey_300"
+                    />
+
+                <RelativeLayout
+                    android:id="@+id/order_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingBottom="10.0dip"
+                    android:paddingEnd="5.0dip"
+                    android:paddingLeft="5.0dip"
+                    android:paddingRight="5.0dip"
+                    android:paddingStart="5.0dip"
+                    android:paddingTop="10.0dip">
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                        <com.gopetting.android.views.TypefaceTextView
+                            android:id="@+id/tv_pickup_drop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:text="@string/order_history_pickup_drop"
+                            android:textColor="@color/item_text_regular"
+                            android:textSize="@dimen/text_size_medium"
+                            app:customTypeface="@string/typeface_regular" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="10.0dip">
+
+                            <com.gopetting.android.views.TypefaceTextView
+                                android:id="@+id/total_amount_lbl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:text="@string/text_amount_paid"
+                                android:textColor="@color/item_text_regular"
+                                android:textSize="@dimen/text_size_medium_special"
+                                app:customTypeface="@string/typeface_bold" />
+
+                            <com.gopetting.android.views.TypefaceTextView
+                                android:id="@+id/total_amount_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:textColor="@color/item_text_regular"
+                                android:textSize="@dimen/text_size_medium_special"
+                                app:customTypeface="@string/typeface_bold" />
+
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
+
+                    <!-- <Button
+                         android:id="@+id/part_pay"
+                         style="@style/pay_now_button_style"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_alignParentRight="true"
+                         android:layout_marginLeft="5.0dip"
+                         android:text="@string/pay_now"
+                         android:textSize="15.0sp" />-->
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="@color/grey_300"
+                    />
+
+
+                <LinearLayout
+                    android:id="@+id/order_details_user_info_container"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingTop="10.0dip"
+                    android:paddingBottom="10.0dip"
+                    android:orientation="vertical">
+
+                    <com.gopetting.android.views.TypefaceTextView
+                        android:id="@+id/os_footer_contact_details_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_contact_details"
+                        android:paddingBottom="10.0dip"
+                        android:paddingLeft="3.0dip"
+                        android:textColor="@color/item_text_regular"
+                        android:textSize="@dimen/text_size_medium_special"
+                        app:customTypeface="@string/typeface_bold"/>
+
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:weightSum="1.0">
+
+                        <com.gopetting.android.views.TypefaceTextView
+                            android:id="@+id/order_customer_address_line1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_weight="3"
+                            android:textColor="@color/item_text_regular"
+                            android:textSize="@dimen/text_size_medium"
+                            app:customTypeface="@string/typeface_regular" />
+
+                        <com.gopetting.android.views.TypefaceTextView
+                            android:id="@+id/order_customer_address_line2"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5.0dip"
+                            android:layout_weight="3"
+                            android:textColor="@color/item_text_regular"
+                            android:textSize="@dimen/text_size_medium"
+                            app:customTypeface="@string/typeface_regular" />
+
+                        <com.gopetting.android.views.TypefaceTextView
+                            android:id="@+id/order_customer_address_line3"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5.0dip"
+                            android:layout_weight="3"
+                            android:textColor="@color/item_text_regular"
+                            android:textSize="@dimen/text_size_medium"
+                            app:customTypeface="@string/typeface_regular" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@id/rl_apply_promo_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="15.0dip">
+
+                <com.gopetting.android.views.TypefaceTextView
+                    android:id="@+id/order_cancel_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/text_cancel_order"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_medium_special"
+                    app:customTypeface="@string/typeface_bold"
+                   />
+
+            </RelativeLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="@color/grey_300"
+                    />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <FrameLayout
+            android:id="@id/progress_bar_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@id/progress_bar"
+                android:layout_width="36.0dip"
+                android:layout_height="36.0dip"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

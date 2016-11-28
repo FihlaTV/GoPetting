@@ -635,8 +635,9 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startCartActivity(SERVICE_IDENTIFIER_3);    //Intent Identifier; This will be passed to 'setupLogin' method; Cart icon clicked and user not logged in
-
+                if (mCart!=null) {
+                    startCartActivity(SERVICE_IDENTIFIER_3);    //Intent Identifier; This will be passed to 'setupLogin' method; Cart icon clicked and user not logged in
+                }
 
             }
         });

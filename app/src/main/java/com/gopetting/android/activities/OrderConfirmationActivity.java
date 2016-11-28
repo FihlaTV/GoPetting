@@ -157,7 +157,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                 mTextViewOrderStatusMessage.setText(R.string.order_failed_message);
                 mTextViewScheduledText.setVisibility(View.GONE);
                 mTextViewScheduledSlot.setVisibility(View.GONE);
-                mFooterButton.setText(R.string.text_try_again);
+                mFooterButton.setText(R.string.done_text);
 
                 mProgressBarContainer.setVisibility(View.GONE);
             }

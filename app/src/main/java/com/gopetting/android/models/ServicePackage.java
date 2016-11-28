@@ -44,6 +44,7 @@ public class ServicePackage extends AbstractItem<ServicePackage, ServicePackage.
 
     public List<IItem> mSubItems;
     public boolean mExpanded = false;
+    public boolean mPressed = false;
     public FastAdapter.OnClickListener<ServicePackage> mOnClickListener;
 
     //the static ViewHolderFactory which will be used to generate the ViewHolder for this Item
@@ -101,6 +102,12 @@ public class ServicePackage extends AbstractItem<ServicePackage, ServicePackage.
     }
 
 
+    public ServicePackage withPressed(boolean pressed) {
+        this.mPressed = pressed;
+        return this;
+    }
+
+
     public FastAdapter.OnClickListener<ServicePackage> getOnClickListener() {
         return mOnClickListener;
     }
@@ -143,34 +150,44 @@ public class ServicePackage extends AbstractItem<ServicePackage, ServicePackage.
 //    }
 //
 
-    /**
-     * helper method to style the image view(Basket Image)
-     *
-     * @param view
-     * @param value
-     */
-    private void style(View view, int value) {
-        view.setScaleX(value);
-        view.setScaleY(value);
-        view.setAlpha(value);
-    }
-
-    /**
-     * helper method to animate the image view(Basket Image)
-     *
-     * @param imageSelectedYes
-     * @param imageSelectedNo
-     * @param on
-     */
-    public void animateHeart(View imageSelectedYes, View imageSelectedNo, boolean on) {
-        imageSelectedYes.setVisibility(View.VISIBLE);
-        imageSelectedNo.setVisibility(View.VISIBLE);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
-            viewPropertyStartCompat(imageSelectedNo.animate().scaleX(on ? 0 : 1).scaleY(on ? 0 : 1).alpha(on ? 0 : 1));
-            viewPropertyStartCompat(imageSelectedYes.animate().scaleX(on ? 1 : 0).scaleY(on ? 1 : 0).alpha(on ? 1 : 0));
-        }
-    }
+//    /**
+//     * helper method to style the image view(Basket Image)
+//     *
+//     * @param view
+//     * @param value
+//     */
+//    private void style(View view, int value) {
+//        view.setScaleX(value);
+//        view.setScaleY(value);
+//        view.setAlpha(value);
+//    }
+//
+//    /**
+//     * helper method to animate the image view(Basket Image)
+//     *
+//     * @param imageSelectedYes
+//     * @param imageSelectedNo
+//     * @param on
+//     */
+//    public void animateHeart(View imageSelectedYes, View imageSelectedNo, boolean on) {
+//
+//        if(on) {
+//            imageSelectedYes.setVisibility(View.VISIBLE);
+//            imageSelectedNo.setVisibility(View.GONE);
+//        }else {
+//            imageSelectedYes.setVisibility(View.GONE);
+//            imageSelectedNo.setVisibility(View.VISIBLE);
+//        }
+//
+//
+////        imageSelectedYes.setVisibility(View.VISIBLE);
+////        imageSelectedNo.setVisibility(View.VISIBLE);
+////
+////        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
+////            viewPropertyStartCompat(imageSelectedNo.animate().scaleX(on ? 0 : 1).scaleY(on ? 0 : 1).alpha(on ? 0 : 1));
+////            viewPropertyStartCompat(imageSelectedYes.animate().scaleX(on ? 1 : 0).scaleY(on ? 1 : 0).alpha(on ? 1 : 0));
+////        }
+//    }
 
     /**
      * helper method for the animator on APIs < 14
@@ -234,8 +251,13 @@ public class ServicePackage extends AbstractItem<ServicePackage, ServicePackage.
         viewHolder.mItemServicePackageDesc.setText(mDescription);
         viewHolder.mItemPrice.setText("Rs."+ mPrice);
 
-
-
+        if (mPressed){
+            viewHolder.mItemBasketSelectedYes.setVisibility(View.VISIBLE);
+            viewHolder.mItemBasketSelectedNo.setVisibility(View.GONE);
+        }else {
+            viewHolder.mItemBasketSelectedYes.setVisibility(View.GONE);
+            viewHolder.mItemBasketSelectedNo.setVisibility(View.VISIBLE);
+        }
 
     }
 

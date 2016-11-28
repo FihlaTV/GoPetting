@@ -184,6 +184,11 @@
     <item name="tv_order_failed_id" type="id" />
     <item name="tv_order_failed_id_name" type="id" />
     <item name="ll_failed_id" type="id" />
+    <item name="fastadapter_order_history_item_id" type="id" />
+    <item name="rl_outer_container" type="id" />
+    <item name="tv_empty_order" type="id" />
+    <item name="ll_empty_order" type="id" />
+    <item name="fastadapter_order_history_service_item_id" type="id" />
 
 
 </resources>

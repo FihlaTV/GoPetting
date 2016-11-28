@@ -138,8 +138,9 @@
     <string name="add_address_text">Add a new address</string>
     <string name="select_date_time_text"><![CDATA[Select Date & Time]]></string>
     <string name="snackbar_services">Please add a service to cart to continue</string>
-    <string name="snackbar_not_logged_in">Please login in</string>
+    <string name="snackbar_not_logged_in">Please login</string>
     <string name="snackbar_empty_cart">Cart is empty, please go back and add a service</string>
+    <string name="snackbar_order_not_logged_in">Please login to view your orders</string>
 
 
     <string name="hint_full_name">Name</string>
@@ -170,9 +171,8 @@
     <string name="title_activity_order_summary">Order Summary</string>
     <string name="text_proceed_to_payment">Proceed to Payment</string>
     <string name="snackbar_appointment">Please add an address</string>
-    <string name="text_address_details_title">Address Details</string>
     <string name="hint_age_group">Choose Age</string>
-
+    <string name="order_history_pickup_drop">Includes Pickup - Service - Drop Facility</string>
 
     <string-array name="string_array_age_group">
         <item>Choose Age</item>
@@ -204,8 +204,34 @@
     <string name="txn_id">Transaction ID</string>
     <string name="order_id">Order ID :</string>
     <string name="order_confirmation_message">Congratulations! Your order has been confirmed.\nOur service provider will contact you prior to service time </string>
-    <string name="order_failed_message">We\'re sorry but the transaction failed.\nIf any money is deducted from your account, it\'ll be refunded back</string>
+    <string name="order_failed_message">We\'re sorry but the transaction failed.\nIf any money is deducted from your account, it\'ll be refunded back\nPlease note the Transaction ID for future reference.</string>
     <string name="scheduled_on">Scheduled On</string>
     <string name="scheduled_slot">%1$s, %2$s</string>
     <string name="text_try_again">Try again</string>
+    <string name="title_activity_order_history">My Orders</string>
+    <string name="empty_order_history">There are no orders!</string>
+    <string name="history_order_id">Order ID : </string>
+    <string name="title_activity_order_history_details">Order Details</string>
+    <string name="text_amount_paid">Amount Paid</string>
+    <string name="text_contact_details">Contact Details</string>
+    <string name="text_cancel_order">Cancel Order</string>
+    <string name="dialog_question_cancel">Do you want to Cancel this order</string>
+    <string name="dialog_button_yes">YES</string>
+
+
+    <!--Order Cancel dialog Spinner Items-->
+    <string-array name="array_cancel_order_options">
+        <item>Choose</item>
+        <item>Schedule mismatch</item>
+        <item>Our experts didn\'t turn up</item>
+        <item>Price was expensive</item>
+        <item>Plan Changed</item>
+        <item>Other reason</item>
+    </string-array>
+
+
+    <string name="dialog_button_ok">OK</string>
+    <string name="text_cancel_reason">Please choose reason</string>
+    <string name="text_cancelled">Cancelled</string>
+
 </resources>

@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -443,9 +444,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            case R.id.location:
 //                EventBus.getDefault().post(new MoveToFragmentEvent(new LocationFragment()));
 //                break;
-//            case R.id.orders:
-//                EventBus.getDefault().post(new MoveToFragmentEvent(new OrdersFragment()));
-//                break;
+            case R.id.orders:
+
+                if (session.isLoggedIn()){
+
+                    startActivity(new Intent(MainActivity.this,OrderHistoryActivity.class));
+
+                }else {
+                    Snackbar.make(findViewById(R.id.drawer_layout), R.string.snackbar_order_not_logged_in, Snackbar.LENGTH_SHORT).show();
+                }
+
+                break;
             case R.id.share_app:
                 shareApp();
                 break;

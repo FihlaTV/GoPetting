@@ -470,7 +470,7 @@
                 android:id="@+id/tv_address_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_address_details_title"
+                android:text="@string/text_contact_details"
                 android:textColor="@color/item_text_regular"
                 android:textSize="@dimen/text_size_medium_special"
                 app:customTypeface="@string/typeface_bold" />

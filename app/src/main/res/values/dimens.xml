@@ -75,5 +75,5 @@
 
     <dimen name="promotional_gallery_height">200.0dip</dimen>
     <dimen name="product_category_height">150.0dip</dimen>
-
+    <dimen name="order_history_common_left_margin">15.0dip</dimen>
 </resources>

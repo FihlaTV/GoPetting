@@ -23,6 +23,7 @@ import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.mikepenz.fastadapter.helpers.ClickListenerHelper;
 
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -215,9 +216,37 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
 //
 //                            }
 //                            fastAdapterService.notifyAdapterDataSetChanged();
-//                            item.setItemSelected(!item.mItemSelected);
-                            //we animate the heart
-//                            item.animateHeart(((ViewGroup) v).getChildAt(0), ((ViewGroup) v).getChildAt(1), item.mItemSelected);
+
+//---------------------------------------------------
+                            //Select/highlight currently pressed item and Deselect rest
+//                            Set<Integer> selectionsBasket = fastAdapterService.getSelections();
+//                            if (!selectionsBasket.isEmpty()) {
+//                                int selectedPosition = selectionsBasket.iterator().next();
+//                                fastAdapterService.deselect();
+//                                item.animateHeart(((ViewGroup) v).getChildAt(0), ((ViewGroup) v).getChildAt(1),false);
+//                                fastAdapterService.notifyItemChanged(selectedPosition);
+//
+//                            }
+//                            fastAdapterService.select(position);
+//
+//                            item.animateHeart(((ViewGroup) v).getChildAt(0), ((ViewGroup) v).getChildAt(1),true);
+//                            fastAdapterService.notifyItemChanged(position);
+
+//----------------------------------------------
+                            if (!item.isSelected()) {
+                                Set<Integer> selections = fastAdapterService.getSelections();
+                                if (!selections.isEmpty()) {
+                                    int selectedPosition = selections.iterator().next();
+                                    fastAdapterService.deselect();
+                                    ServicePackage servicePackage = (ServicePackage) fastAdapterService.getItem(selectedPosition);
+                                    servicePackage.withPressed(false);
+                                    fastAdapterService.notifyItemChanged(selectedPosition);
+                                }
+                                fastAdapterService.select(position);
+                                item.withPressed(true);
+
+                            }
+
 
                             //we display the info about the click
 //                            Toast.makeText(getContext(), item.mServicePackageName + serviceSubCategoryIndex, Toast.LENGTH_SHORT).show();
@@ -232,6 +261,9 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
                 return viewHolder;
             }
         });
+
+
+
 
 
     }

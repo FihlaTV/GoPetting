@@ -62,6 +62,7 @@ import com.mikepenz.fastadapter.helpers.ClickListenerHelper;
 
 import org.parceler.Parcels;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -588,16 +589,16 @@ public class OrderSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
+                Log.i("TIME","Payment Start Time");
 
                 if (mGrandTotal > 0 && (!mSelectedBreedType.isEmpty()) && (!mSelectedAgeGroup.equalsIgnoreCase("Choose Age"))) {
 
                       showHideProgressBarContainer(1);  //Show
 
-//                    mProgressDialog = new ProgressDialog(OrderSummaryActivity.this);
-//                    mProgressDialog.setIndeterminate(true);
-//                    mProgressDialog.setMessage("loading...");
-//                    mProgressDialog.setCancelable(false);
+                    mProgressDialog = new ProgressDialog(OrderSummaryActivity.this);
+                    mProgressDialog.setIndeterminate(true);
+                    mProgressDialog.setMessage("Verifying details...");
+                    mProgressDialog.setCancelable(false);
 
 
                     //Get Summary First Status
@@ -909,13 +910,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-//        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-//            mProgressDialog.dismiss();
-//        }
-
-        showHideProgressBarContainer(2);  //Hide
-
-
+        Log.i("TIME","Activity Result Start Time");
 
 
         if (requestCode == Constants.REQUEST_CODE && data != null) {
@@ -926,7 +921,6 @@ public class OrderSummaryActivity extends AppCompatActivity {
             // Check transactionID, orderID, and orderID for null before using them to check the Payment status.
             if (orderID != null && transactionID != null && paymentID != null) {
 
-                showHideProgressBarContainer(1);  //Show
 
                 mOrderID = orderID;
                 mTransactionID = transactionID;
@@ -938,6 +932,11 @@ public class OrderSummaryActivity extends AppCompatActivity {
 //                 Toast.makeText(OrderSummaryActivity.this, "Check payment status",Toast.LENGTH_SHORT).show();
             } else {
 //                Toast.makeText(OrderSummaryActivity.this, "Oops!! Payment was cancelled",Toast.LENGTH_SHORT).show();
+
+
+             if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                    mProgressDialog.dismiss();
+            }
 
             }
         }
@@ -969,11 +968,17 @@ private void getSummaryFirstStatus(int dataRequestId) {
             ,servicePackagesWithPrice,psdFacility,mSelectedBreedType,mSelectedAgeGroup
             ,mEditTextSpecialInstructions.getText().toString());
 
+    Log.i("TIME","Summary First Status Start Time");
+
     call.enqueue(new Callback<SummaryFirstStatus>() {
         @Override
         public void onResponse(Call<SummaryFirstStatus> call, Response<SummaryFirstStatus> response) {
 
+            showHideProgressBarContainer(2);  //Hide
+
             if (response.isSuccessful()) {
+
+                Log.i("TIME","SummaryFirstStatus Response");
 
                 mSummaryFirstStatus = response.body();
 
@@ -982,21 +987,22 @@ private void getSummaryFirstStatus(int dataRequestId) {
                     createOrder();
 
                 } else if (mSummaryFirstStatus.getStatus() == 101) {
-                    //Disable ProgressDialog
-//                    if (mProgressDialog != null && mProgressDialog.isShowing()) {
-//                        mProgressDialog.dismiss();
-//                    }
 
-                    showHideProgressBarContainer(2);  //Hide
+                    //Disable ProgressDialog
+                    if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                        mProgressDialog.dismiss();
+                    }
+
+
 
                     Snackbar.make(findViewById(R.id.ll_activity_container), R.string.slot_not_available, Snackbar.LENGTH_SHORT).show();
                 } else {
-                    //Disable ProgressDialog
-//                    if (mProgressDialog != null && mProgressDialog.isShowing()) {
-//                        mProgressDialog.dismiss();
-//                    }
 
-                    showHideProgressBarContainer(2);  //Hide
+                    //Disable ProgressDialog
+                    if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                        mProgressDialog.dismiss();
+                    }
+
 
                     Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_something_went_wrong, Snackbar.LENGTH_SHORT).show();
                 }
@@ -1005,11 +1011,11 @@ private void getSummaryFirstStatus(int dataRequestId) {
             else {
                 Log.d("onResponse", "getSummaryFirstStatus :onResponse:notSuccessful");
 
-//                if (mProgressDialog != null && mProgressDialog.isShowing()) {
-//                    mProgressDialog.dismiss();
-//                }
+                if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                    mProgressDialog.dismiss();
+                }
 
-                showHideProgressBarContainer(2);  //Hide
+
 
                 Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_something_went_wrong, Snackbar.LENGTH_SHORT).show();
 
@@ -1019,11 +1025,11 @@ private void getSummaryFirstStatus(int dataRequestId) {
         @Override
         public void onFailure(Call<SummaryFirstStatus> call, Throwable throwable) {
 
-//            if (mProgressDialog != null && mProgressDialog.isShowing()) {
-//                mProgressDialog.dismiss();
-//            }
+            if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                mProgressDialog.dismiss();
+            }
 
-            showHideProgressBarContainer(2);  //Hide
+
 
             Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_something_went_wrong, Snackbar.LENGTH_SHORT).show();
 
@@ -1059,7 +1065,9 @@ private void getSummaryFirstStatus(int dataRequestId) {
 
         //Create the Order
         Order order = new Order(mSummaryFirstStatus.getAt(), mSummaryFirstStatus.getId(),mSelectedFullName, mSummaryFirstStatus.getEmailId()
-                                ,mSelectedPhone,Integer.toString(mGrandTotal),mCartScreen.getServiceCategoryName());
+                                ,mSelectedPhone,Integer.toString(mGrandTotal),"GoPetting");
+
+
 //
 //        Order order = new Order("Alh0W5NBPrQaCGx4oP5S6eGzuA1kOk","12345678979137195","Sumit Sharma", "sumitsharma@gmail.com"
 //                ,"8974512235","10","Salon");
@@ -1071,47 +1079,49 @@ private void getSummaryFirstStatus(int dataRequestId) {
         //set webhook
         order.setWebhook("http://ec2-52-220-151-54.ap-southeast-1.compute.amazonaws.com/api/v1/t/wh");
 
+        Log.i("TIME","Validate Order START");
+
         //Validate the Order
         if (!order.isValid()) {
             //oops order validation failed. Pinpoint the issue(s).
 
             if (!order.isValidName()) {
-//               showToast("Buyer name is invalid");
-                showSnackbar();
+               showToast("Buyer name is invalid");
+//                showSnackbar();
             }
 
             if (!order.isValidEmail()) {
-//                showToast("Buyer email is invalid");
+                showToast("Buyer email is invalid");
                 showSnackbar();
             }
 
             if (!order.isValidPhone()) {
-//                showToast("Buyer phone is invalid");
+                showToast("Phone is invalid");
                 showSnackbar();
             }
 
             if (!order.isValidAmount()) {
-//                showToast("Amount is invalid or has more than two decimal places");
+                showToast("Amount is invalid or has more than two decimal places");
                 showSnackbar();
             }
 
             if (!order.isValidDescription()) {
-//                showToast("Description is invalid");
+                showToast("Description is invalid");
                 showSnackbar();
             }
 
             if (!order.isValidTransactionID()) {
-//                showToast("Transaction is Invalid");
+                showToast("Transaction is Invalid");
                 showSnackbar();
             }
 
             if (!order.isValidRedirectURL()) {
-//                showToast("Redirection URL is invalid");
+                showToast("Redirection URL is invalid");
                 showSnackbar();
             }
 
             if (!order.isValidWebhook()) {
-//                showToast("Webhook URL is invalid");
+                showToast("Webhook URL is invalid");
                 showSnackbar();
             }
 
@@ -1119,9 +1129,13 @@ private void getSummaryFirstStatus(int dataRequestId) {
         }
 
         //Validation is successful. Proceed
-//        mProgressDialog.show();
 
-        showHideProgressBarContainer(1);  //Show
+        Log.i("TIME","Validate Order END");
+
+//        showHideProgressBarContainer(1);  //Show
+
+        mProgressDialog.setMessage("Please wait while we take you to payment screen...");
+        mProgressDialog.show();
 
         Request request = new Request(order, new OrderRequestCallBack() {
             @Override
@@ -1129,19 +1143,22 @@ private void getSummaryFirstStatus(int dataRequestId) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-//                        mProgressDialog.dismiss();
-                        showHideProgressBarContainer(2);  //Hide
+
+                        Log.i("TIME","Request - Inside Run() - START");
+
+//                        showHideProgressBarContainer(2);  //Hide
+                        mProgressDialog.dismiss();
 
                         if (error != null) {
                             if (error instanceof Errors.ConnectionError) {
-//                                showToast("No internet connection");
-                                showSnackbar();
+                                showToast("No internet connection");
+//                                showSnackbar();
                             } else if (error instanceof Errors.ServerError) {
-//                                showToast("Server Error. Try again");
-                                showSnackbar();
+                                showToast("Server Error. Try again");
+//                                showSnackbar();
                             } else if (error instanceof Errors.AuthenticationError) {
-                                Toast.makeText(OrderSummaryActivity.this, "Access token is invalid or expired. Please Update the token!!",Toast.LENGTH_SHORT).show();
-//                                showToast("Access token is invalid or expired. Please Update the token!!");
+//                                Toast.makeText(OrderSummaryActivity.this, "Access token is invalid or expired. Please Update the token!!",Toast.LENGTH_SHORT).show();
+                                showToast("Access token is invalid or expired. Please Update the token!!");
 //                                showSnackbar();
 
                             } else if (error instanceof Errors.ValidationError) {
@@ -1157,46 +1174,47 @@ private void getSummaryFirstStatus(int dataRequestId) {
 
                                 if (!validationError.isValidRedirectURL()) {
                                     showSnackbar();
-//                                    showToast("Redirect url is invalid");
+                                    showToast("Redirect url is invalid");
                                     return;
                                 }
 
                                 if (!validationError.isValidWebhook()) {
-//                                    showToast("Webhook url is invalid");
-                                    showSnackbar();
+                                    showToast("Webhook url is invalid");
+//                                    showSnackbar();
                                     return;
                                 }
 
                                 if (!validationError.isValidPhone()) {
-//                                    showToast("Buyer's Phone Number is invalid/empty");
-                                    showSnackbar();
+                                    showToast("Phone Number is invalid/empty");
+//                                    showSnackbar();
                                     return;
                                 }
 
                                 if (!validationError.isValidEmail()) {
-//                                    showToast("Buyer's Email is invalid/empty");
-                                    showSnackbar();
+                                    showToast("Buyer's Email is invalid/empty");
+//                                    showSnackbar();
                                     return;
                                 }
 
                                 if (!validationError.isValidAmount()) {
-//                                    showToast("Amount is either less than Rs.9 or has more than two decimal places");
-                                    showSnackbar();
+                                    showToast("Amount is either less than Rs.9 or has more than two decimal places");
+//                                    showSnackbar();
                                     return;
                                 }
 
                                 if (!validationError.isValidName()) {
-//                                    showToast("Buyer's Name is required");
-                                    showSnackbar();
+                                    showToast("Buyer's Name is required");
+//                                    showSnackbar();
                                     return;
                                 }
                             } else {
-//                                showToast(error.getMessage());
-                                showSnackbar();
+                                showToast(error.getMessage());
+//                                showSnackbar();
                             }
                             return;
                         }
 
+                        Log.i("TIME","Order Request execute END");
                         startPreCreatedUI(order);
 
                     }
@@ -1205,15 +1223,11 @@ private void getSummaryFirstStatus(int dataRequestId) {
         });
 
         request.execute();
+
     }
 
 
     private void showSnackbar() {
-
-        //Disable ProgressDialog
-//        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-//            mProgressDialog.dismiss();
-//        }
 
         showHideProgressBarContainer(2);  //Hide
 
@@ -1226,6 +1240,8 @@ private void getSummaryFirstStatus(int dataRequestId) {
     }
 
     private void startPreCreatedUI(Order order) {
+
+        Log.i("TIME","Payment End Time - Start of Payment Screen");
 
         Intent intent = new Intent(getBaseContext(), PaymentDetailsActivity.class);
         intent.putExtra(Constants.ORDER, order);
@@ -1249,12 +1265,11 @@ private void getSummaryFirstStatus(int dataRequestId) {
                     mSummarySecondStatus = response.body();
 
                     //Disable ProgressDialog
-//                    if (mProgressDialog != null && mProgressDialog.isShowing()) {
-//                        mProgressDialog.dismiss();
-//                    }
+                    if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                        mProgressDialog.dismiss();
+                    }
 
-                    showHideProgressBarContainer(2);  //Hide
-
+                    Log.i("TIME","Order Confirmation Activity Start Time");
 
                     if (mSummarySecondStatus.getStatus() == 12) {
 //                          Toast.makeText(OrderSummaryActivity.this, "successful",Toast.LENGTH_SHORT).show();
@@ -1287,11 +1302,11 @@ private void getSummaryFirstStatus(int dataRequestId) {
                 else {
                     Log.d("onResponse", "getSummarySecondStatus :onResponse:notSuccessful");
 
-//                    if (mProgressDialog != null && mProgressDialog.isShowing()) {
-//                        mProgressDialog.dismiss();
-//                    }
+                    if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                        mProgressDialog.dismiss();
+                    }
 
-                    showHideProgressBarContainer(2);  //Hide
+
 
                     Intent intent = new Intent(OrderSummaryActivity.this, OrderConfirmationActivity.class);
                     Bundle bundle = new Bundle();
@@ -1309,11 +1324,11 @@ private void getSummaryFirstStatus(int dataRequestId) {
             @Override
             public void onFailure(Call<SummarySecondStatus> call, Throwable throwable) {
 
-//                if (mProgressDialog != null && mProgressDialog.isShowing()) {
-//                    mProgressDialog.dismiss();
-//                }
+                if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                    mProgressDialog.dismiss();
+                }
 
-                showHideProgressBarContainer(2);  //Hide
+//                showHideProgressBarContainer(2);  //Hide
 
 
                 Intent intent = new Intent(OrderSummaryActivity.this, OrderConfirmationActivity.class);
@@ -1362,5 +1377,16 @@ private void getSummaryFirstStatus(int dataRequestId) {
         }
 
     }
+
+
+    private void showToast(final String message) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
 
 }

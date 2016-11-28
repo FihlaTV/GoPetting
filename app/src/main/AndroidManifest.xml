@@ -122,6 +122,23 @@
             android:name=".activities.OrderSummaryActivity"
             android:label="@string/title_activity_order_summary" />
         <activity android:name=".activities.OrderConfirmationActivity"></activity>
+        <activity
+            android:name=".activities.OrderHistoryActivity"
+            android:label="@string/title_activity_order_history">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.gopetting.android.activities.MainActivity" />
+
+        </activity>
+
+        <activity
+            android:name=".activities.OrderHistoryDetailActivity"
+            android:label="@string/title_activity_order_history_details">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gopetting.android.activities.OrderHistoryActivity" />
+        </activity>
+
     </application>
 
 </manifest>

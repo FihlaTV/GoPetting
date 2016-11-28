@@ -12,6 +12,9 @@ import com.gopetting.android.models.DeliveryDetails;
 import com.gopetting.android.models.Dog;
 import com.gopetting.android.models.DogDetails;
 import com.gopetting.android.models.FilterSubCategory;
+import com.gopetting.android.models.OrderHistory;
+import com.gopetting.android.models.OrderHistoryDetails;
+import com.gopetting.android.models.OrderHistoryItem;
 import com.gopetting.android.models.OrderSummary;
 import com.gopetting.android.models.Promo;
 import com.gopetting.android.models.ServiceCategory;
@@ -240,5 +243,33 @@ public class Controller {
                                                          @Query("o_id") String oId
         );
     }
+
+
+
+    public interface GetOrderHistory {
+        @GET("/api/v1/order/service/history_summary")
+        Call<OrderHistory> getOrderHistory(@Header("Authorization") String authorization,
+                                           @Query("user_id") String userId);
+    }
+
+
+    public interface GetOrderHistoryDetails {
+        @GET("api/v1/order/service/history_details")
+        Call<OrderHistoryDetails> getOrderHistoryDetails(@Header("Authorization") String authorization,
+                                                         @Query("user_id") String userId,
+                                                         @Query("order_id") String order_id);
+    }
+
+
+
+
+    public interface GetButtonOrderStatus {
+        @GET("api/v1/order/service/status")
+        Call<Status> getButtonOrderStatus(@Header("Authorization") String authorization,
+                                   @Query("user_id") String userId,
+                                   @Query("order_id") String orderId,
+                                   @Query("reason") String reason);
+    }
+
 
 }
