@@ -401,10 +401,14 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
                         mOrderStatusChanged = 1;
                         showProgressBar(false);
 
+                    }else if (mButtonOrderStatus.getStatus() == 103){
+                        showProgressBar(false);
+                        Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_pg_refund_case, Snackbar.LENGTH_LONG).setDuration(5000).show();
                     }else {
                         showProgressBar(false);
                         Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_something_went_wrong, Snackbar.LENGTH_SHORT).show();
                     }
+
 
 
                 }

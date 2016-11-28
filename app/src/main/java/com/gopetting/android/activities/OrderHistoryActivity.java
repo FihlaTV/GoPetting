@@ -149,6 +149,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
 
                         mRelativeLayoutOuterContainer.setVisibility(View.GONE);
                         mLinearLayoutEmptyOrder.setVisibility(View.VISIBLE);
+                        mFrameLayoutProgressBarContainer.setVisibility(View.GONE);   //Hide Progress Bar
                     }
 
 

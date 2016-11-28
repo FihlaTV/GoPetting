@@ -233,5 +233,6 @@
     <string name="dialog_button_ok">OK</string>
     <string name="text_cancel_reason">Please choose reason</string>
     <string name="text_cancelled">Cancelled</string>
+    <string name="snackbar_pg_refund_case">There\'s already a refund case raised by you in Instamojo. Request you to close that.</string>
 
 </resources>
