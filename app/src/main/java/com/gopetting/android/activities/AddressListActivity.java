@@ -504,83 +504,83 @@ public class AddressListActivity extends AppCompatActivity {
         //a custom OnCreateViewHolder listener class which is used to create the viewHolders
         //we define the listener for the deleteContainer  here for better performance
         //you can also define the listener within the items bindView method but performance is better if you do it like this
-        mFastItemAdapterAddressList.withOnCreateViewHolderListener(new FastAdapter.OnCreateViewHolderListener() {
-            @Override
-            public RecyclerView.ViewHolder onPreCreateViewHolder(ViewGroup parent, int viewType) {
-                return mFastItemAdapterAddressList.getTypeInstance(viewType).getViewHolder(parent);
-            }
-
-            @Override
-            public RecyclerView.ViewHolder onPostCreateViewHolder(final RecyclerView.ViewHolder viewHolder) {
-
-                if (viewHolder instanceof Address.ViewHolder) {
-                    //if we click on the (mLinearLayoutDeleteContainer)
-                    mClickListenerHelper.listen(viewHolder, ((Address.ViewHolder) viewHolder).mLinearLayoutDeleteContainer, new ClickListenerHelper.OnClickListener<Address>() {
-                        @Override
-                        public void onClick(View v, int position, Address item) {
-
-//                            Toast.makeText(AddressListActivity.this, "Delete button clicked", Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
-
-//                            if (position != mAddressList.getAddresses().size()-1) {
-                            if (mDefaultAddressId == item.getAddressId()) {
-                                mDefaultAddressUpdateFlag = 1;  //Update Appointment Default address and change DateTimeslot accordingly
-                            }
+//        mFastItemAdapterAddressList.withOnCreateViewHolderListener(new FastAdapter.OnCreateViewHolderListener() {
+//            @Override
+//            public RecyclerView.ViewHolder onPreCreateViewHolder(ViewGroup parent, int viewType) {
+//                return mFastItemAdapterAddressList.getTypeInstance(viewType).getViewHolder(parent);
+//            }
+//
+//            @Override
+//            public RecyclerView.ViewHolder onPostCreateViewHolder(final RecyclerView.ViewHolder viewHolder) {
+//
+//                if (viewHolder instanceof Address.ViewHolder) {
+//                    //if we click on the (mLinearLayoutDeleteContainer)
+//                    mClickListenerHelper.listen(viewHolder, ((Address.ViewHolder) viewHolder).mLinearLayoutDeleteContainer, new ClickListenerHelper.OnClickListener<Address>() {
+//                        @Override
+//                        public void onClick(View v, int position, Address item) {
+//
+////                            Toast.makeText(AddressListActivity.this, "Delete button clicked", Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+//
+////                            if (position != mAddressList.getAddresses().size()-1) {
+//                            if (mDefaultAddressId == item.getAddressId()) {
+//                                mDefaultAddressUpdateFlag = 1;  //Update Appointment Default address and change DateTimeslot accordingly
 //                            }
-
-
-                            //Select previous/next address if this is currently selected address as this is going to get deleted.
-                            if (item.isSelected()) {
-                                if (position == mAddressList.getAddresses().size() - 1) {
-
-                                    if (position == 0) {
-                                        mAppointmentDisableFlag = 1;  //To disable default displayed Address layout in appointmentactivity
-                                        // as there're no address in address list
-                                    } else {
-
-                                        mNextAddressItem = (Address) mFastItemAdapterAddressList.getItem(position - 1); //Save previous item
-
-                                        mFastItemAdapterAddressList.select(position - 1); //select previous address as this is last item
-                                    }
-
-                                } else {
-                                    mNextAddressItem = (Address) mFastItemAdapterAddressList.getItem(position + 1); //Save next item
-
-                                    mFastItemAdapterAddressList.select(position + 1); //Select next address as this is not last item
-                                }
-                            }
-
-                            //Get next/previous addressId when there're more than 1 item in AddressList
-                            if (mAppointmentDisableFlag != 1 && mNextAddressItem != null) {
-                                //Save newly selected address after delete
-                                mSelectedAddressId = mNextAddressItem.getAddressId();
-                            }
-
-                            //Remove currently selected item from mAddressList
-                            for (int i = 0; i < mAddressList.getAddresses().size(); i++) {
-
-                                if (mAddressList.getAddresses().get(i).getAddressId() == item.getAddressId()) {
-                                    mAddressList.getAddresses().remove(i);
-
-                                }
-                            }
-
-                            //Remove currently selected item from FastItemAdapter
-                            mFastItemAdapterAddressList.remove(position);
-
-                            //Creating Deleted AddressId List
-                            if (mDeletedAddressIdList.isEmpty()) {
-                                mDeletedAddressIdList = Integer.toString(item.getAddressId());
-                            } else {
-                                mDeletedAddressIdList = mDeletedAddressIdList + "_" + Integer.toString(item.getAddressId());
-                            }
-
-                        }
-                    });
-                }
-
-                return viewHolder;
-            }
-        });
+////                            }
+//
+//
+//                            //Select previous/next address if this is currently selected address as this is going to get deleted.
+//                            if (item.isSelected()) {
+//                                if (position == mAddressList.getAddresses().size() - 1) {
+//
+//                                    if (position == 0) {
+//                                        mAppointmentDisableFlag = 1;  //To disable default displayed Address layout in appointmentactivity
+//                                        // as there're no address in address list
+//                                    } else {
+//
+//                                        mNextAddressItem = (Address) mFastItemAdapterAddressList.getItem(position - 1); //Save previous item
+//
+//                                        mFastItemAdapterAddressList.select(position - 1); //select previous address as this is last item
+//                                    }
+//
+//                                } else {
+//                                    mNextAddressItem = (Address) mFastItemAdapterAddressList.getItem(position + 1); //Save next item
+//
+//                                    mFastItemAdapterAddressList.select(position + 1); //Select next address as this is not last item
+//                                }
+//                            }
+//
+//                            //Get next/previous addressId when there're more than 1 item in AddressList
+//                            if (mAppointmentDisableFlag != 1 && mNextAddressItem != null) {
+//                                //Save newly selected address after delete
+//                                mSelectedAddressId = mNextAddressItem.getAddressId();
+//                            }
+//
+//                            //Remove currently selected item from mAddressList
+//                            for (int i = 0; i < mAddressList.getAddresses().size(); i++) {
+//
+//                                if (mAddressList.getAddresses().get(i).getAddressId() == item.getAddressId()) {
+//                                    mAddressList.getAddresses().remove(i);
+//
+//                                }
+//                            }
+//
+//                            //Remove currently selected item from FastItemAdapter
+//                            mFastItemAdapterAddressList.remove(position);
+//
+//                            //Creating Deleted AddressId List
+//                            if (mDeletedAddressIdList.isEmpty()) {
+//                                mDeletedAddressIdList = Integer.toString(item.getAddressId());
+//                            } else {
+//                                mDeletedAddressIdList = mDeletedAddressIdList + "_" + Integer.toString(item.getAddressId());
+//                            }
+//
+//                        }
+//                    });
+//                }
+//
+//                return viewHolder;
+//            }
+//        });
 
 
     }
