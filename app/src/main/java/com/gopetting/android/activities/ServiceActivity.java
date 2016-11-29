@@ -70,7 +70,9 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
     private static final int SERVICE_IDENTIFIER_2 = 202; //Intent Identifier, when Basket icon clicked and user not logged in
     private static final int SERVICE_IDENTIFIER_3 = 203; //Intent Identifier; Cart icon clicked and user not logged in
     private static final int SERVICE_IDENTIFIER_4 = 204; //Intent Identifier; for starting Appointment Activity
+    private static final int CART_IDENTIFIER_2 = 102 ; //102 value to Identify AppointmentActivity Started by CartActivity
     private static final int SERVICE_CATEGORY_ID = 11;  //Pet Salon
+
     private static String sUserId;
 
 
@@ -131,7 +133,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                     startActivityForResult(intent,SERVICE_IDENTIFIER_4);
 
                 }else {
-                    Snackbar.make(findViewById(R.id.coordinator_layout), R.string.snackbar_services, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.coordinator_layout), R.string.snackbar_services, Snackbar.LENGTH_SHORT).show();
                 }
 
             }
@@ -287,6 +289,11 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                 if (response.isSuccessful()) {
 
                     mCart = response.body();
+
+                    if (mCart.mCartItems.size() == 0){
+                        mCart.setServiceCategoryName("Pet Salon");
+                    }
+
 
                     //Enable footer button click since data is loaded into mCart Object
                     mRelativeLayoutFooterButton.setEnabled(true);
@@ -572,7 +579,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
 
         //Intent Identifier, when Basket icon clicked and user not logged in
-        if (requestCode == SERVICE_IDENTIFIER_2) {
+        if (requestCode == SERVICE_IDENTIFIER_2 ) {
             if (resultCode == Activity.RESULT_OK) {
                 Log.i("Info", "RESULT_OK code was not expected");
             }
@@ -604,7 +611,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
         //Intent Identifier; for Starting AppointmentActivity
         //For saving latest cart when moving between activities like service,cart,appointment and ordersummary.
-        if (requestCode == SERVICE_IDENTIFIER_4) {
+        if ((requestCode == SERVICE_IDENTIFIER_4)) {
             if (resultCode == Activity.RESULT_OK) {
                 mCart = (Cart) Parcels.unwrap(data.getParcelableExtra("cart"));
 

@@ -85,22 +85,36 @@
             android:paddingRight="15.0dip"
             android:visibility="gone">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_empty_cart" />
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@drawable/ic_empty_cart" />-->
+
+
 
             <com.gopetting.android.views.TypefaceTextView
                 android:id="@id/tv_empty_cart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10.0dip"
+                android:layout_marginBottom="10.0dip"
                 android:gravity="center"
                 android:lineSpacingExtra="3.0dip"
                 android:text="@string/empty_cart_text"
                 android:textColor="@color/item_text_regular"
-                android:textSize="@dimen/text_size_medium_special"
+                android:textSize="@dimen/text_size_large"
                 app:customTypeface="@string/typeface_regular" />
+
+            <Button
+                android:id="@id/btn_home"
+                android:layout_width="100.0dip"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_rectangle"
+                android:paddingBottom="10.0dip"
+                android:paddingTop="10.0dip"
+                android:text="@string/text_home"
+                android:textColor="@color/white" />
+
         </LinearLayout>
 
     </RelativeLayout>

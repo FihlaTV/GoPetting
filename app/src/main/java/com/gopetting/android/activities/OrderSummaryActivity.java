@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -42,6 +43,7 @@ import com.gopetting.android.models.Credential;
 import com.gopetting.android.models.OrderSummary;
 import com.gopetting.android.models.Promo;
 import com.gopetting.android.models.Status;
+import com.gopetting.android.models.StringItem;
 import com.gopetting.android.models.SummaryFirstStatus;
 import com.gopetting.android.models.SummarySecondStatus;
 import com.gopetting.android.network.Controller;
@@ -137,7 +139,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
     FrameLayout mFrameLayoutProgressBarContainer;
     @BindView(R.id.edit_text_special_instructions)
     EditText mEditTextSpecialInstructions;
-
+    @BindView(R.id.btn_home)
+    Button mButtonHome;
 
     private static String sUserId;
 
@@ -175,6 +178,9 @@ public class OrderSummaryActivity extends AppCompatActivity {
     private String mOrderID;
     private String mTransactionID;
     private String mPaymentID;
+    private boolean mEmptyCartFlag = false;
+    private List<StringItem> mPromotionalScreens;
+    private ArrayList<String> mPromoImages;
 
 
     @Override
@@ -188,6 +194,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
         mRelativeLayoutInnerContainer.setVisibility(View.GONE);
         mFrameLayoutProgressBarContainer.setVisibility(View.VISIBLE);
+
+        mPromoImages = new ArrayList<>();   //Initializing
 
         //Get Cart Data, Date, Time and Address Details
         Intent intent = getIntent();
@@ -288,6 +296,9 @@ public class OrderSummaryActivity extends AppCompatActivity {
                 break;
             case 5: //Get Summary Second Status
                 getSummarySecondStatus(dataRequestId);
+                break;
+            case 6: //Get Promotional Data
+                getPromotionalGalleryData();
                 break;
             default:
                 Log.i("OrderSummaryActivity", "getServerData datarequestid: Out of range value ");
@@ -653,7 +664,19 @@ public class OrderSummaryActivity extends AppCompatActivity {
             mFrameLayoutProgressBarContainer.setVisibility(View.GONE);
             mRelativeLayoutFooterButtonContainer.setVisibility(View.GONE);
             mLinearLayoutEmptyCart.setVisibility(View.VISIBLE);
+            mEmptyCartFlag = true;
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
+
+        mButtonHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mFrameLayoutProgressBarContainer.setVisibility(View.VISIBLE);
+                getServerData(6);
+
+            }
+        });
 
         mTextViewCategoryName.setText(mCartScreen.getServiceCategoryName());
 
@@ -715,6 +738,9 @@ public class OrderSummaryActivity extends AppCompatActivity {
                                 mFrameLayoutProgressBarContainer.setVisibility(View.GONE);
                                 mRelativeLayoutFooterButtonContainer.setVisibility(View.GONE);
                                 mLinearLayoutEmptyCart.setVisibility(View.VISIBLE);
+                                mEmptyCartFlag = true;
+                                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
                             }else { //
 
 
@@ -825,6 +851,50 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
     }
 
+
+    private void getPromotionalGalleryData() {
+
+        Controller.GetPromotionalScreens retrofitSingleton = RetrofitSingleton.getInstance().create(Controller.GetPromotionalScreens.class);
+        Call<List<StringItem>> call = retrofitSingleton.getPromotionalScreens("Bearer " + mCredential.getAccess_token());
+        call.enqueue(new Callback<List<StringItem>>() {
+            @Override
+            public void onResponse(Call<List<StringItem>> call, Response<List<StringItem>> response) {
+                if (response.isSuccessful()) {
+
+                    mPromotionalScreens =response.body();
+
+                    mPromoImages.add(mPromotionalScreens.get(0).getName());
+                    mPromoImages.add(mPromotionalScreens.get(1).getName());
+                    mPromoImages.add(mPromotionalScreens.get(2).getName());
+
+                    Intent intent = new Intent(OrderSummaryActivity.this,MainActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArrayList("promo_images", mPromoImages);
+                    intent.putExtras(bundle);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);    //Clear stack; for exiting activity
+
+                    mFrameLayoutProgressBarContainer.setVisibility(View.GONE);
+
+                    startActivity(intent);
+                    finish();
+
+                }
+
+                else {
+                    Log.d("onResponse", "getPromotionalGalleryData :onResponse:notSuccessful");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StringItem>> call, Throwable throwable) {
+                Toast.makeText(OrderSummaryActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+            }
+        });
+
+
+
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         //add the values which need to be saved from the adapter to the bundle
@@ -872,15 +942,19 @@ public class OrderSummaryActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        Intent returnIntent = new Intent();
-        updateCartObject();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("cart", Parcels.wrap(mCart));
-        returnIntent.putExtras(bundle);
-        setResult(Activity.RESULT_OK,returnIntent);
-        finish();   //Finishing Activity as user press back button and want to update mCart object so that Cart items remain same after delete also.
+        //Disable Back button when cart is empty
+        if (!mEmptyCartFlag) {
+            Intent returnIntent = new Intent();
+            updateCartObject();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("cart", Parcels.wrap(mCart));
+            returnIntent.putExtras(bundle);
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();   //Finishing Activity as user press back button and want to update mCart object so that Cart items remain same after delete also.
 
-        super.onBackPressed();
+            super.onBackPressed();
+        }
+
     }
 
     @Override

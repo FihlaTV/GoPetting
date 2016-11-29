@@ -3,7 +3,6 @@ package com.gopetting.android.activities;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,6 +52,7 @@ import retrofit2.Response;
 
 public class CartActivity extends AppCompatActivity {
 
+
     @BindView(R.id.toolbar_headerbar)
     Toolbar mToolbar;
     @BindView(R.id.tv_category_name)
@@ -71,6 +71,7 @@ public class CartActivity extends AppCompatActivity {
 
     private static final String OTHER_ACTIVITY_FLAG = "other_activity_flag";  //Used for starting login activity
     private static final int IDENTIFIER = 101; //101 value to Identify ServiceActivity
+    private static final int CART_IDENTIFIER_2 = 102 ; //102 value to Identify AppointmentActivity
     private static String sUserId;
 
     private Credential mCredential;
@@ -161,6 +162,27 @@ public class CartActivity extends AppCompatActivity {
                 mRelativeLayoutFooterButtonContainer.setVisibility(View.GONE);
                 mLinearLayoutEmptyCart.setVisibility(View.VISIBLE);
             }
+
+
+
+        mRelativeLayoutFooterButtonContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                    updateCartObject();
+
+                    Intent intent = new Intent(CartActivity.this, AppointmentActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("cart", Parcels.wrap(mCart));
+                    intent.putExtras(bundle);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);    //Clear stack; for exiting activity
+                    startActivityForResult(intent, CART_IDENTIFIER_2); //Identifier for starting Appointment activity
+
+
+
+            }
+        });
+
 
             mTextViewCategoryName.setText(mCartScreen.getServiceCategoryName());
 
@@ -508,6 +530,20 @@ public class CartActivity extends AppCompatActivity {
 
             }
         }
+
+        if (requestCode == CART_IDENTIFIER_2) {
+            if(resultCode == Activity.RESULT_OK){
+
+                setResult(Activity.RESULT_OK,data);
+                finish();   //Finishing Activity; Go back to ServiceActivity
+
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+
+            }
+
+        }
+
 
 
     }

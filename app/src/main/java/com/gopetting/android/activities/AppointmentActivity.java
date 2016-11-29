@@ -132,7 +132,7 @@ public class AppointmentActivity extends AppCompatActivity {
         //Show a snackbar if user is not logged in; However, at this screen this case is not possible.
         if (!mSessionManager.isLoggedIn()){
 
-            Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_not_logged_in, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_not_logged_in, Snackbar.LENGTH_SHORT).show();
             mRelativeLayoutAppointmentContainer.setVisibility(View.GONE);
 
         }else {
@@ -147,7 +147,7 @@ public class AppointmentActivity extends AppCompatActivity {
 
             //Show a snackbar if cart is empty; However, at this screen this case is not possible.
             if (mCart.mCartItems.size()<=0){
-                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_empty_cart, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_empty_cart, Snackbar.LENGTH_SHORT).show();
                 mRelativeLayoutAppointmentContainer.setVisibility(View.GONE);
             }
 
@@ -430,7 +430,7 @@ public class AppointmentActivity extends AppCompatActivity {
 
 
             }else {
-                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_appointment, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_appointment, Snackbar.LENGTH_SHORT).show();
             }
 
             }

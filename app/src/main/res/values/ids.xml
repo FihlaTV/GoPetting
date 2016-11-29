@@ -189,6 +189,8 @@
     <item name="tv_empty_order" type="id" />
     <item name="ll_empty_order" type="id" />
     <item name="fastadapter_order_history_service_item_id" type="id" />
+    <item name="tv_home_button" type="id" />
+    <item name="btn_home" type="id" />
 
 
 </resources>

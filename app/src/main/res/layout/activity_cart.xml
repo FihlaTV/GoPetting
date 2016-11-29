@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_100"
+    android:background="@color/grey_50"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar_with_headerbar" />
@@ -29,7 +29,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!--android:layout_toRightOf="@id/img_icon"-->
+
 
                     <com.gopetting.android.views.TypefaceTextView
                         android:id="@id/tv_category_name"
@@ -41,9 +41,13 @@
                         android:paddingRight="5.0dip"
                         android:paddingTop="10.0dip"
                         android:textColor="@color/item_text_regular"
-                        android:textSize="18.0sp"
-                        app:customTypeface="@string/typeface_bold" />
+                        android:textSize="@dimen/text_size_medium_special"
+                        app:customTypeface="@string/typeface_bold"  />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1.0dip"
+                        android:background="@color/grey_300" />
 
                 </LinearLayout>
 
