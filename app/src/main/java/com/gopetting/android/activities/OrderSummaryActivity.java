@@ -50,6 +50,7 @@ import com.gopetting.android.network.Controller;
 import com.gopetting.android.network.OAuthTokenService;
 import com.gopetting.android.network.RetrofitSingleton;
 import com.gopetting.android.network.SessionManager;
+import com.gopetting.android.utils.ConnectivityReceiver;
 import com.gopetting.android.utils.SimpleDividerItemDecoration;
 import com.instamojo.android.Instamojo;
 import com.instamojo.android.activities.PaymentDetailsActivity;
@@ -423,13 +424,15 @@ public class OrderSummaryActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-               if( !mEditTextApplyPromo.getText().toString().trim().equals("")){
 
-                   mFrameLayoutProgressBarContainer.setVisibility(View.VISIBLE);
+                    if (!mEditTextApplyPromo.getText().toString().trim().equals("")) {
 
-                   //To disable user interaction with background views
-                   getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                           WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                        if (ConnectivityReceiver.isConnected()) {
+                        mFrameLayoutProgressBarContainer.setVisibility(View.VISIBLE);
+
+                        //To disable user interaction with background views
+                        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
 //
 //                   //Set Background to Black with Opacity 50%
@@ -437,9 +440,17 @@ public class OrderSummaryActivity extends AppCompatActivity {
 //                   mProgressBarContainer.getBackground().setAlpha(30);
 
 
-                   mPromoCode = mEditTextApplyPromo.getText().toString();
-                   getServerData(2);
-               }
+                        mPromoCode = mEditTextApplyPromo.getText().toString();
+                        getServerData(2);
+
+                        }else {
+                            showSnack();
+                        }
+
+                    }else {
+                        Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_enter_promo, Snackbar.LENGTH_LONG).show();
+                    }
+
 
             }
         });
@@ -600,32 +611,45 @@ public class OrderSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Log.i("TIME","Payment Start Time");
-
-                if (mGrandTotal > 0 && (!mSelectedBreedType.isEmpty()) && (!mSelectedAgeGroup.equalsIgnoreCase("Choose Age"))) {
-
-                      showHideProgressBarContainer(1);  //Show
-
-                    mProgressDialog = new ProgressDialog(OrderSummaryActivity.this);
-                    mProgressDialog.setIndeterminate(true);
-                    mProgressDialog.setMessage("Verifying details...");
-                    mProgressDialog.setCancelable(false);
 
 
-                    //Get Summary First Status
-                    getServerData(4);
+                    Log.i("TIME", "Payment Start Time");
+
+                    if (mGrandTotal > 0 && (!mSelectedBreedType.isEmpty()) && (!mSelectedAgeGroup.equalsIgnoreCase("Choose Age"))) {
+
+                        if (ConnectivityReceiver.isConnected()) {
+
+                        showHideProgressBarContainer(1);  //Show
+
+                        mProgressDialog = new ProgressDialog(OrderSummaryActivity.this);
+                        mProgressDialog.setIndeterminate(true);
+                        mProgressDialog.setMessage("Verifying details...");
+                        mProgressDialog.setCancelable(false);
 
 
-                    //TODO: Remove below Debug code after deployment
-                    //let's set the log level to debug
-                    Instamojo.setLogLevel(Log.DEBUG);
-                    Instamojo.setBaseUrl("https://test.instamojo.com/");
+                        //Get Summary First Status
+                        getServerData(4);
 
-                }else if (mGrandTotal<=0){
-                    Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_check_details, Snackbar.LENGTH_SHORT).show();
-                }else {
-                    Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_mandatory_fields, Snackbar.LENGTH_SHORT).show();
-                }
+
+                        //TODO: Remove below Debug code after deployment
+                        //let's set the log level to debug
+                        Instamojo.setLogLevel(Log.DEBUG);
+                        Instamojo.setBaseUrl("https://test.instamojo.com/");
+
+
+                        }else {
+                            showSnack();
+                        }
+
+                    } else if (mGrandTotal <= 0) {
+                        Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_check_details, Snackbar.LENGTH_SHORT).show();
+                    } else if ((mSelectedBreedType.isEmpty()) && (mSelectedAgeGroup.equalsIgnoreCase("Choose Age"))){
+                        Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_empty_breed_age, Snackbar.LENGTH_LONG).show();
+                    } else if (mSelectedBreedType.isEmpty()){
+                        Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_empty_breed, Snackbar.LENGTH_LONG).show();
+                    } else if (mSelectedAgeGroup.equalsIgnoreCase("Choose Age")){
+                        Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_empty_age, Snackbar.LENGTH_LONG).show();
+                    }
 
 
             }
@@ -671,10 +695,12 @@ public class OrderSummaryActivity extends AppCompatActivity {
         mButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                mFrameLayoutProgressBarContainer.setVisibility(View.VISIBLE);
-                getServerData(6);
-
+                if (ConnectivityReceiver.isConnected()) {
+                    mFrameLayoutProgressBarContainer.setVisibility(View.VISIBLE);
+                    getServerData(6);
+                }else {
+                    showSnack();
+                }
             }
         });
 
@@ -1460,6 +1486,10 @@ private void getSummaryFirstStatus(int dataRequestId) {
                 Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void showSnack() {
+        Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_no_internet, Snackbar.LENGTH_LONG).show();
     }
 
 

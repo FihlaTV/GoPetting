@@ -27,6 +27,7 @@ import com.gopetting.android.network.Controller;
 import com.gopetting.android.network.OAuthTokenService;
 import com.gopetting.android.network.RetrofitSingleton;
 import com.gopetting.android.network.SessionManager;
+import com.gopetting.android.utils.ConnectivityReceiver;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 
 import java.text.ParseException;
@@ -77,8 +78,6 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
     protected TextView mTextViewPSDFacility;
 
 
-
-
     @BindView(R.id.progress_bar_container)
     FrameLayout mFrameLayoutProgressBarContainer;
     @BindView(R.id.sv_outer)
@@ -122,36 +121,45 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        showProgressBar(true);  //Show Progress Bar
+        if (ConnectivityReceiver.isConnected()) {
 
-        mSessionManager = new SessionManager(this);
-        sUserId = mSessionManager.getUserId();
+            showProgressBar(true);  //Show Progress Bar
 
-        if (getIntent().getExtras() != null) {
-            Bundle bundle = new Bundle();
-            bundle = getIntent().getExtras();
-            mId = bundle.getString(ORDER_ID);
-            mDateslot = bundle.getString(DATESLOT);
-            mServiceCount = bundle.getString(SERVICE_COUNT);
-            mServiceName = bundle.getString(SERVICE_NAME);
-            mTimeSlot = bundle.getString(TIME_SLOT);
-            mStatus = bundle.getString(STATUS);
+            mSessionManager = new SessionManager(this);
+            sUserId = mSessionManager.getUserId();
+
+            if (getIntent().getExtras() != null) {
+                Bundle bundle = new Bundle();
+                bundle = getIntent().getExtras();
+                mId = bundle.getString(ORDER_ID);
+                mDateslot = bundle.getString(DATESLOT);
+                mServiceCount = bundle.getString(SERVICE_COUNT);
+                mServiceName = bundle.getString(SERVICE_NAME);
+                mTimeSlot = bundle.getString(TIME_SLOT);
+                mStatus = bundle.getString(STATUS);
+            }
+
+
+            if (sUserId != null) {
+
+                getServerData(1);   //Get OrderHistoryDetails
+
+            }
+
+        }else {
+            showSnack();
         }
 
-
-
-        if (sUserId != null) {
-
-            getServerData(1);   //Get OrderHistoryDetails
-
-        }
 
         mTextViewCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                onButtonClick();
-
+                if (ConnectivityReceiver.isConnected()) {
+                    onButtonClick();
+                }else {
+                    showSnack();
+                }
             }
         });
 
@@ -358,8 +366,18 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
                                     public void onClick(DialogInterface dialog, int id) {
                                         Spinner spinner = (Spinner) ((AlertDialog) dialog).findViewById(R.id.cancel_dialog_spinner);
                                         mSelectedReason = spinner.getSelectedItem().toString();
-                                        showProgressBar(true);
-                                        getServerData(2);
+
+                                        if(!mSelectedReason.equalsIgnoreCase("Choose")) {
+
+                                            if (ConnectivityReceiver.isConnected()) {
+                                                showProgressBar(true);
+                                                getServerData(2);
+                                            } else {
+                                                showSnack();
+                                            }
+                                        }else {
+                                            Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_choose_reason, Snackbar.LENGTH_LONG).show();
+                                        }
                                     }
                                 })
                                 .setNegativeButton(R.string.dialog_button_cancel, new DialogInterface.OnClickListener() {
@@ -400,6 +418,7 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
                         mTextViewCancelButton.setVisibility(View.GONE);
                         mOrderStatusChanged = 1;
                         showProgressBar(false);
+                        Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_order_cancelled, Snackbar.LENGTH_SHORT).show();
 
                     }else if (mButtonOrderStatus.getStatus() == 103){
                         showProgressBar(false);
@@ -483,6 +502,13 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
         }
 
         super.onBackPressed();
+
+    }
+
+
+    private void showSnack() {
+
+        Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_no_internet, Snackbar.LENGTH_LONG).show();
 
     }
 

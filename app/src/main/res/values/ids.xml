@@ -191,6 +191,8 @@
     <item name="fastadapter_order_history_service_item_id" type="id" />
     <item name="tv_home_button" type="id" />
     <item name="btn_home" type="id" />
+    <item name="ll_no_internet_container" type="id" />
+    <item name="rl_activity_container" type="id" />
 
 
 </resources>

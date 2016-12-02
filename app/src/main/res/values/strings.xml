@@ -235,5 +235,12 @@
     <string name="text_cancelled">Cancelled</string>
     <string name="snackbar_pg_refund_case">There\'s already a refund case raised by you in Instamojo. Request you to close that.</string>
     <string name="text_home">HOME</string>
+    <string name="snackbar_no_internet">Check your internet connection n try again!</string>
+    <string name="snackbar_enter_promo">Please enter promo code</string>
+    <string name="snackbar_empty_breed_age">Please enter Breed Type and choose Age</string>
+    <string name="snackbar_empty_breed">Enter and choose  Breed Type from options</string>
+    <string name="snackbar_empty_age">Please choose your pet age</string>
+    <string name="snackbar_choose_reason">Please choose reason from options</string>
+    <string name="snackbar_order_cancelled">Order Successfully Cancelled</string>
 
 </resources>

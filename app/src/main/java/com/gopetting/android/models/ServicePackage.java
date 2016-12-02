@@ -7,6 +7,7 @@ import android.view.ViewPropertyAnimator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.annotations.SerializedName;
 import com.gopetting.android.R;
@@ -18,6 +19,7 @@ import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter.utils.ViewHolderFactory;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Sumit on 10/20/2016.
@@ -117,10 +119,21 @@ public class ServicePackage extends AbstractItem<ServicePackage, ServicePackage.
         return this;
     }
 
+
+    public boolean mExpandableClicked = false;
     //we define a clickListener in here so we can directly animate
     final private FastAdapter.OnClickListener<ServicePackage> onClickListener = new FastAdapter.OnClickListener<ServicePackage>() {
         @Override
         public boolean onClick(View v, IAdapter adapter, ServicePackage item, int position) {
+
+//            if(item.mPressed){
+//                item.setItemSelected(true);
+//            }else {
+//                item.setItemSelected(false);
+//            }
+
+//            return true;
+
             if (item.getSubItems() != null) {
                 if (!item.isExpanded()) {
 //                    ViewCompat.animate(v.findViewById(R.id.material_drawer_icon)).rotation(180).start();
@@ -129,7 +142,11 @@ public class ServicePackage extends AbstractItem<ServicePackage, ServicePackage.
                 }
                 return mOnClickListener != null ? mOnClickListener.onClick(v, adapter, item, position) : true;
             }
+
+
             return mOnClickListener != null ? mOnClickListener.onClick(v, adapter, item, position) : false;
+
+
         }
     };
 
@@ -226,10 +243,6 @@ public class ServicePackage extends AbstractItem<ServicePackage, ServicePackage.
     }
 
 
-
-
-
-
     //The unique ID for this type of item
     @Override
     public int getType() {
@@ -251,10 +264,28 @@ public class ServicePackage extends AbstractItem<ServicePackage, ServicePackage.
         viewHolder.mItemServicePackageDesc.setText(mDescription);
         viewHolder.mItemPrice.setText("Rs."+ mPrice);
 
-        if (mPressed){
+//        if (isSelected()){
+//            mPressed = true;
+//        }else {
+//            mPressed = false;
+//        }
+
+
+//        if ((isExpanded()) && mPressed){
+//            withSetSelected(true);
+//
+//        }else if (!(isExpanded()) && (!mPressed)){
+//
+//            withSetSelected(false);
+//        }
+
+
+        if (isSelected()){
+            mPressed = true;
             viewHolder.mItemBasketSelectedYes.setVisibility(View.VISIBLE);
             viewHolder.mItemBasketSelectedNo.setVisibility(View.GONE);
         }else {
+            mPressed =false;
             viewHolder.mItemBasketSelectedYes.setVisibility(View.GONE);
             viewHolder.mItemBasketSelectedNo.setVisibility(View.VISIBLE);
         }

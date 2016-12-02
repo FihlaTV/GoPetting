@@ -61,7 +61,7 @@ public class ServicePackageDetail extends AbstractItem<ServicePackageDetail, Ser
 
 
     //The viewHolder used for this item. This viewHolder is always reused by the RecyclerView so scrolling is blazing fast
-    protected static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         protected View view;
         @BindView(R.id.tv_package_detail_title)

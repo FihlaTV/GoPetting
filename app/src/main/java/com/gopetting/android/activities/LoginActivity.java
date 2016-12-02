@@ -53,6 +53,7 @@ import com.gopetting.android.network.Controller;
 import com.gopetting.android.network.OAuthTokenService;
 import com.gopetting.android.network.RetrofitSingleton;
 import com.gopetting.android.network.SessionManager;
+import com.gopetting.android.utils.ConnectivityReceiver;
 import com.gopetting.android.utils.Constants;
 
 import org.json.JSONObject;
@@ -504,19 +505,23 @@ public class LoginActivity extends AppCompatActivity implements
     public void onClick(View v) {
 //        String email = mEmailView.getText().toString();       /*   --ssahu: Disabling Custom Signup
 
+        if (ConnectivityReceiver.isConnected()) {
 
-        switch (v.getId()) {
-            case R.id.btn_login_google:
-                mProgressBarContainer.setVisibility(View.VISIBLE);
-                onSignInClicked();
-                break;
+            switch (v.getId()) {
+                case R.id.btn_login_google:
+                    mProgressBarContainer.setVisibility(View.VISIBLE);
+                    onSignInClicked();
+                    break;
 
-            case R.id.btn_login_fb:
-                mProgressBarContainer.setVisibility(View.VISIBLE);
-                facebookLoginButton.performClick();
-                fbRegisterCallback();
-                break;
-
+                case R.id.btn_login_fb:
+                    mProgressBarContainer.setVisibility(View.VISIBLE);
+                    facebookLoginButton.performClick();
+                    fbRegisterCallback();
+                    break;
+            }
+        }else {
+            showSnack();
+        }
 
 
 /*      --ssahu: Disabling Custom Signup
@@ -541,7 +546,7 @@ public class LoginActivity extends AppCompatActivity implements
                 break;
 
 */
-        }
+
     }
 
     private void fbRegisterCallback() {
@@ -967,6 +972,11 @@ public class LoginActivity extends AppCompatActivity implements
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
+    }
+
+
+    private void showSnack() {
+        Snackbar.make(findViewById(R.id.rl_activity_container), R.string.snackbar_no_internet, Snackbar.LENGTH_LONG).show();
     }
 
 

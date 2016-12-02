@@ -3,6 +3,7 @@ package com.gopetting.android.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -24,6 +25,7 @@ import com.gopetting.android.network.Controller;
 import com.gopetting.android.network.OAuthTokenService;
 import com.gopetting.android.network.RetrofitSingleton;
 import com.gopetting.android.network.SessionManager;
+import com.gopetting.android.utils.ConnectivityReceiver;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
@@ -73,21 +75,30 @@ public class OrderHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_history);
         ButterKnife.bind(this);
 
-        mSessionManager = new SessionManager(getApplicationContext());
 
-        mRelativeLayoutOuterContainer.setVisibility(View.GONE);
-        mFrameLayoutProgressBarContainer.setVisibility(View.VISIBLE);   //Show Progress Bar
-
-        sUserId = mSessionManager.getUserId();       //Extract unique UserId
-
-        if (sUserId != null) {
-
-            getServerData();
-
-        }
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+        if (ConnectivityReceiver.isConnected()) {
+
+            mSessionManager = new SessionManager(getApplicationContext());
+
+            mRelativeLayoutOuterContainer.setVisibility(View.GONE);
+            mFrameLayoutProgressBarContainer.setVisibility(View.VISIBLE);   //Show Progress Bar
+
+
+            sUserId = mSessionManager.getUserId();       //Extract unique UserId
+
+            if (sUserId != null) {
+
+                getServerData();
+
+            }
+
+        }else{
+            showSnack();
+        }
 
 
     }
@@ -179,13 +190,18 @@ public class OrderHistoryActivity extends AppCompatActivity {
             @Override
             public boolean onClick(View v, IAdapter<OrderHistoryItem> adapter, OrderHistoryItem item, int position) {
 
-                Intent intent = new Intent(OrderHistoryActivity.this, OrderHistoryDetailActivity.class);
-                intent.putExtra(ORDER_ID, item.getOrderId());
-                intent.putExtra(DATESLOT, item.getDateslot());
-                intent.putExtra(SERVICE_NAME, item.getServiceName());
-                intent.putExtra(TIME_SLOT, item.getTimeSlot());
-                intent.putExtra(STATUS, item.getStatus());
-                startActivityForResult(intent,IDENTIFIER);
+                if (ConnectivityReceiver.isConnected()) {
+
+                    Intent intent = new Intent(OrderHistoryActivity.this, OrderHistoryDetailActivity.class);
+                    intent.putExtra(ORDER_ID, item.getOrderId());
+                    intent.putExtra(DATESLOT, item.getDateslot());
+                    intent.putExtra(SERVICE_NAME, item.getServiceName());
+                    intent.putExtra(TIME_SLOT, item.getTimeSlot());
+                    intent.putExtra(STATUS, item.getStatus());
+                    startActivityForResult(intent, IDENTIFIER);
+                }else {
+                    showSnack();
+                }
 
                 return false;
             }
@@ -233,12 +249,15 @@ public class OrderHistoryActivity extends AppCompatActivity {
 
                 sUserId = mSessionManager.getUserId();       //Extract unique UserId
 
-                if (sUserId != null) {
+                if (ConnectivityReceiver.isConnected()) {
+                    if (sUserId != null) {
 
-                    getServerData();
+                        getServerData();
 
+                    }
+                }else{
+                    showSnack();
                 }
-
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -248,6 +267,14 @@ public class OrderHistoryActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    private void showSnack() {
+
+        Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_no_internet, Snackbar.LENGTH_LONG).show();
+
+    }
+
 
 }
 

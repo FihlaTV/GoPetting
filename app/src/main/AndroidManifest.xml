@@ -139,6 +139,16 @@
                 android:value="com.gopetting.android.activities.OrderHistoryActivity" />
         </activity>
 
+        <receiver
+            android:name=".utils.ConnectivityReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
     </application>
+
+
 
 </manifest>

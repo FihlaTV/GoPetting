@@ -24,6 +24,7 @@ import com.gopetting.android.network.Controller;
 import com.gopetting.android.network.OAuthTokenService;
 import com.gopetting.android.network.RetrofitSingleton;
 import com.gopetting.android.network.SessionManager;
+import com.gopetting.android.utils.ConnectivityReceiver;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -99,27 +100,32 @@ public class AddAddressActivity extends AppCompatActivity {
                     Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_add_address, Snackbar.LENGTH_LONG).show();
 
                 } else {
+                    if (ConnectivityReceiver.isConnected()) {
 
-                    mSessionManager = new SessionManager(getApplicationContext());
+                        mSessionManager = new SessionManager(getApplicationContext());
 
-                    if (mSessionManager.isLoggedIn()) {
+                        if (mSessionManager.isLoggedIn()) {
 
-                        mProgressBar.setVisibility(View.VISIBLE);
+                            mProgressBar.setVisibility(View.VISIBLE);
 
-                        //Set Background to Black with Opacity 50%
-                        mProgressBarContainer.setBackgroundResource(R.color.black);
-                        mProgressBarContainer.getBackground().setAlpha(50);
+                            //Set Background to Black with Opacity 50%
+                            mProgressBarContainer.setBackgroundResource(R.color.black);
+                            mProgressBarContainer.getBackground().setAlpha(50);
 
-                        //To disable user interaction with background views
-                        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                            //To disable user interaction with background views
+                            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
 
-                        sUserId = mSessionManager.getUserId();       //Extract unique UserId
-                        getServerData(1);   //Sending DATA_REQUEST_ID=1; Get AddressFirstStatus
+                            sUserId = mSessionManager.getUserId();       //Extract unique UserId
+                            getServerData(1);   //Sending DATA_REQUEST_ID=1; Get AddressFirstStatus
 
-                    } else {
-                        //user is not logged in; Ideally this will not happen
+                        } else {
+                            //user is not logged in; Ideally this will not happen
+                        }
+
+                    }else {
+                        showSnack();
                     }
 
                 }
@@ -313,4 +319,11 @@ public class AddAddressActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
     }
+
+
+    private void showSnack() {
+        Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_no_internet, Snackbar.LENGTH_LONG).show();
+    }
+
+
 }

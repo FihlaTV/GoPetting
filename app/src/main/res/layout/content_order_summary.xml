@@ -343,6 +343,7 @@
                 android:id="@+id/auto_complete_tv_breed_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:completionThreshold="1"
                 android:hint="@string/hint_breed_type"
                 android:textColor="@color/item_text_regular"
                 android:textSize="@dimen/text_size_medium"

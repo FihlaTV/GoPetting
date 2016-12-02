@@ -19,6 +19,9 @@ import com.gopetting.android.utils.Communicator;
 import com.gopetting.android.utils.ServiceCategoryData;
 import com.gopetting.android.utils.SimpleDividerItemDecoration;
 import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.IAdapter;
+import com.mikepenz.fastadapter.IExpandable;
+import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.mikepenz.fastadapter.helpers.ClickListenerHelper;
 
@@ -190,6 +193,32 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
         //restore selections (this has to be done after the items were added
         fastAdapterService.withSavedInstanceState(savedInstanceState);
 
+
+
+//
+//        fastAdapterService.withOnPreClickListener(new FastAdapter.OnClickListener<ServicePackage>() {
+//            @Override
+//            public boolean onClick(View v, IAdapter<ServicePackage> adapter, ServicePackage item, int position) {
+//
+//                //Select current Radio button and Deselect rest
+////                if (!item.isSelected()) {
+//                    Set<Integer> selections = fastAdapterService.getSelections();
+//                    if (!selections.isEmpty()) {
+//                        int selectedPosition = selections.iterator().next();
+//                        fastAdapterService.deselect();
+//                        fastAdapterService.notifyItemChanged(selectedPosition);
+//                    }
+////                    mFastItemAdapterAddressList.select(position);
+////
+////                    //Save currently selected address
+////                    mSelectedAddressId = item.getAddressId();
+////                }
+//
+//                return false;
+//            }
+//        });
+
+
         //a custom OnCreateViewHolder listener class which is used to create the viewHolders
         //we define the listener for the imageLovedContainer here for better performance
         //you can also define the listener within the items bindView method but performance is better if you do it like this
@@ -233,19 +262,22 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
 //                            fastAdapterService.notifyItemChanged(position);
 
 //----------------------------------------------
-                            if (!item.isSelected()) {
+
+
+//                            if (!item.isSelected()) {
                                 Set<Integer> selections = fastAdapterService.getSelections();
                                 if (!selections.isEmpty()) {
                                     int selectedPosition = selections.iterator().next();
                                     fastAdapterService.deselect();
-                                    ServicePackage servicePackage = (ServicePackage) fastAdapterService.getItem(selectedPosition);
-                                    servicePackage.withPressed(false);
+//                                    ServicePackage servicePackage = (ServicePackage) fastAdapterService.getItem(selectedPosition);
+//                                    servicePackage.withPressed(false);
                                     fastAdapterService.notifyItemChanged(selectedPosition);
                                 }
                                 fastAdapterService.select(position);
-                                item.withPressed(true);
+//                                item.withPressed(true);
+//                                fastAdapterService.notifyItemChanged(position);
 
-                            }
+//                            }
 
 
                             //we display the info about the click

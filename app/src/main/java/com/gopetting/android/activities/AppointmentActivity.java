@@ -33,6 +33,7 @@ import com.gopetting.android.network.Controller;
 import com.gopetting.android.network.OAuthTokenService;
 import com.gopetting.android.network.RetrofitSingleton;
 import com.gopetting.android.network.SessionManager;
+import com.gopetting.android.utils.ConnectivityReceiver;
 import com.gopetting.android.utils.HorizontalDividerItemDecoration;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
@@ -356,9 +357,10 @@ public class AppointmentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                if (ConnectivityReceiver.isConnected()) {
 
                     //1st logic: Fresh Start with No address and haven't pressed 'Add Address' button for adding new address
-                    if (mAppointment.getStatus() == 101 && mDateTimeslotStatus == 0 ) {
+                    if (mAppointment.getStatus() == 101 && mDateTimeslotStatus == 0) {
 
                         mRelativeLayoutAddressDateTimeContainer.setVisibility(View.VISIBLE);
                         mProgressBar.setVisibility(View.GONE);
@@ -368,12 +370,12 @@ public class AppointmentActivity extends AppCompatActivity {
                         startActivityForResult(intent, APPOINTMENT_INTENT_IDENTIFIER_1);
 
 
-                    //1st logic : Fresh Start with No address and then added address
-                    //2nd logic : Fresh Start with more than 1 address
-                    //3rd logic : Fresh Start with more than 1 address; Then selected address from AddressListActivity
+                        //1st logic : Fresh Start with No address and then added address
+                        //2nd logic : Fresh Start with more than 1 address
+                        //3rd logic : Fresh Start with more than 1 address; Then selected address from AddressListActivity
                     } else if ((mAppointment.getStatus() == 101 && mDateTimeslotStatus == 12)
-                                || (mAppointment.getStatus() == 12 && mDateTimeslotStatus == 0)
-                                || (mAppointment.getStatus() == 12 && mDateTimeslotStatus == 12)) {
+                            || (mAppointment.getStatus() == 12 && mDateTimeslotStatus == 0)
+                            || (mAppointment.getStatus() == 12 && mDateTimeslotStatus == 12)) {
 
 
                         mRelativeLayoutAddressDateTimeContainer.setVisibility(View.VISIBLE);
@@ -386,18 +388,21 @@ public class AppointmentActivity extends AppCompatActivity {
 
                         if (mAppointment != null) {
                             if (mAppointment.getAddresses().size() != 0)
-                            mDefaultAddressId = mAppointment.getAddresses().get(0).getAddressId();
+                                mDefaultAddressId = mAppointment.getAddresses().get(0).getAddressId();
 
-                        }else{
+                        } else {
                             mDefaultAddressId = mAddressId;
                         }
 
-                        bundle.putInt("default_address_id",mDefaultAddressId);
+                        bundle.putInt("default_address_id", mDefaultAddressId);
                         intent.putExtras(bundle);
                         startActivityForResult(intent, APPOINTMENT_INTENT_IDENTIFIER_2);
 
                     }
 
+                }else {
+                    showSnack();
+                }
 
             }
         });
@@ -407,32 +412,33 @@ public class AppointmentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (View.VISIBLE ==  mLinearLayoutDefaultAddressContainer.getVisibility()){
-                Intent intent = new Intent(AppointmentActivity.this, OrderSummaryActivity.class);
-                Bundle bundle = new Bundle();
+                if (ConnectivityReceiver.isConnected()) {
 
-                bundle.putParcelable("cart", Parcels.wrap(mCart)); //Send cart data;
+                    if (View.VISIBLE == mLinearLayoutDefaultAddressContainer.getVisibility()) {
+                        Intent intent = new Intent(AppointmentActivity.this, OrderSummaryActivity.class);
+                        Bundle bundle = new Bundle();
 
-                //Send Date, Time and Address Details
-                bundle.putString("selected_date", mSelectedDateslot);
-                bundle.putInt("selected_timeslot_id", mSelectedTimeslotId);
-                bundle.putString("selected_timeslot", mSelectedTimeslot);
-                bundle.putString("selected_full_name", mSelectedFullName);
-                bundle.putInt("selected_address_id", mSelectedAddressId);
-                bundle.putString("selected_full_address", mSelectedFullAddress);
-                bundle.putString("selected_pincode", mSelectedPincode);
-                bundle.putString("selected_phone", mSelectedPhone);
+                        bundle.putParcelable("cart", Parcels.wrap(mCart)); //Send cart data;
 
-                intent.putExtras(bundle);
-                startActivityForResult(intent,APPOINTMENT_INTENT_IDENTIFIER_3); //Mainly for transporting 'mCart' object
+                        //Send Date, Time and Address Details
+                        bundle.putString("selected_date", mSelectedDateslot);
+                        bundle.putInt("selected_timeslot_id", mSelectedTimeslotId);
+                        bundle.putString("selected_timeslot", mSelectedTimeslot);
+                        bundle.putString("selected_full_name", mSelectedFullName);
+                        bundle.putInt("selected_address_id", mSelectedAddressId);
+                        bundle.putString("selected_full_address", mSelectedFullAddress);
+                        bundle.putString("selected_pincode", mSelectedPincode);
+                        bundle.putString("selected_phone", mSelectedPhone);
 
+                        intent.putExtras(bundle);
+                        startActivityForResult(intent, APPOINTMENT_INTENT_IDENTIFIER_3); //Mainly for transporting 'mCart' object
 
-
-
-            }else {
-                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_appointment, Snackbar.LENGTH_SHORT).show();
-            }
-
+                    } else {
+                        Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_appointment, Snackbar.LENGTH_SHORT).show();
+                    }
+                }else {
+                    showSnack();
+                }
             }
         });
 
@@ -764,4 +770,12 @@ public class AppointmentActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
     }
+
+    private void showSnack() {
+
+        Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_no_internet, Snackbar.LENGTH_LONG).show();
+
+    }
+
+
 }

@@ -3,6 +3,7 @@ package com.gopetting.android.activities;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import com.gopetting.android.network.Controller;
 import com.gopetting.android.network.OAuthTokenService;
 import com.gopetting.android.network.RetrofitSingleton;
 import com.gopetting.android.network.SessionManager;
+import com.gopetting.android.utils.ConnectivityReceiver;
 import com.gopetting.android.utils.SimpleDividerItemDecoration;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
@@ -115,7 +117,12 @@ public class CartActivity extends AppCompatActivity {
 
         if (!mSessionManager.isLoggedIn()){
             //Ask user to login; Cart services are only for logged in users as of now
-            setupLogin();
+
+            if (ConnectivityReceiver.isConnected()) {
+                setupLogin();
+            }else {
+                showSnack();
+            }
         }else {
             sUserId =mSessionManager.getUserId();       //Extract unique UserId
 //            getServerData(1);   //Sending DATA_REQUEST_ID=1; Get Cart Screen Data
@@ -169,6 +176,8 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                if (ConnectivityReceiver.isConnected()) {
+
                     updateCartObject();
 
                     Intent intent = new Intent(CartActivity.this, AppointmentActivity.class);
@@ -177,7 +186,9 @@ public class CartActivity extends AppCompatActivity {
                     intent.putExtras(bundle);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);    //Clear stack; for exiting activity
                     startActivityForResult(intent, CART_IDENTIFIER_2); //Identifier for starting Appointment activity
-
+                }else {
+                    showSnack();
+                }
 
 
             }
@@ -608,5 +619,12 @@ public class CartActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+
+    private void showSnack() {
+
+        Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_no_internet, Snackbar.LENGTH_LONG).show();
+
+    }
+
 
 }

@@ -30,6 +30,7 @@ import com.gopetting.android.network.Controller;
 import com.gopetting.android.network.OAuthTokenService;
 import com.gopetting.android.network.RetrofitSingleton;
 import com.gopetting.android.network.SessionManager;
+import com.gopetting.android.utils.ConnectivityReceiver;
 import com.gopetting.android.utils.SimpleDividerItemDecoration;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
@@ -126,7 +127,12 @@ public class AddressListActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                    footerButtonClick();
+                    if (ConnectivityReceiver.isConnected()) {
+                        footerButtonClick();
+                    }else {
+                        showSnack();
+                    }
+
 
 //                    //Send back selected address only when there's at least one address available(When user will delete address,all address might be deleted
 //                    if (mAddressList.getAddresses().size()>0) {
@@ -592,12 +598,17 @@ public class AddressListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                if (ConnectivityReceiver.isConnected()) {
 //                mRelativeLayoutAddressDateTimeContainer.setVisibility(View.VISIBLE);
-                mProgressBar.setVisibility(View.GONE);
+                    mProgressBar.setVisibility(View.GONE);
 
-                //Start AddAddressActivity and Get New Address
-                Intent intent = new Intent(AddressListActivity.this, AddAddressActivity.class);
-                startActivityForResult(intent, ADDRESS_LIST_INTENT_IDENTIFIER_1);
+                    //Start AddAddressActivity and Get New Address
+                    Intent intent = new Intent(AddressListActivity.this, AddAddressActivity.class);
+                    startActivityForResult(intent, ADDRESS_LIST_INTENT_IDENTIFIER_1);
+
+                }else {
+                    showSnack();
+                }
             }
         });
 
@@ -705,6 +716,13 @@ public class AddressListActivity extends AppCompatActivity {
 
         }
 
+
+    }
+
+
+    private void showSnack() {
+
+        Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_no_internet, Snackbar.LENGTH_LONG).show();
 
     }
 

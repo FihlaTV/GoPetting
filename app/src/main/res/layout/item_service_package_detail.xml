@@ -19,7 +19,6 @@
         android:textColor="@color/item_text_regular"
         android:textSize="@dimen/text_size_medium_special"
         app:customTypeface="@string/typeface_regular"/>
-    android:padding="@dimen/common_left_margin"
 
     <LinearLayout
         android:orientation="vertical"

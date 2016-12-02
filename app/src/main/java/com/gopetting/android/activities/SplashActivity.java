@@ -3,6 +3,7 @@ package com.gopetting.android.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import com.gopetting.android.models.StringItem;
 import com.gopetting.android.network.Controller;
 import com.gopetting.android.network.OAuthTokenService;
 import com.gopetting.android.network.RetrofitSingleton;
+import com.gopetting.android.utils.ConnectivityReceiver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +46,12 @@ public class SplashActivity extends Activity {
 
         mPromoImages = new ArrayList<>();   //Initializing
 
-        getServerData();
+        if (ConnectivityReceiver.isConnected()) {
+
+            getServerData();
+        }else {
+            showSnack();
+        }
 //
 //        try {
 //            Thread.currentThread();
@@ -248,6 +255,13 @@ public class SplashActivity extends Activity {
 //        }
 //
 //    }
+
+
+    private void showSnack() {
+
+        Snackbar.make(findViewById(R.id.rl_activity_container), R.string.snackbar_no_internet, Snackbar.LENGTH_LONG).show();
+
+    }
 
 }
 

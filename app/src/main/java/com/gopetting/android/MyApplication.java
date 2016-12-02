@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.gopetting.android.utils.ConnectivityReceiver;
 import com.instamojo.android.Instamojo;
 
 /**
@@ -34,6 +35,11 @@ public class MyApplication extends Application {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+    }
+
+
+    public void setConnectivityListener(ConnectivityReceiver.ConnectivityReceiverListener listener) {
+        ConnectivityReceiver.connectivityReceiverListener = listener;
     }
 
 

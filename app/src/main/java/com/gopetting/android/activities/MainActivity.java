@@ -48,6 +48,7 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
+import com.gopetting.android.MyApplication;
 import com.gopetting.android.R;
 import com.gopetting.android.bus.UpdateActionBarTitleEvent;
 import com.gopetting.android.fragments.GalleryFragment;
@@ -56,6 +57,7 @@ import com.gopetting.android.models.ProductCategory;
 import com.gopetting.android.models.ProductCategoryData;
 import com.gopetting.android.models.StringItem;
 import com.gopetting.android.network.SessionManager;
+import com.gopetting.android.utils.ConnectivityReceiver;
 import com.gopetting.android.utils.Constants;
 import com.gopetting.android.utils.SimpleDividerItemDecoration;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -342,12 +344,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switch (position) {
                     case 0:
 
-
-                        Intent intent = new Intent(MainActivity.this,ServiceActivity.class);
-                        Bundle b = new Bundle();
-                        b.putString("service_category",PET_SALON);
-                        intent.putExtras(b);
-                        startActivity(intent);
+                        if (ConnectivityReceiver.isConnected()) {
+                            Intent intent = new Intent(MainActivity.this, ServiceActivity.class);
+                            Bundle b = new Bundle();
+                            b.putString("service_category", PET_SALON);
+                            intent.putExtras(b);
+                            startActivity(intent);
+                        }else {
+                            showSnack();
+                        }
                         break;
                     case 1:
 
@@ -445,13 +450,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                EventBus.getDefault().post(new MoveToFragmentEvent(new LocationFragment()));
 //                break;
             case R.id.orders:
+                if (ConnectivityReceiver.isConnected()) {
 
-                if (session.isLoggedIn()){
+                    if (session.isLoggedIn()) {
 
-                    startActivity(new Intent(MainActivity.this,OrderHistoryActivity.class));
+                        startActivity(new Intent(MainActivity.this, OrderHistoryActivity.class));
 
-                }else {
-                    Snackbar.make(findViewById(R.id.drawer_layout), R.string.snackbar_order_not_logged_in, Snackbar.LENGTH_SHORT).show();
+                    } else {
+                        Snackbar.make(findViewById(R.id.drawer_layout), R.string.snackbar_order_not_logged_in, Snackbar.LENGTH_SHORT).show();
+                    }
+                }else{
+                    showSnack();
                 }
 
                 break;
@@ -526,11 +535,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setLoginLogout() {
         if (!session.isLoggedIn()){
 
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putStringArrayList("promo_images", mPromoImages);
-            intent.putExtras(bundle);
-            startActivity(intent);
+            if (ConnectivityReceiver.isConnected()) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("promo_images", mPromoImages);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }else {
+                showSnack();
+            }
 
         }else {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -555,7 +568,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void composeEmail() {
 
             Log.i("Send email", "");
-            String[] TO = {"gopettingtech@gmail.com"};
+            String[] TO = {"support@gopetting.com"};
 //            String[] CC = {""};
             Intent emailIntent = new Intent(Intent.ACTION_SENDTO);  //for sending mail through default client like GMAIL.
 
@@ -799,11 +812,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     break;
                 } else {
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putStringArrayList("promo_images", mPromoImages);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
+                    if (ConnectivityReceiver.isConnected()) {
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putStringArrayList("promo_images", mPromoImages);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }else {
+                        showSnack();
+                    }
                 }
 
         }
@@ -863,6 +880,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //menu.findItem(R.id.Login).setTitle("Logout");
         return super.onPrepareOptionsMenu(menu);
     }
+
+
+    // Showing the status in Snackbar
+    private void showSnack() {
+
+        Snackbar.make(findViewById(R.id.drawer_layout), R.string.snackbar_no_internet, Snackbar.LENGTH_LONG).show();
+
+    }
+
 
 }
 

@@ -35,6 +35,7 @@ import com.gopetting.android.network.OAuthTokenService;
 import com.gopetting.android.network.RetrofitSingleton;
 import com.gopetting.android.network.SessionManager;
 import com.gopetting.android.utils.Communicator;
+import com.gopetting.android.utils.ConnectivityReceiver;
 import com.gopetting.android.utils.ServiceCategoryData;
 import com.mikepenz.fastadapter.IItem;
 
@@ -126,11 +127,18 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
                 if (mSessionManager.isLoggedIn() && mCart.mCartItems.size()>0){
 
-                    Intent intent = new Intent(ServiceActivity.this, AppointmentActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable("cart", Parcels.wrap(mCart));
-                    intent.putExtras(bundle);
-                    startActivityForResult(intent,SERVICE_IDENTIFIER_4);
+                    if (ConnectivityReceiver.isConnected()) {
+
+                        Intent intent = new Intent(ServiceActivity.this, AppointmentActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("cart", Parcels.wrap(mCart));
+                        intent.putExtras(bundle);
+                        startActivityForResult(intent, SERVICE_IDENTIFIER_4);
+
+                    }else {
+                        showSnack();
+                    }
+
 
                 }else {
                     Snackbar.make(findViewById(R.id.coordinator_layout), R.string.snackbar_services, Snackbar.LENGTH_SHORT).show();
@@ -541,11 +549,18 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                 .setPositiveButton(R.string.dialog_button_login, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        Intent intent = new Intent(ServiceActivity.this, LoginActivity.class);
-                        Bundle b = new Bundle();
-                        b.putInt(OTHER_ACTIVITY_FLAG, 10);    //OTHER_ACTIVITY_FLAG = 10; This means login activity is started by activity other than MainActivity;
-                        intent.putExtras(b);
-                        startActivityForResult(intent, intentIdentifier);
+                        if (ConnectivityReceiver.isConnected()) {
+
+                            Intent intent = new Intent(ServiceActivity.this, LoginActivity.class);
+                            Bundle b = new Bundle();
+                            b.putInt(OTHER_ACTIVITY_FLAG, 10);    //OTHER_ACTIVITY_FLAG = 10; This means login activity is started by activity other than MainActivity;
+                            intent.putExtras(b);
+                            startActivityForResult(intent, intentIdentifier);
+
+                        }else {
+                            showSnack();
+                        }
+
 
                     }
                 })
@@ -670,13 +685,19 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
             setupLogin(intentIdentifier);   //Ask user to login
 
         }else {
-            Intent intent = new Intent(ServiceActivity.this, CartActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("cart", Parcels.wrap(mCart));
-            intent.putExtras(bundle);
 
-            startActivityForResult(intent,SERVICE_IDENTIFIER_1);
+            if (ConnectivityReceiver.isConnected()) {
 
+                Intent intent = new Intent(ServiceActivity.this, CartActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("cart", Parcels.wrap(mCart));
+                intent.putExtras(bundle);
+
+                startActivityForResult(intent, SERVICE_IDENTIFIER_1);
+
+            }else {
+                showSnack();
+            }
         }
 
     }
@@ -716,4 +737,13 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
     protected void onDestroy() {
         super.onDestroy();
     }
+
+
+    private void showSnack() {
+
+        Snackbar.make(findViewById(R.id.coordinator_layout), R.string.snackbar_no_internet, Snackbar.LENGTH_LONG).show();
+
+    }
+
+
 }
