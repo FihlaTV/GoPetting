@@ -166,8 +166,11 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
     private void initFragmentData(Bundle savedInstanceState) {
 
         fastAdapterService = new FastItemAdapter();
-        fastAdapterService.withSelectable(true);
+//        fastAdapterService.withSelectable(true);
+        fastAdapterService.withMultiSelect(false);
         fastAdapterService.withOnlyOneExpandedItem(true);
+        fastAdapterService.withSelectWithItemUpdate(true);
+        fastAdapterService.withAllowDeselection(false);     //Mike
 
         //init the ClickListenerHelper which simplifies custom click listeners on views of the Adapter
         mClickListenerHelper = new ClickListenerHelper<>(fastAdapterService);
@@ -195,30 +198,6 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
 
 
 
-//
-//        fastAdapterService.withOnPreClickListener(new FastAdapter.OnClickListener<ServicePackage>() {
-//            @Override
-//            public boolean onClick(View v, IAdapter<ServicePackage> adapter, ServicePackage item, int position) {
-//
-//                //Select current Radio button and Deselect rest
-////                if (!item.isSelected()) {
-//                    Set<Integer> selections = fastAdapterService.getSelections();
-//                    if (!selections.isEmpty()) {
-//                        int selectedPosition = selections.iterator().next();
-//                        fastAdapterService.deselect();
-//                        fastAdapterService.notifyItemChanged(selectedPosition);
-//                    }
-////                    mFastItemAdapterAddressList.select(position);
-////
-////                    //Save currently selected address
-////                    mSelectedAddressId = item.getAddressId();
-////                }
-//
-//                return false;
-//            }
-//        });
-
-
         //a custom OnCreateViewHolder listener class which is used to create the viewHolders
         //we define the listener for the imageLovedContainer here for better performance
         //you can also define the listener within the items bindView method but performance is better if you do it like this
@@ -237,51 +216,24 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
                         @Override
                         public void onClick(View v, int position, ServicePackage item) {
 
-//                            for(int i=0;i<ServiceCategoryData.getServicePackages(serviceSubCategoryIndex).size();i++){
-//
-//                                ServiceCategoryData.getServicePackages(serviceSubCategoryIndex).get(i).setItemSelected(false);
-//
-//                                ServiceCategoryData.getServicePackages(serviceSubCategoryIndex).get(i).animateHeart(((ViewGroup) v).getChildAt(0), ((ViewGroup) v).getChildAt(1), ServiceCategoryData.getServicePackages(serviceSubCategoryIndex).get(i).mItemSelected);
-//
+
+
+
+//                            for (int i = 0; i < fastAdapterService.getItemCount(); i++) {
+//                                    fastAdapterService.deselect(i);
+//                                  fastAdapterService.notifyItemChanged(i);
 //                            }
-//                            fastAdapterService.notifyAdapterDataSetChanged();
 
-//---------------------------------------------------
-                            //Select/highlight currently pressed item and Deselect rest
-//                            Set<Integer> selectionsBasket = fastAdapterService.getSelections();
-//                            if (!selectionsBasket.isEmpty()) {
-//                                int selectedPosition = selectionsBasket.iterator().next();
-//                                fastAdapterService.deselect();
-//                                item.animateHeart(((ViewGroup) v).getChildAt(0), ((ViewGroup) v).getChildAt(1),false);
-//                                fastAdapterService.notifyItemChanged(selectedPosition);
-//
-//                            }
-//                            fastAdapterService.select(position);
-//
-//                            item.animateHeart(((ViewGroup) v).getChildAt(0), ((ViewGroup) v).getChildAt(1),true);
-//                            fastAdapterService.notifyItemChanged(position);
-
-//----------------------------------------------
-
-
-//                            if (!item.isSelected()) {
-                                Set<Integer> selections = fastAdapterService.getSelections();
-                                if (!selections.isEmpty()) {
-                                    int selectedPosition = selections.iterator().next();
-                                    fastAdapterService.deselect();
+                            Set<Integer> selections = fastAdapterService.getSelections();
+                            if (!selections.isEmpty()) {
+                                int selectedPosition = selections.iterator().next();
+                                fastAdapterService.deselect();
 //                                    ServicePackage servicePackage = (ServicePackage) fastAdapterService.getItem(selectedPosition);
 //                                    servicePackage.withPressed(false);
-                                    fastAdapterService.notifyItemChanged(selectedPosition);
-                                }
-                                fastAdapterService.select(position);
-//                                item.withPressed(true);
-//                                fastAdapterService.notifyItemChanged(position);
-
-//                            }
-
-
-                            //we display the info about the click
-//                            Toast.makeText(getContext(), item.mServicePackageName + serviceSubCategoryIndex, Toast.LENGTH_SHORT).show();
+                                fastAdapterService.notifyItemChanged(selectedPosition);
+                            }
+                            fastAdapterService.select(position);
+//                            item.withPressed(true);
 
                             mListener.onServiceFragmentClick(item,serviceSubCategoryIndex); //Send back clicked Service Package
 

@@ -134,6 +134,13 @@ public class ServicePackage extends AbstractItem<ServicePackage, ServicePackage.
 
 //            return true;
 
+
+            if (!mPressed) {
+//                mExpandableClicked = false;
+                withSetSelected(false);
+            }
+
+
             if (item.getSubItems() != null) {
                 if (!item.isExpanded()) {
 //                    ViewCompat.animate(v.findViewById(R.id.material_drawer_icon)).rotation(180).start();
@@ -264,31 +271,51 @@ public class ServicePackage extends AbstractItem<ServicePackage, ServicePackage.
         viewHolder.mItemServicePackageDesc.setText(mDescription);
         viewHolder.mItemPrice.setText("Rs."+ mPrice);
 
-//        if (isSelected()){
-//            mPressed = true;
-//        }else {
+//
+//        if ((!isSelected()) && (!mExpandableClicked)){
 //            mPressed = false;
 //        }
 
 
-//        if ((isExpanded()) && mPressed){
-//            withSetSelected(true);
+            if (isSelected()) {
+//              withSetSelected(true);
+//                boolean bool = isSelected();
+                mPressed = true;
+                viewHolder.mItemBasketSelectedYes.setVisibility(View.VISIBLE);
+                viewHolder.mItemBasketSelectedNo.setVisibility(View.GONE);
+            } else {
+
+                mPressed = false;
+                viewHolder.mItemBasketSelectedYes.setVisibility(View.GONE);
+                viewHolder.mItemBasketSelectedNo.setVisibility(View.VISIBLE);
+            }
+
+
+
+//        if (!mExpandableClicked ) {
 //
-//        }else if (!(isExpanded()) && (!mPressed)){
+//            if (isSelected()) {
+//                mPressed = true;
+//                viewHolder.mItemBasketSelectedYes.setVisibility(View.VISIBLE);
+//                viewHolder.mItemBasketSelectedNo.setVisibility(View.GONE);
+//            } else {
+//                mPressed = false;
+//                viewHolder.mItemBasketSelectedYes.setVisibility(View.GONE);
+//                viewHolder.mItemBasketSelectedNo.setVisibility(View.VISIBLE);
+//            }
+//        }else {
 //
-//            withSetSelected(false);
+//            if (mPressed) {
+//
+//                mPressed = true;
+//                viewHolder.mItemBasketSelectedYes.setVisibility(View.VISIBLE);
+//                viewHolder.mItemBasketSelectedNo.setVisibility(View.GONE);
+//            }else {
+//                mPressed = false;
+//                viewHolder.mItemBasketSelectedYes.setVisibility(View.GONE);
+//                viewHolder.mItemBasketSelectedNo.setVisibility(View.VISIBLE);
+//            }
 //        }
-
-
-        if (isSelected()){
-            mPressed = true;
-            viewHolder.mItemBasketSelectedYes.setVisibility(View.VISIBLE);
-            viewHolder.mItemBasketSelectedNo.setVisibility(View.GONE);
-        }else {
-            mPressed =false;
-            viewHolder.mItemBasketSelectedYes.setVisibility(View.GONE);
-            viewHolder.mItemBasketSelectedNo.setVisibility(View.VISIBLE);
-        }
 
     }
 

@@ -300,6 +300,8 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
                     if (mCart.mCartItems.size() == 0){
                         mCart.setServiceCategoryName("Pet Salon");
+                    }else {
+                        
                     }
 
 
