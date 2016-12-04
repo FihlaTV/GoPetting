@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="1.0dip"
             android:layout_marginTop="10.0dip"
-            android:background="@color/grey_100" />
+            android:background="@color/grey_200" />
 
         <LinearLayout
             android:id="@id/ll_promo_code"
@@ -154,6 +154,7 @@
             android:id="@id/rl_pickup_drop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="10.0dip"
             android:background="@color/white"
             android:orientation="horizontal">
 
@@ -181,25 +182,26 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1.0dip"
-            android:background="@color/grey_300" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1.0dip"
-            android:layout_marginTop="10.0dip"
-            android:background="@color/grey_100" />
+            android:background="@color/grey_200" />
+
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1.0dip"-->
+            <!--android:layout_marginTop="10.0dip"-->
+            <!--android:background="@color/grey_100" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="vertical"
-            android:paddingBottom="10.0dip"
+            android:paddingBottom="20.0dip"
             android:paddingEnd="25.0dip"
             android:paddingLeft="5.0dip"
             android:paddingRight="25.0dip"
             android:paddingStart="5.0dip"
-            android:paddingTop="10.0dip">
+            android:paddingTop="20.0dip">
 
             <RelativeLayout
                 android:id="@id/rl_sub_total"
@@ -325,7 +327,7 @@
             android:layout_width="match_parent"
             android:layout_height="1.0dip"
             android:layout_marginTop="10.0dip"
-            android:background="@color/grey_100" />
+            android:background="@color/grey_200" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -338,6 +340,20 @@
             android:paddingRight="25.0dip"
             android:paddingStart="5.0dip"
             android:paddingTop="10.0dip">
+
+            <com.gopetting.android.views.TypefaceTextView
+                android:id="@id/tv_pet_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:paddingBottom="10.0dip"
+                android:paddingLeft="5.0dip"
+                android:paddingRight="5.0dip"
+                android:paddingTop="10.0dip"
+                android:text="@string/text_pet_details"
+                android:textColor="@color/item_text_regular"
+                android:textSize="@dimen/text_size_medium_special"
+                app:customTypeface="@string/typeface_bold" />
 
             <com.gopetting.android.views.TypefaceAutoCompleteTextView
                 android:id="@+id/auto_complete_tv_breed_type"
@@ -398,7 +414,7 @@
             android:layout_width="match_parent"
             android:layout_height="1.0dip"
             android:layout_marginTop="10.0dip"
-            android:background="@color/grey_100" />
+            android:background="@color/grey_200" />
 
 
         <RelativeLayout
@@ -517,7 +533,7 @@
             android:layout_width="match_parent"
             android:layout_height="1.0dip"
             android:layout_marginTop="10.0dip"
-            android:background="@color/grey_100" />
+            android:background="@color/grey_200" />
 
         <RelativeLayout
             android:id="@id/rl_i_accept_terms_conditions"

@@ -193,6 +193,7 @@
     <item name="btn_home" type="id" />
     <item name="ll_no_internet_container" type="id" />
     <item name="rl_activity_container" type="id" />
+    <item name="tv_pet_details" type="id" />
 
 
 </resources>

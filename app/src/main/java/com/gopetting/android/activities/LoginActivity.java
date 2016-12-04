@@ -130,7 +130,7 @@ public class LoginActivity extends AppCompatActivity implements
     //    private TextView txt_create, txt_forgot;
     private LoginButton facebookLoginButton;
 
-    ProgressDialog ringProgressDialog;
+//    ProgressDialog ringProgressDialog;
 
     private boolean IsGbtnClickInd;
     SessionManager session;
@@ -400,6 +400,7 @@ public class LoginActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
 
         callbackManager.onActivityResult(requestCode, resultCode, data);
+
         if (IsGbtnClickInd == true) {
             getProfileInformation();
         }
@@ -509,12 +510,14 @@ public class LoginActivity extends AppCompatActivity implements
 
             switch (v.getId()) {
                 case R.id.btn_login_google:
-                    mProgressBarContainer.setVisibility(View.VISIBLE);
+//                    mProgressBarContainer.setVisibility(View.VISIBLE);
+                    showProgressBarContainer(true);
                     onSignInClicked();
                     break;
 
                 case R.id.btn_login_fb:
-                    mProgressBarContainer.setVisibility(View.VISIBLE);
+//                    mProgressBarContainer.setVisibility(View.VISIBLE);
+                    showProgressBarContainer(true);
                     facebookLoginButton.performClick();
                     fbRegisterCallback();
                     break;
@@ -598,7 +601,9 @@ public class LoginActivity extends AppCompatActivity implements
             @Override
             public void onCancel() {
 
-                mProgressBarContainer.setVisibility(View.GONE);
+//                mProgressBarContainer.setVisibility(View.GONE);
+                showProgressBarContainer(false);
+
 //                Toast.makeText(LoginActivity.this, "Login cancelled", Toast.LENGTH_SHORT).show();
 //                Snackbar.make(findViewById(R.id.ll_login), R.string.login_cancelled, Snackbar.LENGTH_LONG).show();
             }
@@ -606,7 +611,8 @@ public class LoginActivity extends AppCompatActivity implements
             @Override
             public void onError(FacebookException exception) {
 
-                mProgressBarContainer.setVisibility(View.GONE);
+//                mProgressBarContainer.setVisibility(View.GONE);
+                showProgressBarContainer(false);
 
                 Toast.makeText(LoginActivity.this, "Error on Login, check your facebook app_id", Toast.LENGTH_LONG).show();
                 Crashlytics.logException(exception);
@@ -650,22 +656,26 @@ public class LoginActivity extends AppCompatActivity implements
 //        toastLoading.show();
         IsGbtnClickInd = true;
         mIsResolving = false;
+
+        mShouldResolve = true;
+        mGoogleApiClient.connect();
+
         // User clicked the sign-in button, so begin the sign-in process and automatically
         // attempt to resolve any errors that occur.
-        ringProgressDialog = ProgressDialog.show(LoginActivity.this, "Connecting...", "Atempting to connect", true);
-        ringProgressDialog.setCancelable(false);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    mShouldResolve = true;
-                    mGoogleApiClient.connect();
-                } catch (Exception e) {
-                    ringProgressDialog.dismiss();
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+//        ringProgressDialog = ProgressDialog.show(LoginActivity.this, "Connecting...", "Atempting to connect", true);
+//        ringProgressDialog.setCancelable(false);
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    mShouldResolve = true;
+//                    mGoogleApiClient.connect();
+//                } catch (Exception e) {
+//                    ringProgressDialog.dismiss();
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
     }
 
     @Override
@@ -677,7 +687,8 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     public void onConnectionSuspended(int arg0) {
 //        mProgressBarContainer.setVisibility(View.GONE);
-        ringProgressDialog.dismiss();
+//        showProgressBarContainer(false);
+//        ringProgressDialog.dismiss();
         mGoogleApiClient.connect();
     }
 
@@ -688,8 +699,9 @@ public class LoginActivity extends AppCompatActivity implements
         // ConnectionResult to see possible error codes.
         Log.d(Constants.TAG_LOGIN, "onConnectionFailed:" + connectionResult);
 
-        mProgressBarContainer.setVisibility(View.GONE);    //By ssahu
-        ringProgressDialog.dismiss();
+//        mProgressBarContainer.setVisibility(View.GONE);    //By ssahu
+//        showProgressBarContainer(false);
+//        ringProgressDialog.dismiss();
 
         if (!mIsResolving && mShouldResolve) {
             if (connectionResult.hasResolution()) {
@@ -718,7 +730,11 @@ public class LoginActivity extends AppCompatActivity implements
      */
     private void getProfileInformation() {
         // mIsResolving=true;
-        ringProgressDialog.dismiss();
+
+//        ringProgressDialog.dismiss();
+//        showProgressBarContainer(false);
+
+
         mGoogleApiClient.connect();
         if (mGoogleApiClient.isConnected()) {
             if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
@@ -789,6 +805,7 @@ public class LoginActivity extends AppCompatActivity implements
             }
         } else {
             //ResolveSignInError();
+            showProgressBarContainer(false);
         }
     }
 
@@ -977,6 +994,37 @@ public class LoginActivity extends AppCompatActivity implements
 
     private void showSnack() {
         Snackbar.make(findViewById(R.id.rl_activity_container), R.string.snackbar_no_internet, Snackbar.LENGTH_LONG).show();
+    }
+
+
+
+    private void showProgressBarContainer(boolean bool){
+
+        //Show Progress Bar
+        if (bool){
+
+            mProgressBarContainer.setVisibility(View.VISIBLE);
+
+            //Set Background to Black with Opacity 50%
+            mProgressBarContainer.setBackgroundResource(R.color.black);
+            mProgressBarContainer.getBackground().setAlpha(50);
+
+            //To disable user interaction with background views
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+
+        }else {
+
+            //Show Progress Bar and Disable User Interaction
+            mProgressBarContainer.setVisibility(View.GONE);
+            //Remove Background
+            mProgressBarContainer.setBackgroundResource(0);
+            //To enable user interaction with background views; This was disable earlier for ProgressBar
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+        }
+
     }
 
 

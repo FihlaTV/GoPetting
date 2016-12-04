@@ -242,5 +242,6 @@
     <string name="snackbar_empty_age">Please choose your pet age</string>
     <string name="snackbar_choose_reason">Please choose reason from options</string>
     <string name="snackbar_order_cancelled">Order Successfully Cancelled</string>
+    <string name="text_pet_details">Pet Details</string>
 
 </resources>

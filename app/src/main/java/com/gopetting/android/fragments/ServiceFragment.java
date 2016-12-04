@@ -230,6 +230,8 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
                 fastAdapterService.notifyItemChanged(selectedPosition);
             }
 
+            fastAdapterService.collapse();
+
             for (int i = 0; i < cartItems.size(); i++) {
 
                 for (int j = 0; j < fastAdapterService.getItemCount(); j++) {
