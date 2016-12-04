@@ -102,6 +102,7 @@
         <activity
             android:name=".activities.ServiceActivity"
             android:label="@string/title_activity_service"
+
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.Base">
             <meta-data

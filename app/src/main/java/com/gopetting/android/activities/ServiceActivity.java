@@ -1,6 +1,7 @@
 package com.gopetting.android.activities;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,7 +50,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -93,7 +94,8 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
     private String mSelectedServiceSubCategoryName;
     private Status mStatus;
     private int mServerRequestId = 10; //Default value
-
+    private boolean mServicePackageInitialState = false;
+    private AlertDialog mDialog;
 
 
     @Override
@@ -128,6 +130,11 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                 if (mSessionManager.isLoggedIn() && mCart.mCartItems.size()>0){
 
                     if (ConnectivityReceiver.isConnected()) {
+
+                        initializeServicePackageState(2);   //Send id=2 Collapse all items to avoid Cast Exception for ServicePackageDetail to ServicePackage
+                        //Reset Service Package Selection State (Basket Color)
+                        mServicePackageInitialState = false;
+
 
                         Intent intent = new Intent(ServiceActivity.this, AppointmentActivity.class);
                         Bundle bundle = new Bundle();
@@ -300,8 +307,13 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
                     if (mCart.mCartItems.size() == 0){
                         mCart.setServiceCategoryName("Pet Salon");
+                        initializeServicePackageState(3);   //Send id=3 for deselecting all service packages
+
                     }else {
-                        
+
+                        //Initialize Service Package Selection State (Basket Color)
+                        initializeServicePackageState(1);   //Send id=1 for initializing service package state
+
                     }
 
 
@@ -340,8 +352,72 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
 
     }
-    
-    
+
+
+    //Initialize Service Package Selection State (Basket Color)
+    private void initializeServicePackageState(int id) {
+
+        if (id == 1) {
+
+            //Cart not null; Cart is not empty; fragments have been loaded; fragments service package state(basket color) not initialized
+            if (mCart != null && (mCart.mCartItems.size() > 0) && (mViewPagerAdapter.getCount() > 0) && (!mServicePackageInitialState)) {
+
+                for (int i = 0; i < mViewPagerAdapter.getCount(); i++) {
+
+                    ServiceFragment serviceFragment = (ServiceFragment) mViewPagerAdapter.getItem(i);
+                    serviceFragment.passDataToFragment(mCart.mCartItems, 1); //Send id=1 for initializing service package state
+                }
+
+                mServicePackageInitialState = true;
+            }
+
+
+            //Collapse all items to avoid Cast Exception for ServicePackagDetail to ServicePackage
+        }else if (id == 2){
+
+            //fragments are loaded
+            if ((mViewPagerAdapter.getCount() > 0) ) {
+
+                for (int i = 0; i < mViewPagerAdapter.getCount(); i++) {
+
+                    ServiceFragment serviceFragment = (ServiceFragment) mViewPagerAdapter.getItem(i);
+                    serviceFragment.passSecondDataToFragment(2); //Send id=2 for collapsing all service package in fragments
+                                                                             //Cart items will not be used for id=2
+                }
+
+            }
+
+            //Send id=3 for deselecting all service packages
+        }else if (id == 3){
+
+            //Cart not null; fragments are loaded
+            if ((mViewPagerAdapter.getCount() > 0) ) {
+
+                for (int i = 0; i < mViewPagerAdapter.getCount(); i++) {
+
+                    ServiceFragment serviceFragment = (ServiceFragment) mViewPagerAdapter.getItem(i);
+                    serviceFragment.passSecondDataToFragment(3); //Send id=3 for deselecting all service packages
+                                                                             //Cart items will not be used for id=3
+                }
+
+            }
+
+        }else if (id == 4) {
+
+            //Cart not null; Cart is not empty; fragments have been loaded;
+            if (mCart != null && (mCart.mCartItems.size() > 0) && (mViewPagerAdapter.getCount() > 0)) {
+
+                for (int i = 0; i < mViewPagerAdapter.getCount(); i++) {
+
+                    ServiceFragment serviceFragment = (ServiceFragment) mViewPagerAdapter.getItem(i);
+                    serviceFragment.passDataToFragment(mCart.mCartItems, 1); //Send id=1 for initializing service package state
+                }
+
+            }
+        }
+    }
+
+
     private void addItemToCart() {
 
         int flag = 1; //Just a default value to check whether any package is already available in cart for selected service subcategory
@@ -362,9 +438,17 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                     if (mSelectedServicePackageId == mCart.mCartItems.get(i).getServicePackageId()) {
                         //Don't do anything as Service Package is already available in Cart and we don't allow more than 1 service package per service subcategory as of now.
 
-                        Toast.makeText(ServiceActivity.this, "Package is already in cart",Toast.LENGTH_SHORT).show(); //Show to user, package is already in cart
+//                        Toast.makeText(ServiceActivity.this, "Package is already in cart",Toast.LENGTH_SHORT).show(); //Show to user, package is already in cart
 
                         flag = 2;
+
+                        //Refresh Shopping Cart Icon Count;
+                        mNotifyCount = Integer.toString(mCart.mCartItems.size());
+                        invalidateOptionsMenu();
+
+                        //Initialize Service Package Selection State (Basket Color)
+                        initializeServicePackageState(4);   //Send id=4 for initializing service package state without checking flag
+
                         break;      //Break loop as service package is added/replaced
 
                     } else {
@@ -389,7 +473,11 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                         mNotifyCount = Integer.toString(mCart.mCartItems.size());
                         invalidateOptionsMenu();
 
-                        Toast.makeText(ServiceActivity.this, "Package is added to cart",Toast.LENGTH_SHORT).show(); //Show to user, package is added
+                        //Initialize Service Package Selection State (Basket Color)
+                        initializeServicePackageState(4);   //Send id=4 for initializing service package state without checking flag
+
+
+//                        Toast.makeText(ServiceActivity.this, "Package is added to cart",Toast.LENGTH_SHORT).show(); //Show to user, package is added
 /*
                         final int j = i;
 
@@ -455,7 +543,11 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         mNotifyCount = Integer.toString(mCart.mCartItems.size());
         invalidateOptionsMenu();
 
-        Toast.makeText(ServiceActivity.this, "Package is added to cart",Toast.LENGTH_SHORT).show(); //Show to user, package is added
+        //Initialize Service Package Selection State (Basket Color)
+        initializeServicePackageState(4);   //Send id=4 for initializing service package state without checking flag
+
+
+//        Toast.makeText(ServiceActivity.this, "Package is added to cart",Toast.LENGTH_SHORT).show(); //Show to user, package is added
 
     }
 
@@ -494,9 +586,6 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
         for (int l = 0; l <mServiceCategoryData.mServiceSubCategories.size() ; l++) {
 
-            //Send ServicePackages to ServiceFragment
-//            mFragmentCommunicator.passDataToFragment(mServiceCategoryData.mServiceSubCategories.get(l).getServicePackages());
-//            EventBus.getDefault().post(new ActivityToFragment(mServiceCategoryData.mServiceSubCategories.get(l).getServicePackages(),l));
 
             mViewPagerAdapter.addFragment(mServiceCategoryData.mServiceSubCategories.get(l).getServiceSubcategoryName()
                                             ,ServiceFragment.newInstance(l));
@@ -510,6 +599,9 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         mTabLayoutService.setupWithViewPager(mViewPagerService);
         mTabLayoutService.setTabMode(TabLayout.MODE_SCROLLABLE);
         mTabLayoutService.setTabGravity(TabLayout.GRAVITY_CENTER);
+
+        //Initialize Service Package Selection State (Basket Color)
+        initializeServicePackageState(1);   //Send id=1 for initializing service package state
 
         mProgressBarMedium.setVisibility(View.GONE);
     }
@@ -530,6 +622,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         mSelectedPrice = servicePackage.getPrice();
         mSelectedServiceSubCategoryId = mServiceCategoryData.mServiceSubCategories.get(serviceSubCategoryIndex).getServiceSubCategoryId();
         mSelectedServiceSubCategoryName = mServiceCategoryData.mServiceSubCategories.get(serviceSubCategoryIndex).getServiceSubcategoryName();
+
 
         if (!mSessionManager.isLoggedIn()){
 
@@ -569,11 +662,27 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                 .setNegativeButton(R.string.dialog_button_cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User cancelled the dialog
+                        initializeServicePackageState(3);   //Send id=3 for deselecting all service packages
 
                     }
                 });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        mDialog = builder.create();
+
+        mDialog.show();
+
+        mDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+
+            @Override
+            public boolean onKey(DialogInterface arg0, int keyCode,
+                                 KeyEvent event) {
+
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    initializeServicePackageState(3);   //Send id=3 for deselecting all service packages
+                    mDialog.dismiss();
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -583,6 +692,14 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         if (requestCode == SERVICE_IDENTIFIER_1) {
             if (resultCode == Activity.RESULT_OK) {
                 mCart = (Cart) Parcels.unwrap(data.getParcelableExtra("cart"));
+
+                if (mCart.mCartItems.size()>0) {
+                    //Initialize Service Package Selection State (Basket Color)
+                    initializeServicePackageState(1); //Send id=1 for initializing service package state
+                }else {
+                    initializeServicePackageState(3); //Send id=3 for deselecting all service packages
+                }
+
 
                 //Refresh Shopping Cart Icon Count;
                 mNotifyCount = Integer.toString(mCart.mCartItems.size());
@@ -605,6 +722,8 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                 if (mSessionManager.isLoggedIn()) {
                     sUserId = mSessionManager.getUserId();       //Extract unique UserId
                     getServerData(3);   //Sending DATA_REQUEST_ID=3; //Get only Cart Data, when Basket icon clicked
+                } else{
+                    initializeServicePackageState(3); //Send id=3 for deselecting all service packages
                 }
 
             }
@@ -620,6 +739,8 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                 if (mSessionManager.isLoggedIn()) {
                     sUserId = mSessionManager.getUserId();   //Extract unique UserId
                     getServerData(5);
+                }else{
+                    initializeServicePackageState(3); //Send id=3 for deselecting all service packages
                 }
 
             }
@@ -631,6 +752,13 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         if ((requestCode == SERVICE_IDENTIFIER_4)) {
             if (resultCode == Activity.RESULT_OK) {
                 mCart = (Cart) Parcels.unwrap(data.getParcelableExtra("cart"));
+
+                if (mCart.mCartItems.size()>0) {
+                    //Initialize Service Package Selection State (Basket Color)
+                    initializeServicePackageState(1); //Send id=1 for initializing service package state
+                }else {
+                    initializeServicePackageState(3); //Send id=3 for deselecting all service packages
+                }
 
                 //Refresh Shopping Cart Icon Count;
                 mNotifyCount = Integer.toString(mCart.mCartItems.size());
@@ -689,6 +817,12 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         }else {
 
             if (ConnectivityReceiver.isConnected()) {
+
+                initializeServicePackageState(2);   //Send id=2 Collapse all items to avoid Cast Exception for ServicePackageDetail to ServicePackage
+                //Reset Service Package Selection State (Basket Color)
+                mServicePackageInitialState = false;
+
+
 
                 Intent intent = new Intent(ServiceActivity.this, CartActivity.class);
                 Bundle bundle = new Bundle();

@@ -1,5 +1,6 @@
 package com.gopetting.android.utils;
 
+import com.gopetting.android.models.CartItem;
 import com.gopetting.android.models.ServicePackage;
 
 import java.util.List;
@@ -10,7 +11,10 @@ import java.util.List;
 public class Communicator {
 
     public interface FragmentCommunicator{
-        public void passDataToFragment(List<ServicePackage> servicePackages);
+        public void passDataToFragment(List<CartItem> cartItems, int id);
+
+        public void passSecondDataToFragment(int id);
+
     }
 
 

@@ -14,14 +14,12 @@ import android.view.ViewGroup;
 
 import com.gopetting.android.R;
 import com.gopetting.android.activities.ServiceActivity;
+import com.gopetting.android.models.CartItem;
 import com.gopetting.android.models.ServicePackage;
 import com.gopetting.android.utils.Communicator;
 import com.gopetting.android.utils.ServiceCategoryData;
 import com.gopetting.android.utils.SimpleDividerItemDecoration;
 import com.mikepenz.fastadapter.FastAdapter;
-import com.mikepenz.fastadapter.IAdapter;
-import com.mikepenz.fastadapter.IExpandable;
-import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.mikepenz.fastadapter.helpers.ClickListenerHelper;
 
@@ -96,35 +94,7 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        if (savedInstanceState != null) {
-//            //probably orientation change etc.
-//            mServicePackages = Parcels.unwrap(savedInstanceState.getParcelable(SERVICE_PACKAGES));
-////            mServicePackages = Parcels.unwrap(getArguments().getParcelable(SERVICE_PACKAGES));
-//        } else {
-////            if (mServicePackageData != null) {
-//            //returning from backstack, data is fine, do nothing
-////            } else {
-//            //newly created, compute data
-//                initFragmentData();
-////            }
-//        }
         initFragmentData(savedInstanceState);
-//
-//        fastAdapterService = new FastItemAdapter();
-//        fastAdapterService.withSelectable(true);
-////        fastAdapterService.add(mServicePackages); //Fetch ServicePackages from ServiceActivity
-//        fastAdapterService.add(FilterSubCategoryData.getBreedTypeData());
-//        mRecyclerViewService.setAdapter(fastAdapterService);
-//
-//        mLayoutManagerService = new LinearLayoutManager(getContext());
-//        mLayoutManagerService.setOrientation(LinearLayoutManager.VERTICAL);
-//
-//        mRecyclerViewService.setLayoutManager(mLayoutManagerService);
-//        mRecyclerViewService.setItemAnimator(new DefaultItemAnimator());
-//        mRecyclerViewService.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));//Adding item divider
-//
-//        mProgressBarMedium.setVisibility(View.GONE);
-
     }
 
 
@@ -132,19 +102,6 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//
-//        if (savedInstanceState != null) {
-//            //probably orientation change etc.
-//            mServicePackages = Parcels.unwrap(savedInstanceState.getParcelable(SERVICE_PACKAGES));
-////            mServicePackages = Parcels.unwrap(getArguments().getParcelable(SERVICE_PACKAGES));
-//        } else {
-////            if (mServicePackageData != null) {
-//                //returning from backstack, data is fine, do nothing
-////            } else {
-//                //newly created, compute data
-////                initFragmentData();
-////            }
-//        }
 
     }
 
@@ -217,23 +174,13 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
                         public void onClick(View v, int position, ServicePackage item) {
 
 
-
-
-//                            for (int i = 0; i < fastAdapterService.getItemCount(); i++) {
-//                                    fastAdapterService.deselect(i);
-//                                  fastAdapterService.notifyItemChanged(i);
-//                            }
-
                             Set<Integer> selections = fastAdapterService.getSelections();
                             if (!selections.isEmpty()) {
                                 int selectedPosition = selections.iterator().next();
                                 fastAdapterService.deselect();
-//                                    ServicePackage servicePackage = (ServicePackage) fastAdapterService.getItem(selectedPosition);
-//                                    servicePackage.withPressed(false);
                                 fastAdapterService.notifyItemChanged(selectedPosition);
                             }
                             fastAdapterService.select(position);
-//                            item.withPressed(true);
 
                             mListener.onServiceFragmentClick(item,serviceSubCategoryIndex); //Send back clicked Service Package
 
@@ -269,10 +216,59 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
     }
 
 
+    //Initializing Service Package Selection from Cart data
     //FragmentCommunicator interface implementation
     @Override
-    public void passDataToFragment(List<ServicePackage> servicePackages){
-//        mServicePackages = servicePackages;
+    public void passDataToFragment(List<CartItem> cartItems, int id){
+
+        if (id == 1) {
+
+            Set<Integer> selections = fastAdapterService.getSelections();
+            if (!selections.isEmpty()) {
+                int selectedPosition = selections.iterator().next();
+                fastAdapterService.deselect();
+                fastAdapterService.notifyItemChanged(selectedPosition);
+            }
+
+            for (int i = 0; i < cartItems.size(); i++) {
+
+                for (int j = 0; j < fastAdapterService.getItemCount(); j++) {
+
+                    if (cartItems.get(i).getServicePackageId() == ((ServicePackage) fastAdapterService.getItem(j)).getServicePackageId()) {
+
+                        fastAdapterService.select(j);
+
+                    }
+
+                }
+
+            }
+        }
+
+
+    }
+
+    //Collapse/Deselect all service packages
+    //FragmentCommunicator interface implementation
+    @Override
+    public void passSecondDataToFragment(int id){
+
+        if (id == 2){
+
+                fastAdapterService.collapse();  //Collapse all items to avoid Cast Exception for ServicePackagDetail to ServicePackage
+
+            }else if (id == 3){  //Send id=3 for deselecting all service packages
+
+                Set<Integer> selections = fastAdapterService.getSelections();
+                if (!selections.isEmpty()) {
+                    int selectedPosition = selections.iterator().next();
+                    fastAdapterService.deselect();
+                    fastAdapterService.notifyItemChanged(selectedPosition);
+                }
+
+            }
+
+
 
     }
 
