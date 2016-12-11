@@ -22,7 +22,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.gopetting.android.R;
 import com.gopetting.android.adapters.ViewPagerAdapter;
 import com.gopetting.android.fragments.ServiceFragment;
@@ -49,7 +48,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -113,7 +111,11 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
             getServerData(2);   //Sending DATA_REQUEST_ID=2; Only ServiceCategoryData
         }else {
             sUserId =mSessionManager.getUserId();       //Extract unique UserId
-            getServerData(1);   //Sending DATA_REQUEST_ID=1; Whole Data includes ServiceSategoryData & CartItems
+            if (sUserId != null) {
+                getServerData(1);   //Sending DATA_REQUEST_ID=1; Whole Data includes ServiceSategoryData & CartItems
+            }else {
+                Snackbar.make(findViewById(R.id.coordinator_layout), R.string.snackbar_userid_empty, Snackbar.LENGTH_SHORT).show();
+            }
         }
 
 

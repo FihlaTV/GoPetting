@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.gopetting.android.R;
-
 import com.gopetting.android.network.SessionManager;
 
 import java.util.HashMap;

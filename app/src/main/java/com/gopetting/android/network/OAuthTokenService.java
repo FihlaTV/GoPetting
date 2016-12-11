@@ -118,7 +118,7 @@ public class OAuthTokenService {
         Calendar c = Calendar.getInstance();
         Date currentLocalTime = c.getTime();
         //Log.d("currentDate", currentLocalTime.getTime() + "");
-        long newDate = currentLocalTime.getTime() + (expire * 1000);
+        long newDate = currentLocalTime.getTime() + ((expire-120) * 1000);      //Reduce expiry time by 2minutes for safe side
         Date expireDate = new Date(newDate);
         //Log.d("expireDate", expireDate + "");
         if (id.equals("default")) {

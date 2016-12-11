@@ -3,10 +3,9 @@ package com.gopetting.android.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -154,8 +153,11 @@ public class AppointmentActivity extends AppCompatActivity {
 
             sUserId =mSessionManager.getUserId();       //Extract unique UserId
 
-            getServerData(1); //Sending DATA_REQUEST_ID=1; //Get Appointment Data (Address Date Time)
-
+            if (sUserId != null) {
+                getServerData(1); //Sending DATA_REQUEST_ID=1; //Get Appointment Data (Address Date Time)
+            }else {
+                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_userid_empty, Snackbar.LENGTH_SHORT).show();
+            }
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }

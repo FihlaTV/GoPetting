@@ -243,5 +243,8 @@
     <string name="snackbar_choose_reason">Please choose reason from options</string>
     <string name="snackbar_order_cancelled">Order Successfully Cancelled</string>
     <string name="text_pet_details">Pet Details</string>
+    <string name="snackbar_userid_empty">Seems ur session got expired, pls logout and login again</string>
+    <string name="dialog_question_update">Wow, we just got better!\nPlease update for a better experience</string>
+    <string name="dialog_title_update">Update Available</string>
 
 </resources>

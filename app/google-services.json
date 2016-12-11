@@ -1,7 +1,9 @@
 {
   "project_info": {
     "project_number": "617720920735",
-    "project_id": "gopetting-9999"
+    "firebase_url": "https://gopetting-9999.firebaseio.com",
+    "project_id": "gopetting-9999",
+    "storage_bucket": "gopetting-9999.appspot.com"
   },
   "client": [
     {
@@ -21,6 +23,10 @@
           }
         },
         {
+          "client_id": "617720920735-b4352630e2uaqjgcd305ue9fs5lp08up.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
           "client_id": "617720920735-glot7tpf6kn4vvj3vcf85h3f6f832ooq.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -35,11 +41,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "617720920735-b4352630e2uaqjgcd305ue9fs5lp08up.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }

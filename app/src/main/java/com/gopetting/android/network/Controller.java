@@ -1,23 +1,21 @@
 package com.gopetting.android.network;
 
-import com.gopetting.android.models.Address;
 import com.gopetting.android.models.AddressList;
 import com.gopetting.android.models.Appointment;
 import com.gopetting.android.models.Cart;
 import com.gopetting.android.models.CartScreen;
 import com.gopetting.android.models.Credential;
 import com.gopetting.android.models.DateTimeSlot;
-import com.gopetting.android.models.Dateslot;
 import com.gopetting.android.models.DeliveryDetails;
 import com.gopetting.android.models.Dog;
 import com.gopetting.android.models.DogDetails;
 import com.gopetting.android.models.FilterSubCategory;
 import com.gopetting.android.models.OrderHistory;
 import com.gopetting.android.models.OrderHistoryDetails;
-import com.gopetting.android.models.OrderHistoryItem;
 import com.gopetting.android.models.OrderSummary;
 import com.gopetting.android.models.Promo;
 import com.gopetting.android.models.ServiceCategory;
+import com.gopetting.android.models.StartupItem;
 import com.gopetting.android.models.Status;
 import com.gopetting.android.models.StringItem;
 import com.gopetting.android.models.SummaryFirstStatus;
@@ -97,6 +95,13 @@ public class Controller {
         @GET("/api/v1/screens/promotional")
         Call<List<StringItem>> getPromotionalScreens(@Header("Authorization") String authorization);
     }
+
+
+    public interface GetStartupItem {
+        @GET("/api/v1/screens/startup")
+        Call<StartupItem> getStartupItem(@Header("Authorization") String authorization);
+    }
+
 
 //    Temp interface for Backup Server DNS
     public interface GetAddress {

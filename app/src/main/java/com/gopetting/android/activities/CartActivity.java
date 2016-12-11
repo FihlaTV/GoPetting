@@ -3,10 +3,10 @@ package com.gopetting.android.activities;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -124,10 +124,15 @@ public class CartActivity extends AppCompatActivity {
                 showSnack();
             }
         }else {
+
             sUserId =mSessionManager.getUserId();       //Extract unique UserId
 //            getServerData(1);   //Sending DATA_REQUEST_ID=1; Get Cart Screen Data
 
-            initCartData();
+            if (sUserId != null) {
+                initCartData();
+            }else {
+                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_userid_empty, Snackbar.LENGTH_SHORT).show();
+            }
             
         }
 

@@ -118,10 +118,14 @@ public class AddAddressActivity extends AppCompatActivity {
 
 
                             sUserId = mSessionManager.getUserId();       //Extract unique UserId
-                            getServerData(1);   //Sending DATA_REQUEST_ID=1; Get AddressFirstStatus
-
+                            if (sUserId != null) {
+                                getServerData(1);   //Sending DATA_REQUEST_ID=1; Get AddressFirstStatus
+                            }else {
+                                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_userid_empty, Snackbar.LENGTH_SHORT).show();
+                            }
                         } else {
                             //user is not logged in; Ideally this will not happen
+                            Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_not_logged_in, Snackbar.LENGTH_SHORT).show();
                         }
 
                     }else {

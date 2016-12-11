@@ -1,7 +1,5 @@
 package com.gopetting.android.models;
 
-import com.gopetting.android.R;
-
 import java.util.Arrays;
 import java.util.List;
 

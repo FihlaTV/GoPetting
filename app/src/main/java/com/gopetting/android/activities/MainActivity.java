@@ -1,9 +1,12 @@
 package com.gopetting.android.activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -48,7 +51,6 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
-import com.gopetting.android.MyApplication;
 import com.gopetting.android.R;
 import com.gopetting.android.bus.UpdateActionBarTitleEvent;
 import com.gopetting.android.fragments.GalleryFragment;
@@ -60,11 +62,11 @@ import com.gopetting.android.network.SessionManager;
 import com.gopetting.android.utils.ConnectivityReceiver;
 import com.gopetting.android.utils.Constants;
 import com.gopetting.android.utils.SimpleDividerItemDecoration;
+import com.gopetting.android.utils.Version;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -72,7 +74,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.relex.circleindicator.CircleIndicator;
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int NUM_PAGES = 3; //Promotional Screens
 
     private static final String PET_SALON = "pet_salon";
+    private static final int UPDATE_IDENTIFIER = 501;
 
     private DrawerLayout mDrawerLayout;
     private Toolbar mToolbar;
@@ -127,6 +129,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ProgressBar mProgressBar;
     private int mCurrentPage;
     private ArrayList<String> mPromoImages;
+    private int mUpdate = 0;
+    private String mVersion;
+    private String mNewVersion;
 
 
 // ------------------------------LoginActivity - End-----------------------------//
@@ -146,6 +151,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //      If MainActivity is returning/starting from activity other than splashactivity; Since Images are coming from splashactivity
         if(bundle != null) {
             mPromoImages = bundle.getStringArrayList("promo_images");
+            mUpdate = bundle.getInt("update_required");
+        }
+
+        //Show update dialog
+        if (mUpdate == 1){
+            mNewVersion = bundle.getString("new_version");
+            updateDialog();
         }
 
 //------------------------------LoginActivity -Start-----------------------------//
@@ -291,7 +303,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+
+
+
+
     }
+
+    private void updateDialog() {
+
+        AlertDialog.Builder updateDialogBuilder = new AlertDialog.Builder(this);
+        updateDialogBuilder.setMessage(R.string.dialog_question_update)
+                .setTitle(R.string.dialog_title_update)
+                .setPositiveButton(R.string.dialog_button_ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                        try {
+                            startActivityForResult(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)),UPDATE_IDENTIFIER);
+                        } catch (android.content.ActivityNotFoundException anfe) {
+                            startActivityForResult(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)),UPDATE_IDENTIFIER);
+                        }
+
+                    }
+                });
+
+        updateDialogBuilder.setCancelable(false);
+        AlertDialog dialog = updateDialogBuilder.create();
+        dialog.show();
+
+
+    }
+
 
 //    @Override
 //    protected void onSaveInstanceState(Bundle outState) {
@@ -886,6 +929,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void showSnack() {
 
         Snackbar.make(findViewById(R.id.drawer_layout), R.string.snackbar_no_internet, Snackbar.LENGTH_LONG).show();
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        //Intent Identifier; For starting AddAddressActivity and Get New Address
+        if (requestCode == UPDATE_IDENTIFIER) {
+            if (resultCode == Activity.RESULT_OK) {
+
+                checkVersion();
+
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                checkVersion();
+            }
+
+        }
+
+    }
+
+    private void checkVersion() {
+
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            mVersion = packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        //Reference: http://stackoverflow.com/questions/198431/how-do-you-compare-two-version-strings-in-java
+
+        mUpdate = 0;    //Reset
+
+        Version a = new Version(mVersion);
+        Version b = new Version(mNewVersion);
+
+        if (a.compareTo(b) == -1){
+            mUpdate = 1;
+        }else {
+            mUpdate = 0;
+        }
+
+        if (mUpdate == 1){
+            updateDialog();
+        }
 
     }
 

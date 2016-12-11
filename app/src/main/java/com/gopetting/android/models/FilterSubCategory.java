@@ -5,8 +5,8 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.gopetting.android.R;
 import com.google.gson.annotations.SerializedName;
+import com.gopetting.android.R;
 import com.mikepenz.fastadapter.items.AbstractItem;
 
 /**

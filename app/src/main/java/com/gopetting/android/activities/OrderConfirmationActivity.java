@@ -2,8 +2,8 @@ package com.gopetting.android.activities;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.gopetting.android.R;
 import com.gopetting.android.models.Credential;
-import com.gopetting.android.models.OrderSummary;
 import com.gopetting.android.models.StringItem;
 import com.gopetting.android.network.Controller;
 import com.gopetting.android.network.OAuthTokenService;

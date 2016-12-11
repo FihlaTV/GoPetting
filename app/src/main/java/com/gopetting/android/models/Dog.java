@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.gopetting.android.R;
 import com.google.gson.annotations.SerializedName;
+import com.gopetting.android.R;
 import com.mikepenz.fastadapter.items.AbstractItem;
 
 /**

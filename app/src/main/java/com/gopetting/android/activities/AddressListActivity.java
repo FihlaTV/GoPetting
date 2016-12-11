@@ -2,9 +2,9 @@ package com.gopetting.android.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -34,7 +33,6 @@ import com.gopetting.android.utils.ConnectivityReceiver;
 import com.gopetting.android.utils.SimpleDividerItemDecoration;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IAdapter;
-import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 import com.mikepenz.fastadapter.helpers.ClickListenerHelper;
 
@@ -178,7 +176,11 @@ public class AddressListActivity extends AppCompatActivity {
             });
 
 
-            getServerData(1); //Sending DATA_REQUEST_ID=1; //Get Address List
+            if (sUserId != null) {
+                getServerData(1); //Sending DATA_REQUEST_ID=1; //Get Address List
+            }else{
+                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_userid_empty, Snackbar.LENGTH_SHORT).show();
+            }
 
         }
 

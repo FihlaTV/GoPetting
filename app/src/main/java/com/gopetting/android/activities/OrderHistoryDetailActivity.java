@@ -144,6 +144,8 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
 
                 getServerData(1);   //Get OrderHistoryDetails
 
+            }else {
+                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_userid_empty, Snackbar.LENGTH_SHORT).show();
             }
 
         }else {

@@ -65,7 +65,6 @@ import com.mikepenz.fastadapter.helpers.ClickListenerHelper;
 
 import org.parceler.Parcels;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -231,12 +230,17 @@ public class OrderSummaryActivity extends AppCompatActivity {
             Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_not_logged_in, Snackbar.LENGTH_SHORT).show();
         }else {
             sUserId =mSessionManager.getUserId();       //Extract unique UserId
-            getServerData(1);   //Sending DATA_REQUEST_ID=1;
 
-            initCartData();
+            if (sUserId != null) {
+                getServerData(1);   //Sending DATA_REQUEST_ID=1;
+
+                initCartData();
 
 
-            initSummaryData();
+                initSummaryData();
+            }else {
+                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_userid_empty, Snackbar.LENGTH_SHORT).show();
+            }
 
         }
 

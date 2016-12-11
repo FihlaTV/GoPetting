@@ -7,7 +7,6 @@ import android.view.ViewPropertyAnimator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.annotations.SerializedName;
 import com.gopetting.android.R;
@@ -19,7 +18,6 @@ import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter.utils.ViewHolderFactory;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Sumit on 10/20/2016.

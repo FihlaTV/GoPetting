@@ -12,11 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.gopetting.android.models.ProductData;
-import com.gopetting.android.models.ProductItem;
 import com.gopetting.android.R;
 import com.gopetting.android.bus.CheckMenuItemEvent;
 import com.gopetting.android.bus.UpdateActionBarTitleEvent;
+import com.gopetting.android.models.ProductData;
+import com.gopetting.android.models.ProductItem;
 import com.mikepenz.fastadapter.adapters.FastItemAdapter;
 
 import org.greenrobot.eventbus.EventBus;

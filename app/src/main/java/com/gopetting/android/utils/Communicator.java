@@ -1,7 +1,6 @@
 package com.gopetting.android.utils;
 
 import com.gopetting.android.models.CartItem;
-import com.gopetting.android.models.ServicePackage;
 
 import java.util.List;
 
