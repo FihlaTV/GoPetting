@@ -95,7 +95,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
                 getServerData();
 
             }else {
-                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_userid_empty, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_userid_empty, Snackbar.LENGTH_LONG).show();
             }
 
         }else{

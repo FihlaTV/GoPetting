@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -114,7 +115,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
             if (sUserId != null) {
                 getServerData(1);   //Sending DATA_REQUEST_ID=1; Whole Data includes ServiceSategoryData & CartItems
             }else {
-                Snackbar.make(findViewById(R.id.coordinator_layout), R.string.snackbar_userid_empty, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.coordinator_layout), R.string.snackbar_userid_empty, Snackbar.LENGTH_LONG).show();
             }
         }
 
@@ -671,6 +672,9 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         mDialog = builder.create();
 
         mDialog.show();
+
+        mDialog.getButton(mDialog.BUTTON_NEGATIVE).setTextColor((ContextCompat.getColor(ServiceActivity.this, R.color.colorPrimary)));
+        mDialog.getButton(mDialog.BUTTON_POSITIVE).setTextColor((ContextCompat.getColor(ServiceActivity.this, R.color.colorPrimary)));
 
         mDialog.setOnKeyListener(new Dialog.OnKeyListener() {
 

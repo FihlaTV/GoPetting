@@ -17,6 +17,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
@@ -43,6 +44,8 @@ import com.bumptech.glide.Glide;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -75,13 +78,15 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.microedition.khronos.opengles.GL;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.relex.circleindicator.CircleIndicator;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        ResultCallback<People.LoadPeopleResult> {
+
+        GoogleApiClient.OnConnectionFailedListener
+       {
 
     private static final int NUM_PAGES = 3; //Promotional Screens
 
@@ -132,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int mUpdate = 0;
     private String mVersion;
     private String mNewVersion;
+    private String mPicture;
 
 
 // ------------------------------LoginActivity - End-----------------------------//
@@ -169,22 +175,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         progress_dialog.setMessage("Signing in....");
 
 
-       /* mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this).addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN).build();
-*/
 
         // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(Plus.API)
-                .addScope(new Scope(Scopes.PROFILE))
-                .addApi(AppIndex.API).build();
-        mGoogleApiClient.connect();
+//        mGoogleApiClient = new GoogleApiClient.Builder(this)
+//                .addConnectionCallbacks(this)
+//                .addOnConnectionFailedListener(this)
+//                .addApi(Plus.API)
+//                .addScope(new Scope(Scopes.PROFILE))
+//                .addApi(AppIndex.API).build();
+//        mGoogleApiClient.connect();
 
+
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        // Build a GoogleApiClient with access to the Google Sign-In API and the
+        // options specified by gso.
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */,this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
 // ------------------------------LoginActivity -End-----------------------------//
 
@@ -238,16 +252,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         proPic = (CircleImageView) view.findViewById(R.id.profile_pic);
         ProfText = (TextView) view.findViewById(R.id.profile_name);
 
+
+
         if (session.isLoggedIn()) {
             HashMap<String, String> user = session.getUserDetails();
 
-            Glide.with(getApplicationContext())
-                    .load(user.get(SessionManager.KEY_PICTURE))
-                    //.placeholder(R.mipmap.default_photo)
-                    //.override(350, 448)
-                    //.diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(proPic);
-            ProfText.setText(user.get(SessionManager.KEY_NAME));
+            mPicture = user.get(SessionManager.KEY_PICTURE);
+
+//            Log.d(TAG, picture);
+
+            if (!(mPicture.equalsIgnoreCase("empty"))) {
+                Glide.with(getApplicationContext())
+                        .load(user.get(SessionManager.KEY_PICTURE))
+                        .into(proPic);
+                ProfText.setText(user.get(SessionManager.KEY_NAME));
+            }else {
+
+                    proPic.setImageResource(R.drawable.ic_profile);
+                    ProfText.setText(user.get(SessionManager.KEY_NAME));
+            }
 
         } else {
             proPic.setImageResource(R.drawable.ic_profile);
@@ -298,7 +321,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
 
         // Set the drawer toggle as the DrawerListener
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -331,8 +354,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         updateDialogBuilder.setCancelable(false);
         AlertDialog dialog = updateDialogBuilder.create();
         dialog.show();
-
-
+        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor((ContextCompat.getColor(MainActivity.this, R.color.colorPrimary)));
     }
 
 
@@ -398,13 +420,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                         break;
                     case 1:
-
+                        Snackbar.make(findViewById(R.id.drawer_layout), R.string.snackbar_soon_launching, Snackbar.LENGTH_SHORT).show();
                         break;
                     case 2:
-
+                        Snackbar.make(findViewById(R.id.drawer_layout), R.string.snackbar_soon_launching, Snackbar.LENGTH_SHORT).show();
                         break;
                     case 3:
-
+                        Snackbar.make(findViewById(R.id.drawer_layout), R.string.snackbar_soon_launching, Snackbar.LENGTH_SHORT).show();
                         break;
                     default:
                         Log.i(TAG, "onClick: Out of bound of adapter index ");
@@ -604,6 +626,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     });
             AlertDialog dialog = builder.create();
             dialog.show();
+            dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor((ContextCompat.getColor(MainActivity.this, R.color.colorPrimary)));
+            dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor((ContextCompat.getColor(MainActivity.this, R.color.colorPrimary)));
         }
 
     }
@@ -784,14 +808,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mGoogleApiClient.connect();
 
             //Set Profile Picture and Text when MainActicity comes from other activities and was not logged in when app started
+
                 HashMap<String, String> user = session.getUserDetails();
 
-                Glide.with(getApplicationContext())
-                        .load(user.get(SessionManager.KEY_PICTURE))
-                        .into(proPic);
-                ProfText.setText(user.get(SessionManager.KEY_NAME));
+                mPicture = user.get(SessionManager.KEY_PICTURE);
 
-            }
+                if (!(mPicture.equalsIgnoreCase("empty"))) {
+                    Glide.with(getApplicationContext())
+                            .load(user.get(SessionManager.KEY_PICTURE))
+                            .into(proPic);
+                    ProfText.setText(user.get(SessionManager.KEY_NAME));
+                }else {
+
+                    proPic.setImageResource(R.drawable.ic_profile);
+                    ProfText.setText(user.get(SessionManager.KEY_NAME));
+                }
+
+        }
 
         super.onStart();
 //        EventBus.getDefault().register(this);
@@ -813,28 +846,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean allAccountLogOut() {
         if (session.isLoggedIn()) {
 
-            if (mGoogleApiClient.isConnected()) {
+//            if (mGoogleApiClient.isConnected()) {
 
-                Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
+//                Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
+//
+//                    @Override
+//                    public void onResult(Status status) {
+//                        mGoogleApiClient.disconnect();
+//                        mGoogleApiClient.connect();
+//
+//                    }
+//
+//                });
 
-                    @Override
-                    public void onResult(Status status) {
-                        mGoogleApiClient.disconnect();
-                        mGoogleApiClient.connect();
-
-                    }
-
-                });
                 mGoogleApiClient.connect();
                 session.setLogin(false);
                 isLog = false;
-            }
+//            }
 
-            if (isLog != false) {
+//            if (isLog != false) {
                 LoginManager.getInstance().logOut();
-                session.setLogin(false);
-                isLog = false;
-            }
+//                session.setLogin(false);
+//                isLog = false;
+//            }
             session.logoutUser();
 
 
@@ -877,46 +911,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(Constants.TAG_LOGIN, "onConnectionFailed:" + connectionResult);
         //ringProgressDialog.dismiss();
 
-        if (!mIsResolving && mShouldResolve) {
-            if (connectionResult.hasResolution()) {
-                try {
-                    connectionResult.startResolutionForResult(this, RC_SIGN_IN);
-                    mIsResolving = true;
-                } catch (IntentSender.SendIntentException e) {
-                    Log.e(Constants.TAG_LOGIN, "Could not resolve ConnectionResult.", e);
-                    Toast.makeText(MainActivity.this, "Could not resolve ConnectionResult", Toast.LENGTH_LONG).show();
-                    mIsResolving = false;
-                }
-            } else {
-                // Could not resolve the connection result, show the user an
-                // error dialog.
-                Toast.makeText(MainActivity.this, "Error on Login, check your google + login method", Toast.LENGTH_LONG).show();
-            }
-        } else {
-            // Show the signed-out UI
-        }
+//        if (!mIsResolving && mShouldResolve) {
+//            if (connectionResult.hasResolution()) {
+//                try {
+//                    connectionResult.startResolutionForResult(this, RC_SIGN_IN);
+//                    mIsResolving = true;
+//                } catch (IntentSender.SendIntentException e) {
+//                    Log.e(Constants.TAG_LOGIN, "Could not resolve ConnectionResult.", e);
+//                    Toast.makeText(MainActivity.this, "Could not resolve ConnectionResult", Toast.LENGTH_LONG).show();
+//                    mIsResolving = false;
+//                }
+//            } else {
+//                // Could not resolve the connection result, show the user an
+//                // error dialog.
+//                Toast.makeText(MainActivity.this, "Error on Login, check your google + login method", Toast.LENGTH_LONG).show();
+//            }
+//        } else {
+//            // Show the signed-out UI
+//        }
     }
 
-    @Override
-    public void onConnected(Bundle bundle) {
+//    @Override
+//    public void onConnected(Bundle bundle) {
+//
+//        mShouldResolve = false;
+//
+//        Plus.PeopleApi.loadVisible(mGoogleApiClient, null).setResultCallback(
+//                this);
+//
+//
+//    }
+//
+//    @Override
+//    public void onConnectionSuspended(int i) {
+//        mGoogleApiClient.connect();
+//    }
 
-        mShouldResolve = false;
-
-        Plus.PeopleApi.loadVisible(mGoogleApiClient, null).setResultCallback(
-                this);
-
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    public void onResult(People.LoadPeopleResult loadPeopleResult) {
-
-    }
+//    @Override
+//    public void onResult(People.LoadPeopleResult loadPeopleResult) {
+//
+//    }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {

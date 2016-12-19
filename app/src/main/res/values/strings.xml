@@ -201,10 +201,12 @@
     <string name="text_book_another_service">Book Another Service</string>
     <string name="order_confirmed">Order Confirmed</string>
     <string name="transaction_failed">Transaction Failed</string>
+    <string name="transaction_something_went_wrong">Something Went Wrong</string>
     <string name="txn_id">Transaction ID</string>
     <string name="order_id">Order ID :</string>
     <string name="order_confirmation_message">Congratulations! Your order has been confirmed.\nOur service provider will contact you prior to service time </string>
     <string name="order_failed_message">We\'re sorry but the transaction failed.\nIf any money is deducted from your account, it\'ll be refunded back\nPlease note the Transaction ID for future reference.</string>
+    <string name="order_went_wrong_message">We\'re sorry but something went wrong, please check Order History for Order status\nIf transaction got failed and money got deducted from your account, it\'ll be refunded back\nPlease note the Transaction ID for future reference.</string>
     <string name="scheduled_on">Scheduled On</string>
     <string name="scheduled_slot">%1$s, %2$s</string>
     <string name="text_try_again">Try again</string>
@@ -246,5 +248,7 @@
     <string name="snackbar_userid_empty">Seems ur session got expired, pls logout and login again</string>
     <string name="dialog_question_update">Wow, we just got better!\nPlease update for a better experience</string>
     <string name="dialog_title_update">Update Available</string>
+    <string name="snackbar_soon_launching">We\'re launching soon this service</string>
+    <string name="snackbar_accept_terms_conditions">Please accept terms and conditions</string>
 
 </resources>

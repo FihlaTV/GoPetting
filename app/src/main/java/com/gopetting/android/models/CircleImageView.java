@@ -24,6 +24,7 @@ import android.net.Uri;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -157,7 +158,8 @@ public class CircleImageView extends ImageView {
     }
 
     public void setBorderColorResource(@ColorRes int borderColorRes) {
-        setBorderColor(getContext().getResources().getColor(borderColorRes));
+//        setBorderColor(getContext().getResources().getColor(borderColorRes));
+        setBorderColor(ContextCompat.getColor(getContext(), borderColorRes));
     }
 
     public int getFillColor() {
@@ -175,7 +177,8 @@ public class CircleImageView extends ImageView {
     }
 
     public void setFillColorResource(@ColorRes int fillColorRes) {
-        setFillColor(getContext().getResources().getColor(fillColorRes));
+//        setFillColor(getContext().getResources().getColor(fillColorRes));
+        setFillColor(ContextCompat.getColor(getContext(), fillColorRes));
     }
 
     public int getBorderWidth() {

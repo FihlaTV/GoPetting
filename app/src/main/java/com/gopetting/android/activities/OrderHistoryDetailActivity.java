@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -145,7 +146,7 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
                 getServerData(1);   //Get OrderHistoryDetails
 
             }else {
-                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_userid_empty, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_userid_empty, Snackbar.LENGTH_LONG).show();
             }
 
         }else {
@@ -390,7 +391,8 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
                                 });
                         AlertDialog reasonDialog = cancelReasonBuilder.create();
                         reasonDialog.show();
-
+                        reasonDialog.getButton(reasonDialog.BUTTON_NEGATIVE).setTextColor((ContextCompat.getColor(OrderHistoryDetailActivity.this, R.color.colorPrimary)));
+                        reasonDialog.getButton(reasonDialog.BUTTON_POSITIVE).setTextColor((ContextCompat.getColor(OrderHistoryDetailActivity.this, R.color.colorPrimary)));
                     }
                 })
                 .setNegativeButton(R.string.dialog_button_no, new DialogInterface.OnClickListener() {
@@ -401,6 +403,8 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
                 });
         AlertDialog dialog = cancelDialogBuilder.create();
         dialog.show();
+        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor((ContextCompat.getColor(OrderHistoryDetailActivity.this, R.color.colorPrimary)));
+        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor((ContextCompat.getColor(OrderHistoryDetailActivity.this, R.color.colorPrimary)));
     }
 
     private void getButtonOrderStatus() {

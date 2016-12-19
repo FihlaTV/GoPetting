@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -131,7 +132,7 @@ public class CartActivity extends AppCompatActivity {
             if (sUserId != null) {
                 initCartData();
             }else {
-                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_userid_empty, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_userid_empty, Snackbar.LENGTH_LONG).show();
             }
             
         }
@@ -354,6 +355,8 @@ public class CartActivity extends AppCompatActivity {
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
+        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor((ContextCompat.getColor(CartActivity.this, R.color.colorPrimary)));
+        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor((ContextCompat.getColor(CartActivity.this, R.color.colorPrimary)));
     }
 
     private void getCartScreenData(final int dataRequestId) {

@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.google.android.gms.plus.model.people.Person;
 import com.gopetting.android.activities.LoginActivity;
+import com.gopetting.android.models.StringItem;
 import com.gopetting.android.models.User;
 
 import org.json.JSONException;
@@ -87,18 +88,30 @@ public class SessionManager {
         editor.commit();
     }
 
-    public void createGplusLogin(Person UserInfo, String Email, User user) {
-        editor.putBoolean(IS_LOGIN,true);
-        editor.putString(KEY_NAME, UserInfo.getDisplayName());
-//        editor.putString(KEY_BIRTHDATE, UserInfo.getBirthday());
-        editor.putString(KEY_EMAIL, Email);
-//        editor.putString(KEY_GENDER, UserInfo.getGender()+"");
-//        editor.putString(KEY_LOCATION, UserInfo.getPlacesLived().toString());//change it
-        editor.putString(KEY_PICTURE, UserInfo.getImage().getUrl());
+//    public void createGplusLogin(Person UserInfo, String Email, User user) {
+//        editor.putBoolean(IS_LOGIN,true);
+//        editor.putString(KEY_NAME, UserInfo.getDisplayName());
+////        editor.putString(KEY_BIRTHDATE, UserInfo.getBirthday());
+//        editor.putString(KEY_EMAIL, Email);
+////        editor.putString(KEY_GENDER, UserInfo.getGender()+"");
+////        editor.putString(KEY_LOCATION, UserInfo.getPlacesLived().toString());//change it
+//        editor.putString(KEY_PICTURE, UserInfo.getImage().getUrl());
+//
+//        // commit changes
+//        editor.commit();
+//    }
 
+    public void createGplusLogin(String displayName, String Email, String picture) {
+        editor.putBoolean(IS_LOGIN,true);
+        editor.putString(KEY_NAME, displayName);
+        editor.putString(KEY_EMAIL, Email);
+        editor.putString(KEY_PICTURE, picture);
         // commit changes
         editor.commit();
     }
+
+
+
     public void IsNotFirstOccurenceCommit(boolean val) {
         editor.putBoolean(IS_FIRST, val);
                // commit changes

@@ -179,7 +179,7 @@ public class AddressListActivity extends AppCompatActivity {
             if (sUserId != null) {
                 getServerData(1); //Sending DATA_REQUEST_ID=1; //Get Address List
             }else{
-                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_userid_empty, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_userid_empty, Snackbar.LENGTH_LONG).show();
             }
 
         }

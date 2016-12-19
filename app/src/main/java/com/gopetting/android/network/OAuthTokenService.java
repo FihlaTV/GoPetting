@@ -130,6 +130,7 @@ public class OAuthTokenService {
             sharedpreferences = context.getSharedPreferences(id, Context.MODE_PRIVATE);
             editor = sharedpreferences.edit();
             editor.putLong(EXPIRATION_DATE, expireDate.getTime());//plus current time
+
             editor.commit();
         }
 

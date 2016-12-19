@@ -101,6 +101,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
     TextView mTextViewApply;
     @BindView(R.id.cb_pickup_drop)
     CheckBox mCheckBoxPickupDrop;
+    @BindView(R.id.cb_i_accept_terms_conditions)
+    CheckBox mCheckBoxTermsConditions;
     @BindView(R.id.tv_sub_total_amount)
     TextView mTextViewSubTotalAmount;
     @BindView(R.id.tv_pickup_drop_subtotal_amount)
@@ -239,7 +241,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
                 initSummaryData();
             }else {
-                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_userid_empty, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_userid_empty, Snackbar.LENGTH_LONG).show();
             }
 
         }
@@ -256,7 +258,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
 //          oAuthTokenService.deleteAllToken();
         mCredential = oAuthTokenService.getAccessTokenWithID("default");
 
-        if(mCredential == null || mCredential.getAccess_token()==null || oAuthTokenService.isExpired("default"))
+        if(mCredential == null || mCredential.getAccess_token()==null || oAuthTokenService.isExpired("default") || (dataRequestId == 5))    //Added datarequestid = 5 logic
         {
             oAuthTokenService.authenticateUsingOAuth( new Controller.MethodsCallback<Credential>()
             {
@@ -619,7 +621,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
                     Log.i("TIME", "Payment Start Time");
 
-                    if (mGrandTotal > 0 && (!mSelectedBreedType.isEmpty()) && (!mSelectedAgeGroup.equalsIgnoreCase("Choose Age"))) {
+                    if (mGrandTotal > 0 && (!mSelectedBreedType.isEmpty()) && (!mSelectedAgeGroup.equalsIgnoreCase("Choose Age")) && (mCheckBoxTermsConditions.isChecked())) {
 
                         if (ConnectivityReceiver.isConnected()) {
 
@@ -653,8 +655,9 @@ public class OrderSummaryActivity extends AppCompatActivity {
                         Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_empty_breed, Snackbar.LENGTH_LONG).show();
                     } else if (mSelectedAgeGroup.equalsIgnoreCase("Choose Age")){
                         Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_empty_age, Snackbar.LENGTH_LONG).show();
+                    } else if (!mCheckBoxTermsConditions.isChecked()) {
+                        Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_accept_terms_conditions, Snackbar.LENGTH_SHORT).show();
                     }
-
 
             }
         });
@@ -1414,7 +1417,7 @@ private void getSummaryFirstStatus(int dataRequestId) {
 
                     Intent intent = new Intent(OrderSummaryActivity.this, OrderConfirmationActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString("status", "failed");
+                    bundle.putString("status", "error");
                     bundle.putString("transaction_id", mSummaryFirstStatus.getId());
                     intent.putExtras(bundle);
                     startActivity(intent);

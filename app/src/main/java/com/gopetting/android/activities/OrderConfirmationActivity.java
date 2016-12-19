@@ -97,6 +97,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
 
         if (bundle != null) {
+
             if (bundle.getString("status").equalsIgnoreCase("success")) {
 
                 mLinearLayoutFailedId.setVisibility(View.GONE);
@@ -140,7 +141,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
 
 
 
-            } else {
+            } else if (bundle.getString("status").equalsIgnoreCase("failed")){
 
                 mLinearLayoutStatusId.setVisibility(View.GONE);
                 mLinearLayoutFailedId.setVisibility(View.VISIBLE);
@@ -159,6 +160,27 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                 mFooterButton.setText(R.string.done_text);
 
                 mProgressBarContainer.setVisibility(View.GONE);
+            }else {
+
+                mLinearLayoutStatusId.setVisibility(View.GONE);
+                mLinearLayoutFailedId.setVisibility(View.VISIBLE);
+
+                mTransactionId = bundle.getString("transaction_id");
+
+                getSupportActionBar().setTitle("Transaction Status");
+
+                mImageViewOrderStatus.setImageResource(R.drawable.ic_order_failed);
+                mTextViewOrderStatus.setText(R.string.transaction_something_went_wrong);
+                mTextViewOrderFailedIdName.setText(R.string.txn_id);
+                mTextViewOrderFailedId.setText(mTransactionId);
+                mTextViewOrderStatusMessage.setText(R.string.order_went_wrong_message);
+                mTextViewScheduledText.setVisibility(View.GONE);
+                mTextViewScheduledSlot.setVisibility(View.GONE);
+                mFooterButton.setText(R.string.done_text);
+
+                mProgressBarContainer.setVisibility(View.GONE);
+
+
             }
 
         }
