@@ -80,15 +80,15 @@ public class Controller {
                                                     @Path("product_category_id") int product_category_id);
     }
 
-//   /api/v1/user/get_user_id?id=<id>&indicator=<indicator>&email=<email>
-    public interface GetUserId {
-        @GET("/api/v1/user/get_user_id")
-        Call<User> getUserId(@Header("Authorization") String authorization,
-                           @Query("id") String id,
-                           @Query("indicator") int indicator,   //indicator=1 for google_id and 2 for facebook_id
-                           @Query("email") String email,
-                           @Query("first_name") String first_name,
-                           @Query("last_name") String last_name);
+
+    public interface GetLFirstStatus {
+        @GET("/api/v1/l/u1")
+        Call<User> getLStatus(@Header("Authorization") String authorization,
+                              @Query("id") String id,
+                              @Query("indicator") int indicator,
+                              @Query("email") String email,
+                              @Query("first_name") String first_name,
+                              @Query("last_name") String last_name);
     }
 
     public interface GetPromotionalScreens {

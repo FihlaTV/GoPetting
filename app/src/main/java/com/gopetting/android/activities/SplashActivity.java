@@ -120,7 +120,7 @@ public class SplashActivity extends Activity {
             {
                 @Override public void failure(Throwable throwable)
                 {
-                    Toast.makeText(SplashActivity.this, throwable.getMessage(),Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+//                    Toast.makeText(SplashActivity.this, throwable.getMessage(),Toast.LENGTH_SHORT).show();
                 }
                 @Override public void success(Credential credential)
                 {

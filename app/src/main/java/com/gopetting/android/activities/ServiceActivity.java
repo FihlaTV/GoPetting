@@ -173,7 +173,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
             {
                 @Override public void failure(Throwable t)
                 {
-                    Toast.makeText(ServiceActivity.this, t.getMessage(),Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+//                    Toast.makeText(ServiceActivity.this, t.getMessage(),Toast.LENGTH_SHORT).show();
                 }
                 @Override public void success(Credential credential)
                 {
@@ -215,7 +215,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                 getCartItemsDataV2(dataRequestId);
                 break;
             default:
-                Log.i("ServiceActivity", "getServerData datarequestid: Out of range value ");
+//                Log.i("ServiceActivity", "getServerData datarequestid: Out of range value ");
         }
 
 
@@ -255,13 +255,13 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                     mStatus = response.body();
 
                 } else {
-                    Log.d("onResponse", "getCartItems :onResponse:notSuccessful");
+//                    Log.d("onResponse", "getCartItems :onResponse:notSuccessful");
                 }
             }
 
             @Override
             public void onFailure(Call<Status> call, Throwable t) {
-                Toast.makeText(ServiceActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+//                Toast.makeText(ServiceActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
             }
         });
 
@@ -285,13 +285,13 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
 
                 } else {
-                    Log.d("onResponse", "getServiceCategoryData :onResponse:notSuccessful");
+//                    Log.d("onResponse", "getServiceCategoryData :onResponse:notSuccessful");
                 }
             }
 
             @Override
             public void onFailure(Call<ServiceCategory> call, Throwable t) {
-                Toast.makeText(ServiceActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+//                Toast.makeText(ServiceActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
             }
         });
     }
@@ -338,18 +338,18 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                             startCartActivity(SERVICE_IDENTIFIER_3); //Sending SERVICE_IDENTIFIER_3 just as a parameter value; As user is already logged in, CartActivity will be started.
                             break;
                         default:
-                            Log.i("ServiceActivity", "datarequestid: Out of range value ");
+//                            Log.i("ServiceActivity", "datarequestid: Out of range value ");
                     }
 
 
                 } else {
-                    Log.d("onResponse", "getCartItems :onResponse:notSuccessful");
+//                    Log.d("onResponse", "getCartItems :onResponse:notSuccessful");
                 }
             }
 
             @Override
             public void onFailure(Call<Cart> call, Throwable t) {
-                Toast.makeText(ServiceActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+//                Toast.makeText(ServiceActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -617,7 +617,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
     @Override
     public void onServiceFragmentClick(ServicePackage servicePackage, int serviceSubCategoryIndex){
-        Log.i("logs", "onServiceFragmentClick: ");
+//        Log.i("logs", "onServiceFragmentClick: ");
 
         //Initializing fields for Selected Service Package
         mSelectedServicePackageId = servicePackage.getServicePackageId();
@@ -712,7 +712,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                 invalidateOptionsMenu();
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                Log.i("Info", "RESULT_CANCELED code was not expected");
+//                Log.i("Info", "RESULT_CANCELED code was not expected");
             }
 
         }
@@ -721,7 +721,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         //Intent Identifier, when Basket icon clicked and user not logged in
         if (requestCode == SERVICE_IDENTIFIER_2 ) {
             if (resultCode == Activity.RESULT_OK) {
-                Log.i("Info", "RESULT_OK code was not expected");
+//                Log.i("Info", "RESULT_OK code was not expected");
             }
             if (resultCode == Activity.RESULT_CANCELED) {
 
@@ -738,7 +738,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         //Intent Identifier; Cart icon clicked and user not logged in
         if (requestCode == SERVICE_IDENTIFIER_3) {
             if (resultCode == Activity.RESULT_OK) {
-                Log.i("Info", "RESULT_OK code was not expected");
+//                Log.i("Info", "RESULT_OK code was not expected");
             }
             if (resultCode == Activity.RESULT_CANCELED) {
 
@@ -771,7 +771,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                 invalidateOptionsMenu();
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                Log.i("Info", "RESULT_CANCELED code was not expected");
+//                Log.i("Info", "RESULT_CANCELED code was not expected");
             }
 
         }

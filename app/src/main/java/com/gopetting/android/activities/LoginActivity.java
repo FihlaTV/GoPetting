@@ -1,21 +1,10 @@
 package com.gopetting.android.activities;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.LoaderManager;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.IntentSender;
-import android.content.Loader;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,10 +12,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.CallbackManager;
@@ -42,10 +29,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.gopetting.android.R;
 import com.gopetting.android.models.Credential;
@@ -61,14 +45,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
@@ -286,7 +267,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     private void handleGoogleSignInResult(GoogleSignInResult result) {
 
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+//        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
@@ -472,7 +453,7 @@ public class LoginActivity extends AppCompatActivity implements
 //                mProgressBarContainer.setVisibility(View.GONE);
                 showProgressBarContainer(false);
 
-                Toast.makeText(LoginActivity.this, "Error on Login, check your facebook app_id", Toast.LENGTH_LONG).show();
+//                Toast.makeText(LoginActivity.this, "Error on Login, check your facebook app_id", Toast.LENGTH_LONG).show();
                 Crashlytics.logException(exception);
             }
         });
@@ -542,7 +523,7 @@ public class LoginActivity extends AppCompatActivity implements
         // Could not connect to Google Play Services.  The user needs to select an account,
         // grant permissions or resolve an error in order to sign in. Refer to the javadoc for
         // ConnectionResult to see possible error codes.
-        Log.d(Constants.TAG_LOGIN, "onConnectionFailed:" + connectionResult);
+//        Log.d(Constants.TAG_LOGIN, "onConnectionFailed:" + connectionResult);
         showProgressBarContainer(false);
 
     }
@@ -608,7 +589,7 @@ public class LoginActivity extends AppCompatActivity implements
             oAuthTokenService.authenticateUsingOAuth(new Controller.MethodsCallback<Credential>() {
                 @Override
                 public void failure(Throwable throwable) {
-                    Toast.makeText(LoginActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+//                    Toast.makeText(LoginActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
                 }
 
                 @Override
@@ -635,8 +616,8 @@ public class LoginActivity extends AppCompatActivity implements
 
     private void getUserId(final int indicator) {          // By ssahu
 
-        Controller.GetUserId retrofitSingleton = RetrofitSingleton.getInstance().create(Controller.GetUserId.class);
-        Call<User> call = retrofitSingleton.getUserId("Bearer " + credential.getAccess_token(), mId, indicator, mEmailId, mFirstName, mLastName);
+        Controller.GetLFirstStatus retrofitSingleton = RetrofitSingleton.getInstance().create(Controller.GetLFirstStatus.class);
+        Call<User> call = retrofitSingleton.getLStatus("Bearer " + credential.getAccess_token(), mId, indicator, mEmailId, mFirstName, mLastName);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -655,13 +636,13 @@ public class LoginActivity extends AppCompatActivity implements
                     }
 
                 } else {
-                    Log.d("Error Response", "LoginActivity :Error Response");
+//                    Log.d("Error Response", "LoginActivity :Error Response");
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Log.d("onFailure", "LoginActivity :Error Response");
+//                Log.d("onFailure", "LoginActivity :Error Response");
             }
         });
 

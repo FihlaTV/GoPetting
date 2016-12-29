@@ -264,7 +264,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
             {
                 @Override public void failure(Throwable t)
                 {
-                    Toast.makeText(OrderSummaryActivity.this, t.getMessage(),Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+//                    Toast.makeText(OrderSummaryActivity.this, t.getMessage(),Toast.LENGTH_SHORT).show();
                 }
                 @Override public void success(Credential credential)
                 {
@@ -308,7 +308,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
                 getPromotionalGalleryData();
                 break;
             default:
-                Log.i("OrderSummaryActivity", "getServerData datarequestid: Out of range value ");
+//                Log.i("OrderSummaryActivity", "getServerData datarequestid: Out of range value ");
         }
 
 
@@ -330,13 +330,13 @@ public class OrderSummaryActivity extends AppCompatActivity {
                     }
 
                     else {
-                        Log.d("onResponse", "getOrderSummary :onResponse:notSuccessful");
+//                        Log.d("onResponse", "getOrderSummary :onResponse:notSuccessful");
                     }
                 }
 
                 @Override
                 public void onFailure(Call<OrderSummary> call, Throwable throwable) {
-                    Toast.makeText(OrderSummaryActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+//                    Toast.makeText(OrderSummaryActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -409,13 +409,13 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
 
                 } else {
-                    Log.d("onResponse", "getCartItems :onResponse:notSuccessful");
+//                    Log.d("onResponse", "getCartItems :onResponse:notSuccessful");
                 }
             }
 
             @Override
             public void onFailure(Call<Promo> call, Throwable t) {
-                Toast.makeText(OrderSummaryActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+//                Toast.makeText(OrderSummaryActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -579,7 +579,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
             date = format.parse(mSelectedDateslot);
         } catch (ParseException e) {
             e.printStackTrace();
-            Log.e("OrderSummaryActivity", e.toString());
+//            Log.e("OrderSummaryActivity", e.toString());
             Crashlytics.logException(e);
         }
 
@@ -619,7 +619,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
 
 
-                    Log.i("TIME", "Payment Start Time");
+//                    Log.i("TIME", "Payment Start Time");
 
                     if (mGrandTotal > 0 && (!mSelectedBreedType.isEmpty()) && (!mSelectedAgeGroup.equalsIgnoreCase("Choose Age")) && (mCheckBoxTermsConditions.isChecked())) {
 
@@ -639,8 +639,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
                         //TODO: Remove below Debug code after deployment
                         //let's set the log level to debug
-                        Instamojo.setLogLevel(Log.DEBUG);
-                        Instamojo.setBaseUrl("https://test.instamojo.com/");
+//                        Instamojo.setLogLevel(Log.DEBUG);
+//                        Instamojo.setBaseUrl("https://test.instamojo.com/");
 
 
                         }else {
@@ -723,7 +723,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
         try {
             mFastAdapterCart.add(mCartScreen.getCartScreenItems());
         } catch (Exception e) {
-            Log.e("CartActivity", e.toString());
+//            Log.e("CartActivity", e.toString());
         }
 
         mRecyclerViewCart.setAdapter(mFastAdapterCart);
@@ -871,13 +871,13 @@ public class OrderSummaryActivity extends AppCompatActivity {
                     mStatus = response.body();
 
                 } else {
-                    Log.d("onResponse", "getCartItems :onResponse:notSuccessful");
+//                    Log.d("onResponse", "getCartItems :onResponse:notSuccessful");
                 }
             }
 
             @Override
             public void onFailure(Call<Status> call, Throwable t) {
-                Toast.makeText(OrderSummaryActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+//                Toast.makeText(OrderSummaryActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -914,13 +914,13 @@ public class OrderSummaryActivity extends AppCompatActivity {
                 }
 
                 else {
-                    Log.d("onResponse", "getPromotionalGalleryData :onResponse:notSuccessful");
+//                    Log.d("onResponse", "getPromotionalGalleryData :onResponse:notSuccessful");
                 }
             }
 
             @Override
             public void onFailure(Call<List<StringItem>> call, Throwable throwable) {
-                Toast.makeText(OrderSummaryActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+//                Toast.makeText(OrderSummaryActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -1017,7 +1017,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.i("TIME","Activity Result Start Time");
+//        Log.i("TIME","Activity Result Start Time");
 
 
         if (requestCode == Constants.REQUEST_CODE && data != null) {
@@ -1075,7 +1075,7 @@ private void getSummaryFirstStatus(int dataRequestId) {
             ,servicePackagesWithPrice,psdFacility,mSelectedBreedType,mSelectedAgeGroup
             ,mEditTextSpecialInstructions.getText().toString());
 
-    Log.i("TIME","Summary First Status Start Time");
+//    Log.i("TIME","Summary First Status Start Time");
 
     call.enqueue(new Callback<SummaryFirstStatus>() {
         @Override
@@ -1085,7 +1085,7 @@ private void getSummaryFirstStatus(int dataRequestId) {
 
             if (response.isSuccessful()) {
 
-                Log.i("TIME","SummaryFirstStatus Response");
+//                Log.i("TIME","SummaryFirstStatus Response");
 
                 mSummaryFirstStatus = response.body();
 
@@ -1116,7 +1116,7 @@ private void getSummaryFirstStatus(int dataRequestId) {
             }
 
             else {
-                Log.d("onResponse", "getSummaryFirstStatus :onResponse:notSuccessful");
+//                Log.d("onResponse", "getSummaryFirstStatus :onResponse:notSuccessful");
 
                 if (mProgressDialog != null && mProgressDialog.isShowing()) {
                     mProgressDialog.dismiss();
@@ -1186,49 +1186,49 @@ private void getSummaryFirstStatus(int dataRequestId) {
         //set webhook
         order.setWebhook("http://ec2-52-220-151-54.ap-southeast-1.compute.amazonaws.com/api/v1/t/wh");
 
-        Log.i("TIME","Validate Order START");
+//        Log.i("TIME","Validate Order START");
 
         //Validate the Order
         if (!order.isValid()) {
             //oops order validation failed. Pinpoint the issue(s).
 
             if (!order.isValidName()) {
-               showToast("Buyer name is invalid");
+//               showToast("Buyer name is invalid");
 //                showSnackbar();
             }
 
             if (!order.isValidEmail()) {
-                showToast("Buyer email is invalid");
+//                showToast("Buyer email is invalid");
                 showSnackbar();
             }
 
             if (!order.isValidPhone()) {
-                showToast("Phone is invalid");
+//                showToast("Phone is invalid");
                 showSnackbar();
             }
 
             if (!order.isValidAmount()) {
-                showToast("Amount is invalid or has more than two decimal places");
+//                showToast("Amount is invalid or has more than two decimal places");
                 showSnackbar();
             }
 
             if (!order.isValidDescription()) {
-                showToast("Description is invalid");
+//                showToast("Description is invalid");
                 showSnackbar();
             }
 
             if (!order.isValidTransactionID()) {
-                showToast("Transaction is Invalid");
+//                showToast("Transaction is Invalid");
                 showSnackbar();
             }
 
             if (!order.isValidRedirectURL()) {
-                showToast("Redirection URL is invalid");
+//                showToast("Redirection URL is invalid");
                 showSnackbar();
             }
 
             if (!order.isValidWebhook()) {
-                showToast("Webhook URL is invalid");
+//                showToast("Webhook URL is invalid");
                 showSnackbar();
             }
 
@@ -1237,7 +1237,7 @@ private void getSummaryFirstStatus(int dataRequestId) {
 
         //Validation is successful. Proceed
 
-        Log.i("TIME","Validate Order END");
+//        Log.i("TIME","Validate Order END");
 
 //        showHideProgressBarContainer(1);  //Show
 
@@ -1251,21 +1251,21 @@ private void getSummaryFirstStatus(int dataRequestId) {
                     @Override
                     public void run() {
 
-                        Log.i("TIME","Request - Inside Run() - START");
+//                        Log.i("TIME","Request - Inside Run() - START");
 
 //                        showHideProgressBarContainer(2);  //Hide
                         mProgressDialog.dismiss();
 
                         if (error != null) {
                             if (error instanceof Errors.ConnectionError) {
-                                showToast("No internet connection");
+//                                showToast("No internet connection");
 //                                showSnackbar();
                             } else if (error instanceof Errors.ServerError) {
-                                showToast("Server Error. Try again");
+//                                showToast("Server Error. Try again");
 //                                showSnackbar();
                             } else if (error instanceof Errors.AuthenticationError) {
 //                                Toast.makeText(OrderSummaryActivity.this, "Access token is invalid or expired. Please Update the token!!",Toast.LENGTH_SHORT).show();
-                                showToast("Access token is invalid or expired. Please Update the token!!");
+//                                showToast("Access token is invalid or expired. Please Update the token!!");
 //                                showSnackbar();
 
                             } else if (error instanceof Errors.ValidationError) {
@@ -1273,7 +1273,7 @@ private void getSummaryFirstStatus(int dataRequestId) {
                                 Errors.ValidationError validationError = (Errors.ValidationError) error;
 
                                 if (!validationError.isValidTransactionID()) {
-                                    Toast.makeText(OrderSummaryActivity.this, "Transaction ID is not Unique",Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(OrderSummaryActivity.this, "Transaction ID is not Unique",Toast.LENGTH_SHORT).show();
 //                                    showToast("Transaction ID is not Unique");
                                     Crashlytics.log(1,"OrderSummaryActivity","Transaction ID is not Unique");
                                     return;
@@ -1281,47 +1281,47 @@ private void getSummaryFirstStatus(int dataRequestId) {
 
                                 if (!validationError.isValidRedirectURL()) {
                                     showSnackbar();
-                                    showToast("Redirect url is invalid");
+//                                    showToast("Redirect url is invalid");
                                     return;
                                 }
 
                                 if (!validationError.isValidWebhook()) {
-                                    showToast("Webhook url is invalid");
+//                                    showToast("Webhook url is invalid");
 //                                    showSnackbar();
                                     return;
                                 }
 
                                 if (!validationError.isValidPhone()) {
-                                    showToast("Phone Number is invalid/empty");
+//                                    showToast("Phone Number is invalid/empty");
 //                                    showSnackbar();
                                     return;
                                 }
 
                                 if (!validationError.isValidEmail()) {
-                                    showToast("Buyer's Email is invalid/empty");
+//                                    showToast("Buyer's Email is invalid/empty");
 //                                    showSnackbar();
                                     return;
                                 }
 
                                 if (!validationError.isValidAmount()) {
-                                    showToast("Amount is either less than Rs.9 or has more than two decimal places");
+//                                    showToast("Amount is either less than Rs.9 or has more than two decimal places");
 //                                    showSnackbar();
                                     return;
                                 }
 
                                 if (!validationError.isValidName()) {
-                                    showToast("Buyer's Name is required");
+//                                    showToast("Buyer's Name is required");
 //                                    showSnackbar();
                                     return;
                                 }
                             } else {
-                                showToast(error.getMessage());
+//                                showToast(error.getMessage());
 //                                showSnackbar();
                             }
                             return;
                         }
 
-                        Log.i("TIME","Order Request execute END");
+//                        Log.i("TIME","Order Request execute END");
                         startPreCreatedUI(order);
 
                     }
@@ -1348,7 +1348,7 @@ private void getSummaryFirstStatus(int dataRequestId) {
 
     private void startPreCreatedUI(Order order) {
 
-        Log.i("TIME","Payment End Time - Start of Payment Screen");
+//        Log.i("TIME","Payment End Time - Start of Payment Screen");
 
         Intent intent = new Intent(getBaseContext(), PaymentDetailsActivity.class);
         intent.putExtra(Constants.ORDER, order);
@@ -1376,7 +1376,7 @@ private void getSummaryFirstStatus(int dataRequestId) {
                         mProgressDialog.dismiss();
                     }
 
-                    Log.i("TIME","Order Confirmation Activity Start Time");
+//                    Log.i("TIME","Order Confirmation Activity Start Time");
 
                     if (mSummarySecondStatus.getStatus() == 12) {
 //                          Toast.makeText(OrderSummaryActivity.this, "successful",Toast.LENGTH_SHORT).show();
@@ -1407,7 +1407,7 @@ private void getSummaryFirstStatus(int dataRequestId) {
                 }
 
                 else {
-                    Log.d("onResponse", "getSummarySecondStatus :onResponse:notSuccessful");
+//                    Log.d("onResponse", "getSummarySecondStatus :onResponse:notSuccessful");
 
                     if (mProgressDialog != null && mProgressDialog.isShowing()) {
                         mProgressDialog.dismiss();

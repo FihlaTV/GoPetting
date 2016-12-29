@@ -200,7 +200,7 @@ public class AddressListActivity extends AppCompatActivity {
             oAuthTokenService.authenticateUsingOAuth(new Controller.MethodsCallback<Credential>() {
                 @Override
                 public void failure(Throwable t) {
-                    Toast.makeText(AddressListActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+//                    Toast.makeText(AddressListActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -239,7 +239,7 @@ public class AddressListActivity extends AppCompatActivity {
                 getAddressSecondStatus(dataRequestId);
                 break;
             default:
-                Log.i("AddressListActivity", "getServerData datarequestid: Out of range value ");
+//                Log.i("AddressListActivity", "getServerData datarequestid: Out of range value ");
         }
 
 
@@ -351,7 +351,7 @@ public class AddressListActivity extends AppCompatActivity {
                 mIndicator = 3;
                 break;
             default:
-                Log.i("AddressListActivity", "datarequestid: Out of range value ");
+//                Log.i("AddressListActivity", "datarequestid: Out of range value ");
         }
 
 
@@ -387,7 +387,7 @@ public class AddressListActivity extends AppCompatActivity {
                                 finish(); //Status is successful; Finish the activity
                                 break;
                             default:
-                                Log.i("AddressListActivity", "datarequestid: Out of range value ");
+//                                Log.i("AddressListActivity", "datarequestid: Out of range value ");
                         }
 
 
@@ -395,13 +395,13 @@ public class AddressListActivity extends AppCompatActivity {
 
 
                 } else {
-                    Log.d("onResponse", "getCartItems :onResponse:notSuccessful");
+//                    Log.d("onResponse", "getCartItems :onResponse:notSuccessful");
                 }
             }
 
             @Override
             public void onFailure(Call<Status> call, Throwable t) {
-                Toast.makeText(AddressListActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+//                Toast.makeText(AddressListActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -431,13 +431,13 @@ public class AddressListActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    Log.d("onResponse", "getAddressListData :onResponse:notSuccessful");
+//                    Log.d("onResponse", "getAddressListData :onResponse:notSuccessful");
                 }
             }
 
             @Override
             public void onFailure(Call<AddressList> call, Throwable throwable) {
-                Toast.makeText(AddressListActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+//                Toast.makeText(AddressListActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -457,7 +457,7 @@ public class AddressListActivity extends AppCompatActivity {
         try {
             mFastItemAdapterAddressList.add(mAddressList.getAddresses());
         } catch (Exception e) {
-            Log.e("AddressListActivity", e.toString());
+//            Log.e("AddressListActivity", e.toString());
             e.printStackTrace();
             Crashlytics.logException(e);
         }
@@ -713,7 +713,7 @@ public class AddressListActivity extends AppCompatActivity {
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                Log.i("Info", "RESULT_CANCELED code was not expected");
+//                Log.i("Info", "RESULT_CANCELED code was not expected");
             }
 
         }

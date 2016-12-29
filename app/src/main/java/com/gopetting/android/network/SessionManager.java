@@ -7,9 +7,7 @@ import android.content.SharedPreferences.Editor;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.google.android.gms.plus.model.people.Person;
 import com.gopetting.android.activities.LoginActivity;
-import com.gopetting.android.models.StringItem;
 import com.gopetting.android.models.User;
 
 import org.json.JSONException;

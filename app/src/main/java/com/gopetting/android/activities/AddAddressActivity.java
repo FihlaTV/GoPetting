@@ -153,7 +153,7 @@ public class AddAddressActivity extends AppCompatActivity {
             oAuthTokenService.authenticateUsingOAuth(new Controller.MethodsCallback<Credential>() {
                 @Override
                 public void failure(Throwable t) {
-                    Toast.makeText(AddAddressActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+//                    Toast.makeText(AddAddressActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -184,7 +184,7 @@ public class AddAddressActivity extends AppCompatActivity {
                 break;
 
             default:
-                Log.i("AddAddressActivity", "getServerData datarequestid: Out of range value ");
+//                Log.i("AddAddressActivity", "getServerData datarequestid: Out of range value ");
         }
 
 
@@ -245,13 +245,13 @@ public class AddAddressActivity extends AppCompatActivity {
 
 
                     } else {
-                        Log.d("onResponse", "getAddAddressFirstStatus :onResponse:notSuccessful");
+//                        Log.d("onResponse", "getAddAddressFirstStatus :onResponse:notSuccessful");
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Status> call, Throwable t) {
-                    Toast.makeText(AddAddressActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+//                    Toast.makeText(AddAddressActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
 

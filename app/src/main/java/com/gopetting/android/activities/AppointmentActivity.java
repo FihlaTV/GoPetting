@@ -178,7 +178,7 @@ public class AppointmentActivity extends AppCompatActivity {
             {
                 @Override public void failure(Throwable t)
                 {
-                    Toast.makeText(AppointmentActivity.this, t.getMessage(),Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+//                    Toast.makeText(AppointmentActivity.this, t.getMessage(),Toast.LENGTH_SHORT).show();
                 }
                 @Override public void success(Credential credential)
                 {
@@ -210,7 +210,7 @@ public class AppointmentActivity extends AppCompatActivity {
                 getDateTimeData(dataRequestId);
                 break;
             default:
-                Log.i("AppointmentActivity", "getServerData datarequestid: Out of range value ");
+//                Log.i("AppointmentActivity", "getServerData datarequestid: Out of range value ");
         }
 
 
@@ -256,13 +256,13 @@ public class AppointmentActivity extends AppCompatActivity {
                 }
 
                 else {
-                    Log.d("onResponse", "getAppointmentData :onResponse:notSuccessful");
+//                    Log.d("onResponse", "getAppointmentData :onResponse:notSuccessful");
                 }
             }
 
             @Override
             public void onFailure(Call<Appointment> call, Throwable throwable) {
-                Toast.makeText(AppointmentActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+//                Toast.makeText(AppointmentActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -299,13 +299,13 @@ public class AppointmentActivity extends AppCompatActivity {
 
 
                 else {
-                    Log.d("onResponse", "getDateTimeData :onResponse:notSuccessful");
+//                    Log.d("onResponse", "getDateTimeData :onResponse:notSuccessful");
                 }
             }
 
             @Override
             public void onFailure(Call<DateTimeSlot> call, Throwable throwable) {
-                Toast.makeText(AppointmentActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+//                Toast.makeText(AppointmentActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -491,7 +491,7 @@ public class AppointmentActivity extends AppCompatActivity {
         try {
             mFastItemAdapterDateslot.add(mDateslots);
         } catch (Exception e) {
-            Log.e("AppointmentActivity", e.toString());
+//            Log.e("AppointmentActivity", e.toString());
             Crashlytics.logException(e);
         }
 
@@ -626,7 +626,7 @@ public class AppointmentActivity extends AppCompatActivity {
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                Log.i("Info", "RESULT_CANCELED code was not expected");
+//                Log.i("Info", "RESULT_CANCELED code was not expected");
             }
 
         }
@@ -677,7 +677,7 @@ public class AppointmentActivity extends AppCompatActivity {
             }
             if (resultCode == Activity.RESULT_CANCELED) {
 
-//                Toast.makeText(AppointmentActivity.this, "Inside Result_canceled",Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+//                Toast.makeText(AppointmentActivity.this, "Inside Result_canceled",Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -691,7 +691,7 @@ public class AppointmentActivity extends AppCompatActivity {
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                Log.i("Info", "RESULT_CANCELED code was not expected");
+//                Log.i("Info", "RESULT_CANCELED code was not expected");
             }
 
         }

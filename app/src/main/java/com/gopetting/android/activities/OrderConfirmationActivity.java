@@ -123,7 +123,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                     date = format.parse(mSelectedDateslot);
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    Log.e("OrderSummaryActivity", e.toString());
+//                    Log.e("OrderSummaryActivity", e.toString());
                     Crashlytics.logException(e);
                 }
 
@@ -214,7 +214,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
             {
                 @Override public void failure(Throwable t)
                 {
-                    Toast.makeText(OrderConfirmationActivity.this, t.getMessage(),Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+//                    Toast.makeText(OrderConfirmationActivity.this, t.getMessage(),Toast.LENGTH_SHORT).show();
                 }
                 @Override public void success(Credential credential)
                 {
@@ -268,13 +268,13 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                 }
 
                 else {
-                    Log.d("onResponse", "getPromotionalGalleryData :onResponse:notSuccessful");
+//                    Log.d("onResponse", "getPromotionalGalleryData :onResponse:notSuccessful");
                 }
             }
 
             @Override
             public void onFailure(Call<List<StringItem>> call, Throwable throwable) {
-                Toast.makeText(OrderConfirmationActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+//                Toast.makeText(OrderConfirmationActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -120,7 +120,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
             {
                 @Override public void failure(Throwable t)
                 {
-                    Toast.makeText(OrderHistoryActivity.this, t.getMessage(),Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+//                    Toast.makeText(OrderHistoryActivity.this, t.getMessage(),Toast.LENGTH_SHORT).show();
                 }
                 @Override public void success(Credential credential)
                 {
@@ -169,13 +169,13 @@ public class OrderHistoryActivity extends AppCompatActivity {
                 }
 
                 else {
-                    Log.d("onResponse", "onResponse:notSuccessful");
+//                    Log.d("onResponse", "onResponse:notSuccessful");
                 }
             }
 
             @Override
             public void onFailure(Call<OrderHistory> call, Throwable throwable) {
-                Toast.makeText(OrderHistoryActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+//                Toast.makeText(OrderHistoryActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

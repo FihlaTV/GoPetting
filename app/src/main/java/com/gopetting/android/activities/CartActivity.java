@@ -213,7 +213,7 @@ public class CartActivity extends AppCompatActivity {
             try {
                 mFastAdapterCart.add(mCartScreen.getCartScreenItems());
             } catch (Exception e) {
-                Log.e("CartActivity", e.toString());
+//                Log.e("CartActivity", e.toString());
             }
 
             mRecyclerViewCart.setAdapter(mFastAdapterCart);
@@ -289,7 +289,7 @@ public class CartActivity extends AppCompatActivity {
             {
                 @Override public void failure(Throwable t)
                 {
-                    Toast.makeText(CartActivity.this, t.getMessage(),Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+//                    Toast.makeText(CartActivity.this, t.getMessage(),Toast.LENGTH_SHORT).show();
                 }
                 @Override public void success(Credential credential)
                 {
@@ -321,7 +321,7 @@ public class CartActivity extends AppCompatActivity {
                 getCartStatus(dataRequestId);
                 break;
             default:
-                Log.i("CartActivity", "getServerData datarequestid: Out of range value ");
+//                Log.i("CartActivity", "getServerData datarequestid: Out of range value ");
         }
 
 
@@ -375,13 +375,13 @@ public class CartActivity extends AppCompatActivity {
 //                    initCart();
 
                 } else {
-                    Log.d("onResponse", "getCartItems :onResponse:notSuccessful");
+//                    Log.d("onResponse", "getCartItems :onResponse:notSuccessful");
                 }
             }
 
             @Override
             public void onFailure(Call<CartScreen> call, Throwable t) {
-                Toast.makeText(CartActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+//                Toast.makeText(CartActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -422,13 +422,13 @@ public class CartActivity extends AppCompatActivity {
                     mStatus = response.body();
 
                 } else {
-                    Log.d("onResponse", "getCartItems :onResponse:notSuccessful");
+//                    Log.d("onResponse", "getCartItems :onResponse:notSuccessful");
                 }
             }
 
             @Override
             public void onFailure(Call<Status> call, Throwable t) {
-                Toast.makeText(CartActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+//                Toast.makeText(CartActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -455,7 +455,7 @@ public class CartActivity extends AppCompatActivity {
         try {
             mFastAdapterCart.add(mCartScreen.getCartScreenItems());
         } catch (Exception e) {
-            Log.e("CartActivity", e.toString());
+//            Log.e("CartActivity", e.toString());
         }
 
         mRecyclerViewCart.setAdapter(mFastAdapterCart);
@@ -538,7 +538,7 @@ public class CartActivity extends AppCompatActivity {
 
         if (requestCode == IDENTIFIER) {
             if(resultCode == Activity.RESULT_OK){
-                Log.i("Info","RESULT_OK code was not expected");
+//                Log.i("Info","RESULT_OK code was not expected");
             }
             if (resultCode == Activity.RESULT_CANCELED) {
 

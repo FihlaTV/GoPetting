@@ -185,7 +185,7 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
             {
                 @Override public void failure(Throwable t)
                 {
-                    Toast.makeText(OrderHistoryDetailActivity.this, t.getMessage(),Toast.LENGTH_SHORT).show();       //TODO: Change this to some appropriate statement like 'Log'
+//                    Toast.makeText(OrderHistoryDetailActivity.this, t.getMessage(),Toast.LENGTH_SHORT).show();
                 }
                 @Override public void success(Credential credential)
                 {
@@ -221,7 +221,7 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
                 break;
 
             default:
-                Log.i("default case", "choose datarequestid: Out of range value ");
+//                Log.i("default case", "choose datarequestid: Out of range value ");
         }
 
 
@@ -248,13 +248,13 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
                 }
 
                 else {
-                    Log.d("onResponse", "onResponse:notSuccessful");
+//                    Log.d("onResponse", "onResponse:notSuccessful");
                 }
             }
 
             @Override
             public void onFailure(Call<OrderHistoryDetails> call, Throwable throwable) {
-                Toast.makeText(OrderHistoryDetailActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show(); //TODO: Change this to some appropriate statement like 'Log'
+//                Toast.makeText(OrderHistoryDetailActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -440,7 +440,7 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
 
                 else {
                     showProgressBar(false);
-                    Log.d("onResponse", "onResponse:notSuccessful");
+//                    Log.d("onResponse", "onResponse:notSuccessful");
                     Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_something_went_wrong, Snackbar.LENGTH_SHORT).show();
                 }
             }

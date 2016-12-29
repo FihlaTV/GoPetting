@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -43,17 +42,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
-import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.plus.People;
-import com.google.android.gms.plus.Plus;
 import com.gopetting.android.R;
 import com.gopetting.android.bus.UpdateActionBarTitleEvent;
 import com.gopetting.android.fragments.GalleryFragment;
@@ -77,8 +69,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.microedition.khronos.opengles.GL;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.relex.circleindicator.CircleIndicator;
@@ -429,7 +419,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Snackbar.make(findViewById(R.id.drawer_layout), R.string.snackbar_soon_launching, Snackbar.LENGTH_SHORT).show();
                         break;
                     default:
-                        Log.i(TAG, "onClick: Out of bound of adapter index ");
+//                        Log.i(TAG, "onClick: Out of bound of adapter index ");
                 }
 
                 return  false;
@@ -581,7 +571,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void shareApp() {
 
-        Log.i("Share app", "");
+//        Log.i("Share app", "");
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
@@ -634,7 +624,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void composeEmail() {
 
-            Log.i("Send email", "");
+//            Log.i("Send email", "");
             String[] TO = {"support@gopetting.com"};
 //            String[] CC = {""};
             Intent emailIntent = new Intent(Intent.ACTION_SENDTO);  //for sending mail through default client like GMAIL.
@@ -645,7 +635,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             try {
                 startActivity(Intent.createChooser(emailIntent,"Send mail..."));
-                Log.i("Finished sending email", "");
+//                Log.i("Finished sending email", "");
             }
             catch (android.content.ActivityNotFoundException ex) {
                 Toast.makeText(MainActivity.this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
@@ -908,7 +898,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Could not connect to Google Play Services.  The user needs to select an account,
         // grant permissions or resolve an error in order to sign in. Refer to the javadoc for
         // ConnectionResult to see possible error codes.
-        Log.d(Constants.TAG_LOGIN, "onConnectionFailed:" + connectionResult);
+//        Log.d(Constants.TAG_LOGIN, "onConnectionFailed:" + connectionResult);
         //ringProgressDialog.dismiss();
 
 //        if (!mIsResolving && mShouldResolve) {
