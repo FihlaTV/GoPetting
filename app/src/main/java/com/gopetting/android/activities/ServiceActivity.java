@@ -167,8 +167,8 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 //          oAuthTokenService.deleteAllToken();
         mCredential = oAuthTokenService.getAccessTokenWithID("default");
 
-        if(mCredential == null || mCredential.getAccess_token()==null || oAuthTokenService.isExpired("default"))
-        {
+//        if(mCredential == null || mCredential.getAccess_token()==null || oAuthTokenService.isExpired("default"))
+//        {
             oAuthTokenService.authenticateUsingOAuth( new Controller.MethodsCallback<Credential>()
             {
                 @Override public void failure(Throwable t)
@@ -189,10 +189,10 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
                 }
             });
-        }else {
-
-            chooseDataRequest(dataRequestId);
-        }
+//        }else {
+//
+//            chooseDataRequest(dataRequestId);
+//        }
     }
 
     private void chooseDataRequest(int dataRequestId) {
