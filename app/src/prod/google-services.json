@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "617720920735",
+    "firebase_url": "https://gopetting-9999.firebaseio.com",
+    "project_id": "gopetting-9999",
+    "storage_bucket": "gopetting-9999.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:617720920735:android:1a6809b078ebdba2",
+        "android_client_info": {
+          "package_name": "com.gopetting.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "617720920735-cnn8jeblrro95nju5ul8j0k43a6ol92s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gopetting.android",
+            "certificate_hash": "8AA01DBD40090E3AF6044FE6896695A3B7E5FB77"
+          }
+        },
+        {
+          "client_id": "617720920735-b4352630e2uaqjgcd305ue9fs5lp08up.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "617720920735-glot7tpf6kn4vvj3vcf85h3f6f832ooq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCG4np6TPOWoiIQzqo-VdoRD2_IPuF1Cmo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "617720920735-b4352630e2uaqjgcd305ue9fs5lp08up.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

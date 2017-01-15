@@ -40,8 +40,8 @@ android {
         applicationId 'com.gopetting.android'
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 1
-        versionName "0.5.5.4"
+        versionCode 3
+        versionName "0.5.6.1"
     }
     buildTypes {
         release {
@@ -51,6 +51,17 @@ android {
         }
     }
     productFlavors {
+
+        prod {
+            applicationId = "com.gopetting.android"
+            buildConfigField 'String', 'API_BASE_URL', '"http://ec2-52-220-151-54.ap-southeast-1.compute.amazonaws.com"'
+        }
+
+        tst {
+            applicationId = "com.gopetting.android.tst"
+            buildConfigField 'String', 'API_BASE_URL', '"http://ec2-52-221-231-149.ap-southeast-1.compute.amazonaws.com"'
+        }
+
     }
 }
 

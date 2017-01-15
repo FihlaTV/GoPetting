@@ -181,6 +181,8 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                     {
                         oAuthTokenService.saveTokenWithID(credential, "default");
 
+                        mCredential = credential;
+
                         chooseDataRequest(dataRequestId);
                     }
                 }

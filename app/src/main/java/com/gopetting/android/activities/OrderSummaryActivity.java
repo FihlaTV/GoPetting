@@ -639,8 +639,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
                         //TODO: Remove below Debug code after deployment
                         //let's set the log level to debug
-//                        Instamojo.setLogLevel(Log.DEBUG);
-//                        Instamojo.setBaseUrl("https://test.instamojo.com/");
+                        Instamojo.setLogLevel(Log.DEBUG);
+                        Instamojo.setBaseUrl("https://test.instamojo.com/");
 
 
                         }else {
@@ -1208,12 +1208,12 @@ private void getSummaryFirstStatus(int dataRequestId) {
             }
 
             if (!order.isValidAmount()) {
-//                showToast("Amount is invalid or has more than two decimal places");
+                showToast("Amount is invalid or has more than two decimal places");
                 showSnackbar();
             }
 
             if (!order.isValidDescription()) {
-//                showToast("Description is invalid");
+                showToast("Description is invalid");
                 showSnackbar();
             }
 
@@ -1315,8 +1315,8 @@ private void getSummaryFirstStatus(int dataRequestId) {
                                     return;
                                 }
                             } else {
-//                                showToast(error.getMessage());
-//                                showSnackbar();
+                                showToast(error.getMessage());
+                                showSnackbar();
                             }
                             return;
                         }

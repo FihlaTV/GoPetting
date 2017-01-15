@@ -1,5 +1,9 @@
 package com.gopetting.android.network;
 
+
+
+import com.gopetting.android.BuildConfig;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -10,8 +14,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
     public class RetrofitSingleton {
 
-//        public static final String API_BASE_URL = "http://ec2-54-169-7-179.ap-southeast-1.compute.amazonaws.com";
-        public static final String API_BASE_URL = "http://ec2-52-220-151-54.ap-southeast-1.compute.amazonaws.com";
+
+//        public static final String API_BASE_URL = "http://ec2-52-220-151-54.ap-southeast-1.compute.amazonaws.com";
+        public static final String API_BASE_URL = BuildConfig.API_BASE_URL;
         private static Retrofit restAdapter = null;
         private static OkHttpClient client = new OkHttpClient.Builder().build();
 
