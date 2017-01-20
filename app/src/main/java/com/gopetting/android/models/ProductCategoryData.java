@@ -12,10 +12,10 @@ public class ProductCategoryData {
 
         public static List<ProductCategory> getItems() {
             return toList(
-                    new ProductCategory().setCategoryImage(R.drawable.img_pet_salon),
-                    new ProductCategory().setCategoryImage(R.drawable.img_pet_school),
-                    new ProductCategory().setCategoryImage(R.drawable.img_pet_doctor),
-                    new ProductCategory().setCategoryImage(R.drawable.img_pet_hotel)
+                    new ProductCategory().setCategoryImage(R.drawable.img_pet_grooming),
+                    new ProductCategory().setCategoryImage(R.drawable.img_pet_food),
+                    new ProductCategory().setCategoryImage(R.drawable.img_pet_accessories),
+                    new ProductCategory().setCategoryImage(R.drawable.img_pet_doctor)
             );
         }
 
