@@ -250,5 +250,8 @@
     <string name="dialog_title_update">Update Available</string>
     <string name="snackbar_soon_launching">We\'re launching soon this service</string>
     <string name="snackbar_accept_terms_conditions">Please accept terms and conditions</string>
+    <string name="snackbar_mobile_check">Please enter valid mobile number</string>
+    <string name="snackbar_pincode_mobile">Please enter valid pincode and mobile no</string>
+    <string name="snackbar_pincode_check">Please enter valid pincode</string>
 
 </resources>

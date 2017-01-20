@@ -1292,13 +1292,13 @@ private void getSummaryFirstStatus(int dataRequestId) {
                                 }
 
                                 if (!validationError.isValidPhone()) {
-//                                    showToast("Phone Number is invalid/empty");
+                                    showToast("Phone Number is invalid");
 //                                    showSnackbar();
                                     return;
                                 }
 
                                 if (!validationError.isValidEmail()) {
-//                                    showToast("Buyer's Email is invalid/empty");
+                                    showToast("Buyer's Email is invalid/empty");
 //                                    showSnackbar();
                                     return;
                                 }

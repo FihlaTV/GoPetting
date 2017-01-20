@@ -98,8 +98,13 @@ public class AddAddressActivity extends AppCompatActivity {
 
 
                     Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_add_address, Snackbar.LENGTH_LONG).show();
-
-                } else {
+                } else if(mEditTextPincode.getText().toString().length()<6 && mEditTextMobile.getText().toString().length()<10) {
+                    Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_pincode_mobile, Snackbar.LENGTH_SHORT).show();
+                } else if(mEditTextPincode.getText().toString().length()<6) {
+                    Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_pincode_check, Snackbar.LENGTH_SHORT).show();
+                } else if(mEditTextMobile.getText().toString().length()<10) {
+                    Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_mobile_check, Snackbar.LENGTH_SHORT).show();
+                }else {
                     if (ConnectivityReceiver.isConnected()) {
 
                         mSessionManager = new SessionManager(getApplicationContext());
@@ -120,7 +125,7 @@ public class AddAddressActivity extends AppCompatActivity {
                             sUserId = mSessionManager.getUserId();       //Extract unique UserId
                             if (sUserId != null) {
                                 getServerData(1);   //Sending DATA_REQUEST_ID=1; Get AddressFirstStatus
-                            }else {
+                            } else {
                                 Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_userid_empty, Snackbar.LENGTH_LONG).show();
                             }
                         } else {
@@ -128,13 +133,12 @@ public class AddAddressActivity extends AppCompatActivity {
                             Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_not_logged_in, Snackbar.LENGTH_SHORT).show();
                         }
 
-                    }else {
+                    } else {
                         showSnack();
                     }
-
                 }
+                    }
 
-            }
         });
 
 
