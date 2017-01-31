@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.gopetting.android.R;
 import com.gopetting.android.adapters.ViewPagerAdapter;
 import com.gopetting.android.fragments.ServiceFragment;
@@ -425,61 +426,64 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
     private void addItemToCart() {
 
-        int flag = 1; //Just a default value to check whether any package is already available in cart for selected service subcategory
+        try {
 
-        //Check whether cart is empty for user
-        if (mCart.mCartItems.size()<=0){
+
+            int flag = 1; //Just a default value to check whether any package is already available in cart for selected service subcategory
+
+            //Check whether cart is empty for user
+            if (mCart.mCartItems.size() <= 0) {
 
                 addAndRefreshCart();
-                flag=2;
+                flag = 2;
 
-        }else {
+            } else {
 
-            //Loop through all Cart items
-            for (int i = 0; i < mCart.mCartItems.size(); i++) {
-                //check if select service subcategory item are already available in cart
-                if (mSelectedServiceSubCategoryId == mCart.mCartItems.get(i).getServiceSubCategoryId()) {
-                    //Yes it's available, now check selected service package is already available in cart
-                    if (mSelectedServicePackageId == mCart.mCartItems.get(i).getServicePackageId()) {
-                        //Don't do anything as Service Package is already available in Cart and we don't allow more than 1 service package per service subcategory as of now.
+                //Loop through all Cart items
+                for (int i = 0; i < mCart.mCartItems.size(); i++) {
+                    //check if select service subcategory item are already available in cart
+                    if (mSelectedServiceSubCategoryId == mCart.mCartItems.get(i).getServiceSubCategoryId()) {
+                        //Yes it's available, now check selected service package is already available in cart
+                        if (mSelectedServicePackageId == mCart.mCartItems.get(i).getServicePackageId()) {
+                            //Don't do anything as Service Package is already available in Cart and we don't allow more than 1 service package per service subcategory as of now.
 
 //                        Toast.makeText(ServiceActivity.this, "Package is already in cart",Toast.LENGTH_SHORT).show(); //Show to user, package is already in cart
 
-                        flag = 2;
+                            flag = 2;
 
-                        //Refresh Shopping Cart Icon Count;
-                        mNotifyCount = Integer.toString(mCart.mCartItems.size());
-                        invalidateOptionsMenu();
+                            //Refresh Shopping Cart Icon Count;
+                            mNotifyCount = Integer.toString(mCart.mCartItems.size());
+                            invalidateOptionsMenu();
 
-                        //Initialize Service Package Selection State (Basket Color)
-                        initializeServicePackageState(4);   //Send id=4 for initializing service package state without checking flag
+                            //Initialize Service Package Selection State (Basket Color)
+                            initializeServicePackageState(4);   //Send id=4 for initializing service package state without checking flag
 
-                        break;      //Break loop as service package is added/replaced
+                            break;      //Break loop as service package is added/replaced
 
-                    } else {
-                        //Other service package is already available under this service sub category; Ask user to replace it with this package
+                        } else {
+                            //Other service package is already available under this service sub category; Ask user to replace it with this package
 
-                        flag =2;
+                            flag = 2;
 //
 //                        String dialogQuestion = getResources().getString(R.string.dialog_question_cart_item_change_part1 )
 //                                                + mSelectedServiceSubCategoryName
 //                                                + getResources().getString(R.string.dialog_question_cart_item_change_part2)
 //                                                + getResources().getString(R.string.dialog_question_cart_item_change_part3);
 
-                        mCart.mCartItems.remove(i); //Remove old service package
+                            mCart.mCartItems.remove(i); //Remove old service package
 
-                        //add currently selected service package to Cart
-                        mCart.mCartItems.add(new CartItem().setServicePackageId(mSelectedServicePackageId)
-                                                            .setServicePackageName(mSelectedServicePackageName)
-                                                            .setPrice(mSelectedPrice)
-                                                            .setServiceSubCategoryId(mSelectedServiceSubCategoryId));
+                            //add currently selected service package to Cart
+                            mCart.mCartItems.add(new CartItem().setServicePackageId(mSelectedServicePackageId)
+                                    .setServicePackageName(mSelectedServicePackageName)
+                                    .setPrice(mSelectedPrice)
+                                    .setServiceSubCategoryId(mSelectedServiceSubCategoryId));
 
-                        //Refresh Shopping Cart Icon Count; Logically Count is going to be same as we're removing 1 package and adding 1 package :)
-                        mNotifyCount = Integer.toString(mCart.mCartItems.size());
-                        invalidateOptionsMenu();
+                            //Refresh Shopping Cart Icon Count; Logically Count is going to be same as we're removing 1 package and adding 1 package :)
+                            mNotifyCount = Integer.toString(mCart.mCartItems.size());
+                            invalidateOptionsMenu();
 
-                        //Initialize Service Package Selection State (Basket Color)
-                        initializeServicePackageState(4);   //Send id=4 for initializing service package state without checking flag
+                            //Initialize Service Package Selection State (Basket Color)
+                            initializeServicePackageState(4);   //Send id=4 for initializing service package state without checking flag
 
 
 //                        Toast.makeText(ServiceActivity.this, "Package is added to cart",Toast.LENGTH_SHORT).show(); //Show to user, package is added
@@ -520,18 +524,22 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                         textView.setTextSize(14);
 //                        textView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/DIN-Regular.otf"));
 */
-                        break; //Break loop as service package is added/replaced
+                            break; //Break loop as service package is added/replaced
+                        }
                     }
                 }
             }
+
+            if (flag == 1) {
+
+                addAndRefreshCart();
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Crashlytics.logException(e);
+
         }
-
-        if (flag == 1){
-
-            addAndRefreshCart();
-
-        }
-
     }
 
     //Add selected service package and refresh the cart
