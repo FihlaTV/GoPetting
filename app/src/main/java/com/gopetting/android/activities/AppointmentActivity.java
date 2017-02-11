@@ -14,8 +14,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +26,7 @@ import com.crashlytics.android.Crashlytics;
 import com.gopetting.android.R;
 import com.gopetting.android.models.Appointment;
 import com.gopetting.android.models.Cart;
+import com.gopetting.android.models.CartItem;
 import com.gopetting.android.models.Credential;
 import com.gopetting.android.models.DateTimeSlot;
 import com.gopetting.android.models.Dateslot;
@@ -51,6 +54,7 @@ import retrofit2.Response;
 
 public class AppointmentActivity extends AppCompatActivity {
 
+    //region 'VIEW BINDINGS'
 
     @BindView(R.id.toolbar_headerbar)
     Toolbar mToolbar;
@@ -62,10 +66,16 @@ public class AppointmentActivity extends AppCompatActivity {
     TextView mTextViewFullAddress;
     @BindView(R.id.tv_phone)
     TextView mTextViewPhone;
+    @BindView(R.id.tv_in_house_delivery_type)
+    TextView mTextViewInHouseDeliveryType;
+    @BindView(R.id.tv_psd_delivery_type)
+    TextView mTextViewPsdDeliveryType;
     @BindView(R.id.rl_address_date_time_container)
     RelativeLayout mRelativeLayoutAddressDateTimeContainer;
     @BindView(R.id.ll_default_address_container)
     LinearLayout mLinearLayoutDefaultAddressContainer;
+    @BindView(R.id.ll_delivery_type_container)
+    LinearLayout mLinearLayoutDeliveryTypeContainer;
     @BindView(R.id.ll_date_time_container)
     LinearLayout mLinearLayoutDateTimeContainer;
     @BindView(R.id.progress_bar)
@@ -78,6 +88,19 @@ public class AppointmentActivity extends AppCompatActivity {
     LinearLayout mLinearLayoutAddAddress;
     @BindView(R.id.rl_footer_button_container)
     RelativeLayout mRelativeLayoutFooterButton;
+    @BindView(R.id.radio_button_in_house)
+    public RadioButton mRadioButtonInHouse;
+    @BindView(R.id.radio_button_psd)
+    public RadioButton mRadioButtonPsd;
+    @BindView(R.id.ll_in_house_container)
+    public LinearLayout mLinearLayoutInHouseContainer;
+    @BindView(R.id.ll_psd_container)
+    public LinearLayout mLinearLayoutPsdContainer;
+    @BindView(R.id.ll_no_slots_container)
+    public LinearLayout mLinearLayoutNoSlotsContainer;
+    @BindView(R.id.tv_no_slots)
+    TextView mTextViewNoSlots;
+    //endregion
 
 
     private static final int APPOINTMENT_INTENT_IDENTIFIER_1 = 301 ; //INTENT IDENTIFIER; Start AddAddressActivity and Get New Address
@@ -116,7 +139,12 @@ public class AppointmentActivity extends AppCompatActivity {
     private String mSelectedPhone;
     private int mSelectedAddressId;
     private String mSelectedPincode;
-
+    private int mCurrentDeliveryType;
+    private int mInHouseCharges;
+    private int mPsdCharges;
+    private int mNoRecordsFlag=0;       //To be used for 'getAppointmentData' method, when no date/time slots received from server and Default address is to set up
+    private int mDeliveryCharges;
+    private String mSelectedDeliveryType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,7 +188,75 @@ public class AppointmentActivity extends AppCompatActivity {
             }
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            initDeliveryTypeListeners();     //Initialize delivery type listeners
+
         }
+    }
+
+    /**
+     * Initialize delivery type listeners
+     */
+    private void initDeliveryTypeListeners() {
+
+        //In House Radio Button Listener
+        mLinearLayoutInHouseContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (!mRadioButtonInHouse.isChecked()) {
+
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    mLinearLayoutDateTimeContainer.setVisibility(View.GONE);
+                    mLinearLayoutNoSlotsContainer.setVisibility(View.GONE);
+
+                    //To disable user interaction with background views
+                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                    mRadioButtonInHouse.setChecked(true);
+                    mRadioButtonPsd.setChecked(false);
+
+                    mCurrentDeliveryType=1;         //In-House=1; PSD=2
+
+                    getServerData(2);
+
+
+
+                }
+            }
+        });
+
+
+        //PSD Radio Button Listener
+        mLinearLayoutPsdContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (!mRadioButtonPsd.isChecked()) {
+
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    mLinearLayoutDateTimeContainer.setVisibility(View.GONE);
+                    mLinearLayoutNoSlotsContainer.setVisibility(View.GONE);
+
+                    //To disable user interaction with background views
+                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+
+                    mRadioButtonInHouse.setChecked(false);
+                    mRadioButtonPsd.setChecked(true);
+
+                    mCurrentDeliveryType=2;         //In-House=1; PSD=2
+
+                    getServerData(2);
+
+
+                }
+            }
+        });
+
+
     }
 
 
@@ -219,13 +315,18 @@ public class AppointmentActivity extends AppCompatActivity {
     private void getAppointmentData(int dataRequestId) {
 
         Controller.GetAppointmentDetails retrofitSingleton = RetrofitSingleton.getInstance().create(Controller.GetAppointmentDetails.class);
-        Call<Appointment> call = retrofitSingleton.getAppointmentDetails("Bearer " + mCredential.getAccess_token(),sUserId);
+        Call<Appointment> call = retrofitSingleton.getAppointmentDetails("Bearer " + mCredential.getAccess_token(),sUserId,concatenate(),mCart.getCartServicePackages().size());
         call.enqueue(new Callback<Appointment>() {
             @Override
             public void onResponse(Call<Appointment> call, Response<Appointment> response) {
                 if (response.isSuccessful()) {
 
                     mAppointment = response.body();
+
+                    mInHouseCharges = mAppointment.getInHouseCharges();
+                    mPsdCharges = mAppointment.getPsdCharges();
+
+                    mCurrentDeliveryType=1;     //In-House=1; PSD=2         //Set Default delivery type 'In-House' during app start
 
 
                     //server status = 101; No address available for user
@@ -236,20 +337,43 @@ public class AppointmentActivity extends AppCompatActivity {
 
                         addAddressClickListener();
 
-                    //server status = 12; Address available,Set Address, Date & Time
+                    //server status = 12; Address available,Set Address, Default In-House delivery type and Date & Time
                     } else if (mAppointment.getStatus() == 12) {
 
-                        //Show Default Address, Date and Time Layouts
+                        //Show Default Address, Delivery Type and  Date, Time Layouts
                         mRelativeLayoutAddressDateTimeContainer.setVisibility(View.VISIBLE);
                         mLinearLayoutDefaultAddressContainer.setVisibility(View.VISIBLE);
+                        mLinearLayoutDeliveryTypeContainer.setVisibility(View.VISIBLE);
                         mLinearLayoutDateTimeContainer.setVisibility(View.VISIBLE);
+                        mLinearLayoutNoSlotsContainer.setVisibility(View.GONE);
+
 
                         addAddressClickListener();
+
+                        mNoRecordsFlag=0;       //Default is 0; so that initAppointment() could execute setupDateTimeLayouts() method
 
                         //initialize Appointment with data
                         initAppointment();
 
 
+
+                    } else if (mAppointment.getStatus() == 10) {
+
+                        setNoSlotsMessage();
+
+                        //Show Default Address, Delivery Type and  Date, Time Layouts
+                        mRelativeLayoutAddressDateTimeContainer.setVisibility(View.VISIBLE);
+                        mLinearLayoutDefaultAddressContainer.setVisibility(View.VISIBLE);
+                        mLinearLayoutDateTimeContainer.setVisibility(View.GONE);
+                        mLinearLayoutDeliveryTypeContainer.setVisibility(View.VISIBLE);
+                        mLinearLayoutNoSlotsContainer.setVisibility(View.VISIBLE);
+
+                        mNoRecordsFlag=1;       //1; to not execute setupDateTimeLayouts() method
+
+                        //initialize Appointment with data
+                        initAppointment();
+
+                        mNoRecordsFlag=0;       //0; Reset flag; so that initAppointment() could function normally for rest of the calls
 
                     }
 
@@ -270,10 +394,28 @@ public class AppointmentActivity extends AppCompatActivity {
 
     }
 
+    private void setNoSlotsMessage() {
+
+        Resources res = getResources();
+
+        if (mCurrentDeliveryType == 1) {
+            String mNoSlotsText = String.format(res.getString(R.string.text_no_slots)
+                    ,"In-House" );
+            mTextViewNoSlots.setText(mNoSlotsText);
+        }else if (mCurrentDeliveryType == 2){
+            String mNoSlotsText = String.format(res.getString(R.string.text_no_slots)
+                    ,"Pickup-Service-Drop" );
+            mTextViewNoSlots.setText(mNoSlotsText);
+        }
+
+    }
+
+
     private void getDateTimeData(int dataRequestId) {
 
         Controller.GetDateTimeItems retrofitSingleton = RetrofitSingleton.getInstance().create(Controller.GetDateTimeItems.class);
-        Call<DateTimeSlot> call = retrofitSingleton.getDateTimeData("Bearer " + mCredential.getAccess_token(),sUserId,mPincode);
+        Call<DateTimeSlot> call = retrofitSingleton.getDateTimeData("Bearer " + mCredential.getAccess_token(),sUserId
+                                ,mSelectedPincode,concatenate(),mCart.getCartServicePackages().size(),mCurrentDeliveryType);
         call.enqueue(new Callback<DateTimeSlot>() {
             @Override
             public void onResponse(Call<DateTimeSlot> call, Response<DateTimeSlot> response) {
@@ -287,12 +429,38 @@ public class AppointmentActivity extends AppCompatActivity {
                         //Update mDateslots object with new items
                         mDateslots = response.body().getDateslots();
 
+                        mInHouseCharges = response.body().getInHouseCharges();  //Fetching These charges may not be required again as it's already been done in getAppointmentData
+                        mPsdCharges = response.body().getPsdCharges();          //Still keeping it for now.
+
                         //Show Default Address, Date and Time Layouts
                         mRelativeLayoutAddressDateTimeContainer.setVisibility(View.VISIBLE);
                         mLinearLayoutDefaultAddressContainer.setVisibility(View.VISIBLE);
+                        mLinearLayoutDeliveryTypeContainer.setVisibility(View.VISIBLE);
                         mLinearLayoutDateTimeContainer.setVisibility(View.VISIBLE);
+                        mLinearLayoutNoSlotsContainer.setVisibility(View.GONE);
 
+                        //To enable user interaction with background views; This was disabled earlier for ProgressBar
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                        setupDeliveryType();
                         setupDateTimeLayouts();
+
+                        //When no date/time slots received
+                    } else if (response.body().getStatus() == 10) {
+
+                        setupDeliveryType();        //Setup Delivery types
+                        setNoSlotsMessage();
+
+                        //Show Default Address, Delivery Type and  Date, Time Layouts
+                        mRelativeLayoutAddressDateTimeContainer.setVisibility(View.VISIBLE);
+                        mLinearLayoutDefaultAddressContainer.setVisibility(View.VISIBLE);
+                        mLinearLayoutDeliveryTypeContainer.setVisibility(View.VISIBLE);
+                        mLinearLayoutDateTimeContainer.setVisibility(View.GONE);
+                        mLinearLayoutNoSlotsContainer.setVisibility(View.VISIBLE);
+                        mProgressBar.setVisibility(View.GONE);
+
+                        //To enable user interaction with background views; This was disabled earlier for ProgressBar
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     }
 
                 }
@@ -313,8 +481,39 @@ public class AppointmentActivity extends AppCompatActivity {
 
     }
 
+    private void setupDeliveryType() {
 
-/**********************************************************
+        Resources res = getResources();
+
+        if(mInHouseCharges == 0){
+            String mInHouseText = String.format(res.getString(R.string.text_in_house_delivery_type)
+                    ,"","free");
+            mTextViewInHouseDeliveryType.setText(mInHouseText);
+        }else {
+            String mInHouseText = String.format(res.getString(R.string.text_in_house_delivery_type)
+                    ,"Rs.",mInHouseCharges);
+            mTextViewInHouseDeliveryType.setText(mInHouseText);
+        }
+
+        String mPsdText = String.format(res.getString(R.string.text_psd_delivery_type)
+               ,"Rs.",mPsdCharges);
+        mTextViewPsdDeliveryType.setText(mPsdText);
+
+
+        if (mCurrentDeliveryType == 1){
+            mRadioButtonInHouse.setChecked(true);
+            mRadioButtonPsd.setChecked(false);
+        }else if (mCurrentDeliveryType == 2) {
+            mRadioButtonInHouse.setChecked(false);
+            mRadioButtonPsd.setChecked(true);
+        }
+
+
+
+    }
+
+
+    /**********************************************************
  *                  Screen Flow Status Scenarios
  *
  *                  1. Fresh Start: No address
@@ -362,6 +561,7 @@ public class AppointmentActivity extends AppCompatActivity {
                 if (ConnectivityReceiver.isConnected()) {
 
                     //1st logic: Fresh Start with No address and haven't pressed 'Add Address' button for adding new address
+                    // (double check this statement, I believe, correct is "Fresh start and 'Add Address' PRESSED")
                     if (mAppointment.getStatus() == 101 && mDateTimeslotStatus == 0) {
 
                         mRelativeLayoutAddressDateTimeContainer.setVisibility(View.VISIBLE);
@@ -369,22 +569,29 @@ public class AppointmentActivity extends AppCompatActivity {
 
                         //Start AddAddressActivity and Get New Address
                         Intent intent = new Intent(AppointmentActivity.this, AddAddressActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("current_delivery_type",mCurrentDeliveryType);
+                        intent.putExtras(bundle);
                         startActivityForResult(intent, APPOINTMENT_INTENT_IDENTIFIER_1);
 
 
+                        //AddAddress Listener will be executed when 'Add Address' button clicked
                         //1st logic : Fresh Start with No address and then added address
                         //2nd logic : Fresh Start with more than 1 address
                         //3rd logic : Fresh Start with more than 1 address; Then selected address from AddressListActivity
                     } else if ((mAppointment.getStatus() == 101 && mDateTimeslotStatus == 12)
                             || (mAppointment.getStatus() == 12 && mDateTimeslotStatus == 0)
-                            || (mAppointment.getStatus() == 12 && mDateTimeslotStatus == 12)) {
+                            || (mAppointment.getStatus() == 12 && mDateTimeslotStatus == 12)
+                            || (mAppointment.getStatus() == 12 && mDateTimeslotStatus == 10)) {
 
 
                         mRelativeLayoutAddressDateTimeContainer.setVisibility(View.VISIBLE);
                         mLinearLayoutDefaultAddressContainer.setVisibility(View.VISIBLE);
-                        mLinearLayoutDateTimeContainer.setVisibility(View.VISIBLE);
+                        mLinearLayoutDeliveryTypeContainer.setVisibility(View.VISIBLE);
+//                        mLinearLayoutDateTimeContainer.setVisibility(View.VISIBLE);  //Not changing these 2 layout visibility as of now; As not sure, what's the stage at this point
+//                        mLinearLayoutNoSlotsContainer.setVisibility(View.GONE);
 
-                        //Start AddressListActivity and Get Address
+                        //Start AddressListActivity and     Get Address
                         Intent intent = new Intent(AppointmentActivity.this, AddressListActivity.class);
                         Bundle bundle = new Bundle();
 
@@ -397,6 +604,7 @@ public class AppointmentActivity extends AppCompatActivity {
                         }
 
                         bundle.putInt("default_address_id", mDefaultAddressId);
+                        bundle.putInt("current_delivery_type",mCurrentDeliveryType);        //
                         intent.putExtras(bundle);
                         startActivityForResult(intent, APPOINTMENT_INTENT_IDENTIFIER_2);
 
@@ -416,9 +624,18 @@ public class AppointmentActivity extends AppCompatActivity {
 
                 if (ConnectivityReceiver.isConnected()) {
 
-                    if (View.VISIBLE == mLinearLayoutDefaultAddressContainer.getVisibility()) {
+                    if ((View.VISIBLE == mLinearLayoutDefaultAddressContainer.getVisibility()) && (View.VISIBLE == mLinearLayoutDateTimeContainer.getVisibility())) {
                         Intent intent = new Intent(AppointmentActivity.this, OrderSummaryActivity.class);
                         Bundle bundle = new Bundle();
+
+                        if (mCurrentDeliveryType == 1){
+                            mDeliveryCharges=mInHouseCharges;   //In House charges
+                            mSelectedDeliveryType="In-House Service";
+                        }else if (mCurrentDeliveryType == 2){
+                            mDeliveryCharges=mPsdCharges;       //PSD Charges
+                            mSelectedDeliveryType="Pickup-Service-Drop";
+                        }
+
 
                         bundle.putParcelable("cart", Parcels.wrap(mCart)); //Send cart data;
 
@@ -431,12 +648,18 @@ public class AppointmentActivity extends AppCompatActivity {
                         bundle.putString("selected_full_address", mSelectedFullAddress);
                         bundle.putString("selected_pincode", mSelectedPincode);
                         bundle.putString("selected_phone", mSelectedPhone);
+                        bundle.putString("selected_delivery_type", mSelectedDeliveryType);
+                        bundle.putInt("delivery_charges", mDeliveryCharges);
+                        bundle.putInt("selected_delivery_type_id", mCurrentDeliveryType);
 
                         intent.putExtras(bundle);
                         startActivityForResult(intent, APPOINTMENT_INTENT_IDENTIFIER_3); //Mainly for transporting 'mCart' object
 
-                    } else {
+                    }else if (!(View.VISIBLE == mLinearLayoutDefaultAddressContainer.getVisibility())){
                         Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_appointment, Snackbar.LENGTH_SHORT).show();
+                    }
+                    else {
+                        //Leaving this blank as of now
                     }
                 }else {
                     showSnack();
@@ -476,7 +699,12 @@ public class AppointmentActivity extends AppCompatActivity {
         //Initialize mDateslots object for DateTimeLayout setup;
         mDateslots = mAppointment.getDateslots();
 
-        setupDateTimeLayouts();
+        setupDeliveryType();
+
+        //mNoRecordsFlag=1; to not execute setupDateTimeLayouts() method
+        if (mNoRecordsFlag == 0) {
+            setupDateTimeLayouts();
+        }
 
 
     }
@@ -488,6 +716,9 @@ public class AppointmentActivity extends AppCompatActivity {
         mFastItemAdapterDateslot = new FastItemAdapter();
         mFastItemAdapterDateslot.withSelectable(true);
 
+        mFastItemAdapterDateslot.notifyDataSetChanged(); //Added this newly
+
+
         try {
             mFastItemAdapterDateslot.add(mDateslots);
         } catch (Exception e) {
@@ -495,7 +726,10 @@ public class AppointmentActivity extends AppCompatActivity {
             Crashlytics.logException(e);
         }
 
+
         mRecyclerViewDateslot.setAdapter(mFastItemAdapterDateslot);
+
+        mFastItemAdapterDateslot.notifyDataSetChanged();                //Added this newly
 
         mLayoutManagerDateslot = new LinearLayoutManager(this);
         mLayoutManagerDateslot.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -515,6 +749,8 @@ public class AppointmentActivity extends AppCompatActivity {
         mFastItemAdapterTimeslot.withSelectable(true);
 
         mRecyclerViewTimeslot.setAdapter(mFastItemAdapterTimeslot);
+
+        mFastItemAdapterTimeslot.notifyDataSetChanged();
 
         mLayoutManagerTimeslot = new GridLayoutManager(this,3);
 
@@ -596,7 +832,6 @@ public class AppointmentActivity extends AppCompatActivity {
         });
 
 
-
     }
 
     @Override
@@ -618,6 +853,8 @@ public class AppointmentActivity extends AppCompatActivity {
                 mState = data.getExtras().getString("state");
                 mPincode = data.getExtras().getString("pincode");
                 mPhone = data.getExtras().getString("phone");
+
+                mCurrentDeliveryType = data.getExtras().getInt("current_delivery_type");
 
                 getServerData(2);
 
@@ -643,12 +880,15 @@ public class AppointmentActivity extends AppCompatActivity {
 
                     //Hide Default Address, Date and Time Layouts
                     mLinearLayoutDefaultAddressContainer.setVisibility(View.GONE);
+                    mLinearLayoutDeliveryTypeContainer.setVisibility(View.GONE);
                     mLinearLayoutDateTimeContainer.setVisibility(View.GONE);
+                    mLinearLayoutNoSlotsContainer.setVisibility(View.GONE);
                     mProgressBar.setVisibility(View.GONE);
 
 //                Resetting flags to act as a start of Appointment Activity with no address for user. As all address were deleted in AddressListActivity
                     mAppointment.setStatus(101);
                     mDateTimeslotStatus = 0;
+                    mCurrentDeliveryType=1; //Reset to default delivery type 'In-House'
 
 
                 }else {
@@ -666,6 +906,9 @@ public class AppointmentActivity extends AppCompatActivity {
                     mState = data.getExtras().getString("state");
                     mPincode = data.getExtras().getString("pincode");
                     mPhone = data.getExtras().getString("phone");
+
+
+                    mCurrentDeliveryType = data.getExtras().getInt("current_delivery_type");
 
                     getServerData(2);
 
@@ -777,7 +1020,33 @@ public class AppointmentActivity extends AppCompatActivity {
 
         Snackbar.make(findViewById(R.id.ll_activity_container), R.string.snackbar_no_internet, Snackbar.LENGTH_LONG).show();
 
+
     }
 
+
+
+
+    /**
+     *
+     * @return Concatenated service package ids with , comma
+     */
+    private String concatenate() {
+
+        String concatenatedString = "";
+        int i = 0;
+
+        for (CartItem cartItem : mCart.getCartServicePackages())
+        {
+            if (i==0){
+                concatenatedString += Integer.toString(cartItem.getServicePackageId());
+                i=1;
+            }else {
+                concatenatedString += "," + Integer.toString(cartItem.getServicePackageId());
+            }
+        }
+
+        return concatenatedString;
+
+    }
 
 }

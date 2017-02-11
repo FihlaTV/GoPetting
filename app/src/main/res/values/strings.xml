@@ -131,7 +131,7 @@
 
 
     <!--address,area,landmark,city,state,pincode-->
-    <string name="full_address">%1$s\n%2$s %3$s\n%4$s %5$s\n%6$s</string>
+    <string name="full_address">%1$s\n%2$s %3$s\n%4$s %5$s %6$s</string>
 
     <string name="done_text">Done</string>
     <string name="submit_text">Submit</string>
@@ -185,7 +185,6 @@
 
 
     <string name="sub_total_amount">Rs.%1$d</string>
-    <string name="pickup_drop_charges">(+)Rs.%1$d</string>
     <string name="promo_code_amount">(-)Rs.%1$d</string>
     <string name="grand_total_amount">Rs.%1$d</string>
     <string name="timeslot">, %1$s</string>
@@ -253,5 +252,11 @@
     <string name="snackbar_mobile_check">Please enter valid mobile number</string>
     <string name="snackbar_pincode_mobile">Please enter valid pincode and mobile no</string>
     <string name="snackbar_pincode_check">Please enter valid pincode</string>
-
+    <string name="text_in_house_delivery_type">In-House(%1$s%2$s)</string>
+    <string name="text_psd_delivery_type">Pickup-Service-Drop(%1$s%2$s)</string>
+    <string name="text_no_slots">No slots available for %1$s\nin your area</string>
+    <string name="text_service_package_type_mix"><![CDATA[Regular & Premium Packages cannot be clubbed together in a single order]]></string>
+    <string name="snackbar_order_value">Minimum order amount is Rs. 800</string>
+    <string name="text_delivery_type">%1$s</string>
+    <string name="text_delivery_type_subtotal_amount">(+)Rs.%1$d</string>
 </resources>

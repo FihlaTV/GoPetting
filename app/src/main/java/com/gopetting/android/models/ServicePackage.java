@@ -40,6 +40,9 @@ public class ServicePackage extends AbstractItem<ServicePackage, ServicePackage.
     @SerializedName("price")
     public int mPrice;
 
+    @SerializedName("service_package_type")
+    public int mServicePackageType;
+
     public boolean mItemSelected = false;
 
     public List<IItem> mSubItems;
@@ -65,6 +68,10 @@ public class ServicePackage extends AbstractItem<ServicePackage, ServicePackage.
 
     public int getPrice() {
         return mPrice;
+    }
+
+    public int getServicePackageType() {
+        return mServicePackageType;
     }
 
     public void setItemSelected(boolean itemSelected) {

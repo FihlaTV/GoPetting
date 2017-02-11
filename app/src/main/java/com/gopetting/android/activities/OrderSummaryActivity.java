@@ -79,6 +79,9 @@ import retrofit2.Response;
 
 public class OrderSummaryActivity extends AppCompatActivity {
 
+
+    //region 'VIEW BINDINGS'
+
     @BindView(R.id.toolbar_headerbar)
     Toolbar mToolbar;
     @BindView(R.id.tv_category_name)
@@ -99,14 +102,12 @@ public class OrderSummaryActivity extends AppCompatActivity {
     Spinner mSpinnerAgeGroup;
     @BindView(R.id.tv_apply_promo)
     TextView mTextViewApply;
-    @BindView(R.id.cb_pickup_drop)
-    CheckBox mCheckBoxPickupDrop;
     @BindView(R.id.cb_i_accept_terms_conditions)
     CheckBox mCheckBoxTermsConditions;
     @BindView(R.id.tv_sub_total_amount)
     TextView mTextViewSubTotalAmount;
-    @BindView(R.id.tv_pickup_drop_subtotal_amount)
-    TextView mTextViewPickupDropSubTotalAmount;
+    @BindView(R.id.tv_delivery_type_subtotal_amount)
+    TextView mTextViewDeliveryTypeSubTotalAmount;
     @BindView(R.id.tv_promo_code_subtotal_amount)
     TextView mTextViewPromoCodeSubTotalAmount;
     @BindView(R.id.tv_grand_total_amount)
@@ -121,8 +122,10 @@ public class OrderSummaryActivity extends AppCompatActivity {
     RelativeLayout mRelativeLayoutPromoCodeSubTotal;
     @BindView(R.id.tv_remove)
     TextView mTextViewRemove;
-    @BindView(R.id.rl_pickup_drop_subtotal)
-    RelativeLayout mRelativeLayoutPickupDropSubTotal;
+    @BindView(R.id.rl_delivery_type_subtotal)
+    RelativeLayout mRelativeLayoutDeliveryTypeSubTotal;
+    @BindView(R.id.tv_delivery_type)
+    TextView mTextViewDeliveryType;
     @BindView(R.id.tv_date)
     TextView mTextViewDate;
     @BindView(R.id.tv_time)
@@ -143,6 +146,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
     EditText mEditTextSpecialInstructions;
     @BindView(R.id.btn_home)
     Button mButtonHome;
+
+    //endregion
 
     private static String sUserId;
 
@@ -167,7 +172,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
     private String mPromoCode;
     private Promo mPromo;
     private int mSubTotal = 0; //Initialize with 0
-    private int mPickupDropAmount = 0; //Initialize with 0
+
     private int mPromoAmount = 0; //Initialize with 0
     private int mGrandTotal = 0; //Initialize with 0
     private String mSelectedAgeGroup;
@@ -183,6 +188,9 @@ public class OrderSummaryActivity extends AppCompatActivity {
     private boolean mEmptyCartFlag = false;
     private List<StringItem> mPromotionalScreens;
     private ArrayList<String> mPromoImages;
+    private String mSelectedDeliveryType;
+    private int mDeliveryCharges;
+    private int mCurrentDeliveryTypeId;
 
 
     @Override
@@ -214,6 +222,9 @@ public class OrderSummaryActivity extends AppCompatActivity {
             mSelectedFullAddress = bundle.getString("selected_full_address");
             mSelectedPincode = bundle.getString("selected_pincode");
             mSelectedPhone = bundle.getString("selected_phone");
+            mSelectedDeliveryType = bundle.getString("selected_delivery_type");
+            mDeliveryCharges = bundle.getInt("delivery_charges");
+            mCurrentDeliveryTypeId = bundle.getInt("selected_delivery_type_id");
 
         }
 
@@ -289,7 +300,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
     private void chooseDataRequest(int dataRequestId) {
 
         switch (dataRequestId) {
-            case 1: //Get Order Summary Data (Pickup drop charges and Breed Types)
+            case 1: //Get Order Summary Data ( Breed Types)
                 getOrderSummaryData(dataRequestId);
                 break;
             case 2: //Get Promo Data
@@ -398,7 +409,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
                         mTextViewPromoCodeSubTotalAmount.setText(promoCodeAmount);
 
                         //Update Grand Total
-                        mGrandTotal = (mSubTotal + mPickupDropAmount) - mPromoAmount;
+                        mGrandTotal = (mSubTotal + mDeliveryCharges) - mPromoAmount;
                         String grandTotalAmount = String.format(res.getString(R.string.grand_total_amount)
                                 ,mGrandTotal);
                         mTextViewGrandTotalAmount.setText(grandTotalAmount);
@@ -475,7 +486,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
                 //Update Grand Total
                 Resources res = getResources();
-                mGrandTotal = mSubTotal + mPickupDropAmount;
+                mGrandTotal = mSubTotal + mDeliveryCharges;
                 String grandTotalAmount = String.format(res.getString(R.string.grand_total_amount)
                         ,mGrandTotal);
                 mTextViewGrandTotalAmount.setText(grandTotalAmount);
@@ -485,65 +496,33 @@ public class OrderSummaryActivity extends AppCompatActivity {
         });
 
 
-        //CheckBox Pickup-Service-Drop
-        mCheckBoxPickupDrop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                CheckBox checkBox = (CheckBox) view;
-                if (checkBox.isChecked())
-                {
-                    //Checkbox is checked
-                    mPickupDropAmount = mOrderSummary.getPickupDropCharges();
-
-                    mRelativeLayoutPickupDropSubTotal.setVisibility(View.VISIBLE);
-                    Resources res = getResources();
-                    String pickupDropSubTotalAmount = String.format(res.getString(R.string.pickup_drop_charges)
-                            ,mPickupDropAmount);
-                    mTextViewPickupDropSubTotalAmount.setText(pickupDropSubTotalAmount);
-
-                    //Update Grand Total
-                    mGrandTotal = (mSubTotal + mPickupDropAmount) - mPromoAmount;
-                    String grandTotalAmount = String.format(res.getString(R.string.grand_total_amount)
-                            ,mGrandTotal);
-                    mTextViewGrandTotalAmount.setText(grandTotalAmount);
-
-                }else {
-
-                    //Checkbox is unchecked
-                    mRelativeLayoutPickupDropSubTotal.setVisibility(View.GONE);
-
-                    mPickupDropAmount = 0; //Reset amount
-
-                    //Update Grand Total
-                    mGrandTotal = mSubTotal - mPromoAmount;
-
-                    Resources res = getResources();
-                    String grandTotalAmount = String.format(res.getString(R.string.grand_total_amount)
-                            ,mGrandTotal);
-                    mTextViewGrandTotalAmount.setText(grandTotalAmount);
-
-                }
-
-            }
-        });
-
 
         //Update mSubTotal at start of screen
         for (CartScreenItem cartScreenItem :mCartScreen.getCartScreenItems()) {
             mSubTotal = mSubTotal + cartScreenItem.getPrice();
         }
 
+        Resources res = getResources();
 
         //Set SubTotal TextView
-        Resources res = getResources();
         String subTotalAmount = String.format(res.getString(R.string.sub_total_amount)
                 ,mSubTotal);
         mTextViewSubTotalAmount.setText(subTotalAmount);
 
+
+        //Set Delivery Type
+        String selectedDeliveryType = String.format(res.getString(R.string.text_delivery_type)
+                ,mSelectedDeliveryType);
+        mTextViewDeliveryType.setText(selectedDeliveryType);
+
+        //Set Delivery Charges
+        String selectedDeliveryTypeSubTotalAmount = String.format(res.getString(R.string.text_delivery_type_subtotal_amount)
+                ,mDeliveryCharges);
+        mTextViewDeliveryTypeSubTotalAmount.setText(selectedDeliveryTypeSubTotalAmount);
+
+
         //Set Grand Total TextView
-        mGrandTotal = mSubTotal;
+        mGrandTotal = mSubTotal + mDeliveryCharges;
         String grandTotalAmount = String.format(res.getString(R.string.grand_total_amount)
                 ,mGrandTotal);
         mTextViewGrandTotalAmount.setText(grandTotalAmount);
@@ -668,13 +647,13 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
         List<CartScreenItem> cartScreenItems = new ArrayList<>();
 
-        for (CartItem cartItem:mCart.mCartItems
-                ) {
+        for (CartItem cartItem:mCart.mCartItems) {
             CartScreenItem cartScreenItem = new CartScreenItem();
             cartScreenItem.setServicePackageId(cartItem.getServicePackageId());
             cartScreenItem.setServicePackageName(cartItem.getServicePackageName());
             cartScreenItem.setPrice(cartItem.getPrice());
             cartScreenItem.setServiceSubCategoryId(cartItem.getServiceSubCategoryId());
+            cartScreenItem.setServicePackageType(cartItem.getServicePackageType());
 
             cartScreenItems.add(cartScreenItem);
         }
@@ -753,7 +732,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
             public RecyclerView.ViewHolder onPostCreateViewHolder(final RecyclerView.ViewHolder viewHolder) {
                 //we do this for our ServicePackage.ViewHolder
                 if (viewHolder instanceof CartScreenItem.ViewHolder) {
-                    //if we click on the  (mItemBasketContainer)
+                    //if we click on the  (mRelativeLayoutDeleteContainer)
                     mClickListenerHelper.listen(viewHolder, ((CartScreenItem.ViewHolder) viewHolder).mRelativeLayoutDeleteContainer, new ClickListenerHelper.OnClickListener<CartScreenItem>() {
                         @Override
                         public void onClick(View v, int position, CartScreenItem item) {
@@ -790,7 +769,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
                                 mTextViewSubTotalAmount.setText(subTotalAmount);
 
                                 //Set Grand Total TextView
-                                mGrandTotal = (mSubTotal + mPickupDropAmount) - mPromoAmount;
+                                mGrandTotal = (mSubTotal + mDeliveryCharges) - mPromoAmount;
                                 String grandTotalAmount = String.format(res.getString(R.string.grand_total_amount)
                                         ,mGrandTotal);
                                 mTextViewGrandTotalAmount.setText(grandTotalAmount);
@@ -963,6 +942,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
             cartItem.setServicePackageName(cartScreenItem.getServicePackageName());
             cartItem.setPrice(cartScreenItem.getPrice());
             cartItem.setServiceSubCategoryId(cartScreenItem.getServiceSubCategoryId());
+            cartItem.setServicePackageType(cartScreenItem.getServicePackageType());
 
             cartItems.add(cartItem);
         }
@@ -1060,10 +1040,7 @@ private void getSummaryFirstStatus(int dataRequestId) {
         mPromoCode = "";
     }
 
-    int psdFacility = 0;        //False
-    if (mCheckBoxPickupDrop.isChecked()){
-        psdFacility = 1;        //True
-    }
+
 
    String servicePackagesWithPrice = concatenate();
 
@@ -1072,7 +1049,7 @@ private void getSummaryFirstStatus(int dataRequestId) {
 
     Call<SummaryFirstStatus> call = retrofitSingleton.getSummaryFirstStatus("Bearer " + mCredential.getAccess_token(),sUserId
             ,mPromoCode,mPromoAmount,mSelectedPincode,mSelectedDateslot,mSelectedTimeslotId,mSelectedTimeslot,mSelectedAddressId
-            ,servicePackagesWithPrice,psdFacility,mSelectedBreedType,mSelectedAgeGroup
+            ,servicePackagesWithPrice, mCurrentDeliveryTypeId,mSelectedBreedType,mSelectedAgeGroup
             ,mEditTextSpecialInstructions.getText().toString());
 
 //    Log.i("TIME","Summary First Status Start Time");

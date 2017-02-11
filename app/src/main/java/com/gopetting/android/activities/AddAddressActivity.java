@@ -68,6 +68,7 @@ public class AddAddressActivity extends AppCompatActivity {
 
     private int mPincode;
     private Status mStatus;
+    private int mCurrentDeliveryType;
 
 
     @Override
@@ -80,6 +81,14 @@ public class AddAddressActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mProgressBar.setVisibility(View.GONE);
+
+        //Get Currently Selected Delivery Type in AppointmentActivity
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            //To send back same delivery type to Appointment/AddressList Activities
+            mCurrentDeliveryType = bundle.getInt("current_delivery_type"); //1= in-House; 2= PSD
+        }
 
         //Submit Button Click Listener
         mRelativeLayoutFooterButton.setOnClickListener(new View.OnClickListener() {
@@ -287,6 +296,8 @@ public class AddAddressActivity extends AppCompatActivity {
             bundle.putString("state",mEditTextState.getText().toString());
             bundle.putString("pincode",mEditTextPincode.getText().toString());  //Sending Pincode in String as it's String type in 'Address' Model also
             bundle.putString("phone",mEditTextMobile.getText().toString());
+
+            bundle.putInt("current_delivery_type", mCurrentDeliveryType);       //Send back Delivery Type to AppointmentActivity/AddressListActivity
 
             returnIntent.putExtras(bundle);
             setResult(Activity.RESULT_OK,returnIntent);

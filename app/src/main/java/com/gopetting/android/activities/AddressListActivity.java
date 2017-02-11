@@ -83,6 +83,7 @@ public class AddressListActivity extends AppCompatActivity {
     private int mAppointmentDisableFlag;    //To disable default displayed layout as there're no address in address list.
     private int mDefaultAddressId;          //To update AppointmentActivity Default address when pressed 'Back Button' if that address is deleted here
     private int mDefaultAddressUpdateFlag;  //To determine whether default address is needed to be updated when pressed 'Back Button'
+    private int mCurrentDeliveryType;       //To send back same delivery type to Appointment Activity       //1= in-House; 2= PSD
 
 
     @Override
@@ -119,6 +120,10 @@ public class AddressListActivity extends AppCompatActivity {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
                 mDefaultAddressId = bundle.getInt("default_address_id"); //To update AppointmentActivity Default address if that address is deleted here
+
+                //To send back same delivery type to Appointment Activity
+                mCurrentDeliveryType = bundle.getInt("current_delivery_type"); //1= in-House; 2= PSD
+
             }
 
             mRelativeLayoutFooterButton.setOnClickListener(new View.OnClickListener() {
@@ -606,6 +611,9 @@ public class AddressListActivity extends AppCompatActivity {
 
                     //Start AddAddressActivity and Get New Address
                     Intent intent = new Intent(AddressListActivity.this, AddAddressActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("current_delivery_type",mCurrentDeliveryType);
+                    intent.putExtras(bundle);
                     startActivityForResult(intent, ADDRESS_LIST_INTENT_IDENTIFIER_1);
 
                 }else {
@@ -672,12 +680,14 @@ public class AddressListActivity extends AppCompatActivity {
         bundle.putString("pincode", mAddressList.getAddresses().get(mSelectedAddressPosition).getPincode());
         bundle.putString("phone", mAddressList.getAddresses().get(mSelectedAddressPosition).getPhone());
 
+        bundle.putInt("current_delivery_type", mCurrentDeliveryType);       //Send back Delivery Type to AppointmentActivity
+
         mProgressBar.setVisibility(View.GONE);
 
         //Remove Background
         mProgressBarContainer.setBackgroundResource(0);
 
-        //To enable user interaction with background views; This was disable earlier for ProgressBar
+        //To enable user interaction with background views; This was disabled earlier for ProgressBar
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
         returnIntent.putExtras(bundle);

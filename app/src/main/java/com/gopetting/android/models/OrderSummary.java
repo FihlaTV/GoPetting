@@ -13,18 +13,11 @@ public class OrderSummary {
     @SerializedName("status")
     private int mStatus;
 
-    @SerializedName("pickup_drop")
-    private int mPickupDropCharges;
-
     @SerializedName("breed_types")
     private List<BreedType> mBreedTypes = new ArrayList<>();
 
     public int getStatus() {
         return mStatus;
-    }
-
-    public int getPickupDropCharges() {
-        return mPickupDropCharges;
     }
 
     public List<BreedType> getBreedTypes() {

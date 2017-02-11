@@ -154,6 +154,7 @@ public class CartActivity extends AppCompatActivity {
             cartScreenItem.setServicePackageName(cartItem.getServicePackageName());
             cartScreenItem.setPrice(cartItem.getPrice());
             cartScreenItem.setServiceSubCategoryId(cartItem.getServiceSubCategoryId());
+            cartScreenItem.setServicePackageType(cartItem.getServicePackageType());
 
             cartScreenItems.add(cartScreenItem);
         }
@@ -597,6 +598,7 @@ public class CartActivity extends AppCompatActivity {
             cartItem.setServicePackageName(cartScreenItem.getServicePackageName());
             cartItem.setPrice(cartScreenItem.getPrice());
             cartItem.setServiceSubCategoryId(cartScreenItem.getServiceSubCategoryId());
+            cartItem.setServicePackageType(cartScreenItem.getServicePackageType());
 
             cartItems.add(cartItem);
         }

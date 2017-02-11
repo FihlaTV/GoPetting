@@ -1,6 +1,7 @@
 package com.gopetting.android.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,8 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.crashlytics.android.Crashlytics;
 import com.gopetting.android.R;
 import com.gopetting.android.activities.ServiceActivity;
+import com.gopetting.android.activities.SplashActivity;
 import com.gopetting.android.models.CartItem;
 import com.gopetting.android.models.ServicePackage;
 import com.gopetting.android.utils.Communicator;
@@ -44,7 +47,7 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
     private FastItemAdapter fastAdapterService;
     private LinearLayoutManager mLayoutManagerService;
     private ClickListenerHelper<ServicePackage> mClickListenerHelper;
-
+    private Context mContext;       //To save context
 
     public ServiceFragment() {
 
@@ -74,6 +77,8 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
             throw new RuntimeException(context.toString()
                     + " must implement ServiceFragmentListener");
         }
+
+        mContext=context;   //save context for starting splashactivity later in Exception
     }
 
 
@@ -221,10 +226,12 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
     @Override
     public void passDataToFragment(List<CartItem> cartItems, int id){
 
+        try{
+
         if (id == 1) {
 
             Set<Integer> selections = fastAdapterService.getSelections();
-            if (!selections.isEmpty()) {
+            if (!selections.isEmpty()) {    //Remove all items from adapter
                 int selectedPosition = selections.iterator().next();
                 fastAdapterService.deselect();
                 fastAdapterService.notifyItemChanged(selectedPosition);
@@ -245,6 +252,19 @@ public class ServiceFragment extends Fragment implements Communicator.FragmentCo
                 }
 
             }
+        }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Crashlytics.logException(e);
+
+            //Clear all previous activity from Stack and start SplashActivity So that Back button doesn't take back to previous screens.
+            Intent intent = new Intent(mContext,SplashActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
+
+            getActivity().finish();
         }
 
 

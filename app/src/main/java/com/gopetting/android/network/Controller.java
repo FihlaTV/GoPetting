@@ -151,7 +151,9 @@ public class Controller {
 
         @GET("/api/v1/appointment/address_date_time")
         Call<Appointment> getAppointmentDetails(@Header("Authorization") String authorization,
-                                                @Query("user_id") String userId);
+                                                @Query("user_id") String userId,
+                                                @Query("service_packages") String servicePackages,
+                                                @Query("service_package_count") int servicePackageCount);
 
     }
 
@@ -176,7 +178,10 @@ public class Controller {
         @GET("/api/v1/appointment/date_time")
         Call<DateTimeSlot> getDateTimeData(@Header("Authorization") String authorization,
                                            @Query("user_id") String userId,
-                                           @Query("pincode") String pincode);
+                                           @Query("pincode") String pincode,
+                                           @Query("service_packages") String servicePackages,
+                                           @Query("service_package_count") int servicePackageCount,
+                                           @Query("delivery_type") int deliveryType);
 
     }
 
@@ -232,7 +237,7 @@ public class Controller {
                                                 @Query("timeslot") String timeslot,
                                                 @Query("address_id") int addressId,
                                                 @Query("service_packages_with_price") String servicePackagesWithPrice,
-                                                @Query("psd_facility") int psdFacility,        //Pickup-Service-Drop
+                                                @Query("delivery_type") int deliveryType,        //1=In-House; 2=Pickup-Service-Drop
                                                 @Query("breed_type") String breedType,
                                                 @Query("age_group") String ageGroup,
                                                 @Query("additional_details") String additional_details

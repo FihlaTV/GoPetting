@@ -24,6 +24,10 @@ public class CartItem {
     @SerializedName("price")
     public int mPrice;
 
+    @SerializedName("service_package_type")
+    public int mServicePackageType;
+
+
 
     public CartItem() {
 
@@ -63,6 +67,16 @@ public class CartItem {
 
     public CartItem setPrice(int price) {
         this.mPrice = price;
+        return this;
+    }
+
+
+    public int getServicePackageType() {
+        return mServicePackageType;
+    }
+
+    public CartItem setServicePackageType(int mServicePackageType) {
+        this.mServicePackageType = mServicePackageType;
         return this;
     }
 }

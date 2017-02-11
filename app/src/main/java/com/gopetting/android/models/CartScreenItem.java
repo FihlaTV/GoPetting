@@ -28,6 +28,9 @@ public class CartScreenItem extends AbstractItem<CartScreenItem, CartScreenItem.
     @SerializedName("price")
     private int mPrice;
 
+    @SerializedName("service_package_type")
+    public int mServicePackageType;
+
     @SerializedName("service_subcategory_id")
     private int mServiceSubCategoryId;
 
@@ -64,6 +67,16 @@ public class CartScreenItem extends AbstractItem<CartScreenItem, CartScreenItem.
     public void setPrice(int price) {
         this.mPrice = price;
     }
+
+
+    public int getServicePackageType() {
+        return mServicePackageType;
+    }
+
+    public void setServicePackageType(int mServicePackageType) {
+        this.mServicePackageType = mServicePackageType;
+    }
+
 
     public void setServiceSubCategoryId(int serviceSubCategoryId) {
         this.mServiceSubCategoryId = serviceSubCategoryId;

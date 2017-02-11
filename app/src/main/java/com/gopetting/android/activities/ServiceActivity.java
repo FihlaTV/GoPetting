@@ -50,6 +50,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -73,7 +74,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
     private static final int SERVICE_IDENTIFIER_3 = 203; //Intent Identifier; Cart icon clicked and user not logged in
     private static final int SERVICE_IDENTIFIER_4 = 204; //Intent Identifier; for starting Appointment Activity
     private static final int CART_IDENTIFIER_2 = 102 ; //102 value to Identify AppointmentActivity Started by CartActivity
-    private static final int SERVICE_CATEGORY_ID = 11;  //Pet Salon
+    private static final int SERVICE_CATEGORY_ID = 11;  //Pet Grooming
 
     private static String sUserId;
 
@@ -96,6 +97,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
     private int mServerRequestId = 10; //Default value
     private boolean mServicePackageInitialState = false;
     private AlertDialog mDialog;
+    private int mSelectedServicePackageType;            //Regular=1; Premium=2;
 
 
     @Override
@@ -103,6 +105,11 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service);
         ButterKnife.bind(this);
+
+        //Initialize if not already initialized; This generally happens when app goes in background for long time.
+        if (!Fabric.isInitialized()) {
+            Fabric.with(this, new Crashlytics());
+        }
 
         //Disable footer button click until data is loaded into mCart Object
         mRelativeLayoutFooterButton.setEnabled(false);
@@ -125,13 +132,13 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Pet Salon");
+        getSupportActionBar().setTitle("Pet Grooming");
 
         mRelativeLayoutFooterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (mSessionManager.isLoggedIn() && mCart.mCartItems.size()>0){
+                if (mSessionManager.isLoggedIn() && mCart.mCartItems.size()>0 && checkOrderValue()){
 
                     if (ConnectivityReceiver.isConnected()) {
 
@@ -151,12 +158,33 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                     }
 
 
-                }else {
+                } else if (!(mSessionManager.isLoggedIn() && mCart.mCartItems.size()>0)){
+
                     Snackbar.make(findViewById(R.id.coordinator_layout), R.string.snackbar_services, Snackbar.LENGTH_SHORT).show();
+
+                } else {
+                    Snackbar.make(findViewById(R.id.coordinator_layout), R.string.snackbar_order_value, Snackbar.LENGTH_SHORT).show();
                 }
 
             }
         });
+
+    }
+
+    private boolean checkOrderValue() {
+
+        int orderValue = 0;
+
+        for (CartItem cartItem : mCart.getCartServicePackages())
+        {
+                orderValue += cartItem.getPrice();
+        }
+
+        if (orderValue>=800) {
+            return true;
+        }else {
+            return false;
+        }
 
     }
 
@@ -312,7 +340,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                     mCart = response.body();
 
                     if (mCart.mCartItems.size() == 0){
-                        mCart.setServiceCategoryName("Pet Salon");
+                        mCart.setServiceCategoryName("Pet Grooming");
                         initializeServicePackageState(3);   //Send id=3 for deselecting all service packages
 
                     }else {
@@ -362,6 +390,9 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
     //Initialize Service Package Selection State (Basket Color)
     private void initializeServicePackageState(int id) {
+
+        try {
+
 
         if (id == 1) {
 
@@ -421,6 +452,20 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
             }
         }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Crashlytics.logException(e);
+
+            //Clear all previous activity from Stack and start SplashActivity So that Back button doesn't take back to previous screens.
+            Intent intent = new Intent(this,SplashActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
+
+            finish();
+        }
+
     }
 
 
@@ -439,51 +484,55 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
 
             } else {
 
-                //Loop through all Cart items
-                for (int i = 0; i < mCart.mCartItems.size(); i++) {
-                    //check if select service subcategory item are already available in cart
-                    if (mSelectedServiceSubCategoryId == mCart.mCartItems.get(i).getServiceSubCategoryId()) {
-                        //Yes it's available, now check selected service package is already available in cart
-                        if (mSelectedServicePackageId == mCart.mCartItems.get(i).getServicePackageId()) {
-                            //Don't do anything as Service Package is already available in Cart and we don't allow more than 1 service package per service subcategory as of now.
+                if (mSelectedServicePackageType == mCart.mCartItems.get(0).mServicePackageType) {     //Check whether Service Package Type is same or not; Regular=1; Premium=2
+                                                                                                    //If TRUE, Go ahead with processing otherwise Don't add service package and give message
+
+                    //Loop through all Cart items
+                    for (int i = 0; i < mCart.mCartItems.size(); i++) {
+                        //check if select service subcategory item are already available in cart
+                        if (mSelectedServiceSubCategoryId == mCart.mCartItems.get(i).getServiceSubCategoryId()) {
+                            //Yes it's available, now check selected service package is already available in cart
+                            if (mSelectedServicePackageId == mCart.mCartItems.get(i).getServicePackageId()) {
+                                //Don't do anything as Service Package is already available in Cart and we don't allow more than 1 service package per service subcategory as of now.
 
 //                        Toast.makeText(ServiceActivity.this, "Package is already in cart",Toast.LENGTH_SHORT).show(); //Show to user, package is already in cart
 
-                            flag = 2;
+                                flag = 2;
 
-                            //Refresh Shopping Cart Icon Count;
-                            mNotifyCount = Integer.toString(mCart.mCartItems.size());
-                            invalidateOptionsMenu();
+                                //Refresh Shopping Cart Icon Count;
+                                mNotifyCount = Integer.toString(mCart.mCartItems.size());
+                                invalidateOptionsMenu();
 
-                            //Initialize Service Package Selection State (Basket Color)
-                            initializeServicePackageState(4);   //Send id=4 for initializing service package state without checking flag
+                                //Initialize Service Package Selection State (Basket Color)
+                                initializeServicePackageState(4);   //Send id=4 for initializing service package state without checking flag
 
-                            break;      //Break loop as service package is added/replaced
+                                break;      //Break loop as service package is added/replaced
 
-                        } else {
-                            //Other service package is already available under this service sub category; Ask user to replace it with this package
+                            } else {
+                                //Other service package is already available under this service sub category; Ask user to replace it with this package
 
-                            flag = 2;
+                                flag = 2;
 //
 //                        String dialogQuestion = getResources().getString(R.string.dialog_question_cart_item_change_part1 )
 //                                                + mSelectedServiceSubCategoryName
 //                                                + getResources().getString(R.string.dialog_question_cart_item_change_part2)
 //                                                + getResources().getString(R.string.dialog_question_cart_item_change_part3);
 
-                            mCart.mCartItems.remove(i); //Remove old service package
+                                mCart.mCartItems.remove(i); //Remove old service package
 
-                            //add currently selected service package to Cart
-                            mCart.mCartItems.add(new CartItem().setServicePackageId(mSelectedServicePackageId)
-                                    .setServicePackageName(mSelectedServicePackageName)
-                                    .setPrice(mSelectedPrice)
-                                    .setServiceSubCategoryId(mSelectedServiceSubCategoryId));
+                                //add currently selected service package to Cart
+                                mCart.mCartItems.add(new CartItem().setServicePackageId(mSelectedServicePackageId)
+                                        .setServicePackageName(mSelectedServicePackageName)
+                                        .setPrice(mSelectedPrice)
+                                        .setServicePackageType(mSelectedServicePackageType)
+                                        .setServiceSubCategoryId(mSelectedServiceSubCategoryId));
 
-                            //Refresh Shopping Cart Icon Count; Logically Count is going to be same as we're removing 1 package and adding 1 package :)
-                            mNotifyCount = Integer.toString(mCart.mCartItems.size());
-                            invalidateOptionsMenu();
+                                //Refresh Shopping Cart Icon Count; Logically Count is going to be same as we're removing 1 package and adding 1 package :)
+                                mNotifyCount = Integer.toString(mCart.mCartItems.size());
+                                invalidateOptionsMenu();
 
-                            //Initialize Service Package Selection State (Basket Color)
-                            initializeServicePackageState(4);   //Send id=4 for initializing service package state without checking flag
+                                //Initialize Service Package Selection State (Basket Color)
+                                initializeServicePackageState(4);   //Send id=4 for initializing service package state without checking flag
 
 
 //                        Toast.makeText(ServiceActivity.this, "Package is added to cart",Toast.LENGTH_SHORT).show(); //Show to user, package is added
@@ -524,10 +573,25 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
                         textView.setTextSize(14);
 //                        textView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/DIN-Regular.otf"));
 */
-                            break; //Break loop as service package is added/replaced
+                                break; //Break loop as service package is added/replaced
+                            }
                         }
                     }
+                }else {
+
+                    Toast.makeText(ServiceActivity.this, R.string.text_service_package_type_mix,Toast.LENGTH_LONG).show();
+
+                    flag = 2;
+
+                    //Refresh Shopping Cart Icon Count;
+                    mNotifyCount = Integer.toString(mCart.mCartItems.size());
+                    invalidateOptionsMenu();
+
+                    //Initialize Service Package Selection State (Basket Color)
+                    initializeServicePackageState(4);   //Send id=4 for initializing service package state without checking flag
+
                 }
+
             }
 
             if (flag == 1) {
@@ -549,6 +613,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         mCart.mCartItems.add(new CartItem().setServicePackageId(mSelectedServicePackageId)
                                             .setServicePackageName(mSelectedServicePackageName)
                                             .setPrice(mSelectedPrice)
+                                            .setServicePackageType(mSelectedServicePackageType)
                                             .setServiceSubCategoryId(mSelectedServiceSubCategoryId));
 
 
@@ -633,6 +698,7 @@ public class ServiceActivity extends AppCompatActivity implements ServiceFragmen
         mSelectedServicePackageId = servicePackage.getServicePackageId();
         mSelectedServicePackageName = servicePackage.getServicePackageName();
         mSelectedPrice = servicePackage.getPrice();
+        mSelectedServicePackageType = servicePackage.getServicePackageType();       //Regular=1; Premium=2;
         mSelectedServiceSubCategoryId = mServiceCategoryData.mServiceSubCategories.get(serviceSubCategoryIndex).getServiceSubCategoryId();
         mSelectedServiceSubCategoryName = mServiceCategoryData.mServiceSubCategories.get(serviceSubCategoryIndex).getServiceSubcategoryName();
 

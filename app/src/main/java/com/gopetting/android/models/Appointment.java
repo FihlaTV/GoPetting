@@ -13,6 +13,12 @@ public class Appointment {
     @SerializedName("status")
     private int mStatus;
 
+    @SerializedName("in_house")
+    private int mInHouseCharges;
+
+    @SerializedName("psd")
+    private int mPsdCharges;
+
     @SerializedName("address")
     public List<Address> mAddresses = new ArrayList<Address>();
 
@@ -28,6 +34,14 @@ public class Appointment {
         this.mStatus = status;
     }
 
+    public int getInHouseCharges() {
+        return mInHouseCharges;
+    }
+
+    public int getPsdCharges() {
+        return mPsdCharges;
+    }
+
     public List<Address> getAddresses() {
         return mAddresses;
     }
@@ -35,6 +49,8 @@ public class Appointment {
     public List<Dateslot> getDateslots() {
         return mDateslots;
     }
+
+
 
 
 }

@@ -150,40 +150,40 @@
         </LinearLayout>
 
 
-        <RelativeLayout
-            android:id="@id/rl_pickup_drop"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10.0dip"
-            android:background="@color/white"
-            android:orientation="horizontal">
+        <!--<RelativeLayout-->
+            <!--android:id="@id/rl_pickup_drop"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingBottom="10.0dip"-->
+            <!--android:background="@color/white"-->
+            <!--android:orientation="horizontal">-->
 
-            <CheckBox
-                android:id="@id/cb_pickup_drop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:scaleX="0.70"
-                android:scaleY="0.70" />
+            <!--<CheckBox-->
+                <!--android:id="@id/cb_pickup_drop"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:scaleX="0.70"-->
+                <!--android:scaleY="0.70" />-->
 
-            <com.gopetting.android.views.TypefaceTextView
-                android:id="@id/tv_pickup_drop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/cb_pickup_drop"
-                android:text="@string/text_pickup_drop"
-                android:textColor="@color/item_text_regular"
-                android:textSize="@dimen/text_size_medium"
-                app:customTypeface="@string/typeface_regular" />
+            <!--<com.gopetting.android.views.TypefaceTextView-->
+                <!--android:id="@id/tv_pickup_drop"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_toRightOf="@id/cb_pickup_drop"-->
+                <!--android:text="@string/text_pickup_drop"-->
+                <!--android:textColor="@color/item_text_regular"-->
+                <!--android:textSize="@dimen/text_size_medium"-->
+                <!--app:customTypeface="@string/typeface_regular" />-->
 
-        </RelativeLayout>
+        <!--</RelativeLayout>-->
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1.0dip"
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1.0dip"-->
 
-            android:background="@color/grey_200" />
+            <!--android:background="@color/grey_200" />-->
 
         <!--<View-->
             <!--android:layout_width="match_parent"-->
@@ -231,28 +231,29 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@id/rl_pickup_drop_subtotal"
+                android:id="@id/rl_delivery_type_subtotal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="10.0dip"
-                android:visibility="gone">
+                android:paddingTop="10.0dip">
 
                 <com.gopetting.android.views.TypefaceTextView
+                    android:id="@id/tv_delivery_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:text="@string/text_pickup_drop_subtotal"
+                    android:text="@string/text_delivery_type"
                     android:textColor="@color/item_text_regular"
                     android:textSize="@dimen/text_size_medium_special"
                     app:customTypeface="@string/typeface_regular" />
 
                 <com.gopetting.android.views.TypefaceTextView
-                    android:id="@id/tv_pickup_drop_subtotal_amount"
+                    android:id="@id/tv_delivery_type_subtotal_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
+                    android:text="@string/text_delivery_type_subtotal_amount"
                     android:textColor="@color/item_text_regular"
                     android:textSize="@dimen/text_size_medium_special"
                     app:customTypeface="@string/typeface_regular" />

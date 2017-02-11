@@ -157,7 +157,7 @@
     <item name="rl_sub_total" type="id" />
     <item name="tv_promo_code_subtotal_amount" type="id" />
     <item name="tv_pickup_drop_subtotal_amount" type="id" />
-    <item name="rl_pickup_drop_subtotal" type="id" />
+    <item name="rl_delivery_type_subtotal" type="id" />
     <item name="rl_promo_code_subtotal" type="id" />
     <item name="tv_grand_total_amount" type="id" />
     <item name="rl_grand_total" type="id" />
@@ -194,6 +194,17 @@
     <item name="ll_no_internet_container" type="id" />
     <item name="rl_activity_container" type="id" />
     <item name="tv_pet_details" type="id" />
+    <item name="ll_delivery_type_container" type="id" />
+    <item name="ll_in_house_radio_button_container" type="id" />
+    <item name="tv_in_house_delivery_type" type="id" />
+    <item name="ll_psd_radio_button_container" type="id" />
+    <item name="tv_psd_delivery_type" type="id" />
+    <item name="radio_button_in_house" type="id" />
+    <item name="radio_button_psd" type="id" />
+    <item name="ll_in_house_container" type="id" />
+    <item name="ll_psd_container" type="id" />
+    <item name="tv_delivery_type" type="id" />
+    <item name="tv_delivery_type_subtotal_amount" type="id" />
 
 
 </resources>
