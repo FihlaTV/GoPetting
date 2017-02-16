@@ -33,8 +33,8 @@ public class OrderHistoryDetailsItem {
     protected String mobileNumber;
     @SerializedName("cancelled_dt")
     protected String cancelled_date;
-    @SerializedName("psd_facility")
-    protected int psdFacility;
+    @SerializedName("delivery_type")
+    protected int deliveryType;
     @SerializedName("avail_flag")
     protected int availabilityFlag;
     @SerializedName("service_packages")
@@ -145,8 +145,8 @@ public class OrderHistoryDetailsItem {
     }
 
 
-    public int getPsdFacility() {
-        return psdFacility;
+    public int getDeliveryType() {
+        return deliveryType;
     }
 
     public int getAvailabilityFlag() {

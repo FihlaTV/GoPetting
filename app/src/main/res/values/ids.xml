@@ -152,7 +152,6 @@
     <item name="tv_remove" type="id" />
     <item name="cb_pickup_drop" type="id" />
     <item name="rl_pickup_drop" type="id" />
-    <item name="tv_pickup_drop" type="id" />
     <item name="tv_sub_total_amount" type="id" />
     <item name="rl_sub_total" type="id" />
     <item name="tv_promo_code_subtotal_amount" type="id" />

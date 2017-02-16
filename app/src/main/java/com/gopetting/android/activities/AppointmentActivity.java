@@ -348,6 +348,7 @@ public class AppointmentActivity extends AppCompatActivity {
                         mLinearLayoutNoSlotsContainer.setVisibility(View.GONE);
 
 
+
                         addAddressClickListener();
 
                         mNoRecordsFlag=0;       //Default is 0; so that initAppointment() could execute setupDateTimeLayouts() method
@@ -355,6 +356,7 @@ public class AppointmentActivity extends AppCompatActivity {
                         //initialize Appointment with data
                         initAppointment();
 
+                        mProgressBar.setVisibility(View.GONE);
 
 
                     } else if (mAppointment.getStatus() == 10) {
@@ -364,17 +366,23 @@ public class AppointmentActivity extends AppCompatActivity {
                         //Show Default Address, Delivery Type and  Date, Time Layouts
                         mRelativeLayoutAddressDateTimeContainer.setVisibility(View.VISIBLE);
                         mLinearLayoutDefaultAddressContainer.setVisibility(View.VISIBLE);
-                        mLinearLayoutDateTimeContainer.setVisibility(View.GONE);
                         mLinearLayoutDeliveryTypeContainer.setVisibility(View.VISIBLE);
+                        mLinearLayoutDateTimeContainer.setVisibility(View.GONE);
                         mLinearLayoutNoSlotsContainer.setVisibility(View.VISIBLE);
 
                         mNoRecordsFlag=1;       //1; to not execute setupDateTimeLayouts() method
+
+                        addAddressClickListener();
 
                         //initialize Appointment with data
                         initAppointment();
 
                         mNoRecordsFlag=0;       //0; Reset flag; so that initAppointment() could function normally for rest of the calls
 
+                        mProgressBar.setVisibility(View.GONE);
+
+                        //To enable user interaction with background views; This was disabled earlier for ProgressBar
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     }
 
                 }
@@ -579,10 +587,17 @@ public class AppointmentActivity extends AppCompatActivity {
                         //1st logic : Fresh Start with No address and then added address
                         //2nd logic : Fresh Start with more than 1 address
                         //3rd logic : Fresh Start with more than 1 address; Then selected address from AddressListActivity
+
+                        //5th logic : Fresh start with address but with no Date Time
+                        //6th logic : Fresh start with address and with Date Time records and then clicked
+                        //7th logic : Fresh start with no slots in In-House; Clicked Add Address, selected address, submitted; Again Pressed Add new address
                     } else if ((mAppointment.getStatus() == 101 && mDateTimeslotStatus == 12)
                             || (mAppointment.getStatus() == 12 && mDateTimeslotStatus == 0)
                             || (mAppointment.getStatus() == 12 && mDateTimeslotStatus == 12)
-                            || (mAppointment.getStatus() == 12 && mDateTimeslotStatus == 10)) {
+                            || (mAppointment.getStatus() == 12 && mDateTimeslotStatus == 10)
+                            || (mAppointment.getStatus() == 10 && mDateTimeslotStatus == 0)
+                            || (mAppointment.getStatus() == 10 && mDateTimeslotStatus == 12)
+                            ||(mAppointment.getStatus() == 10 && mDateTimeslotStatus == 10)) {
 
 
                         mRelativeLayoutAddressDateTimeContainer.setVisibility(View.VISIBLE);

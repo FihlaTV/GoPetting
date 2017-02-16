@@ -3,6 +3,7 @@ package com.gopetting.android.activities;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -75,8 +76,8 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
     protected RecyclerView mRecyclerViewOrderDetailList;
     @BindView(R.id.tv_order_date)
     protected TextView mTextViewPlacedOnDate;
-    @BindView(R.id.tv_pickup_drop)
-    protected TextView mTextViewPSDFacility;
+    @BindView(R.id.tv_delivery_type)
+    protected TextView mTextViewDeliveryType;
 
 
     @BindView(R.id.progress_bar_container)
@@ -311,8 +312,24 @@ public class OrderHistoryDetailActivity extends AppCompatActivity {
         mTextViewTotalAmount.setText("Rs." + mOrderHistoryDetails.getOrderHistoryDetailsItem().get(0).amountPaid);
         mTextViewOrderStatus.setText(mStatus);
 
-        if (mOrderHistoryDetails.getOrderHistoryDetailsItem().get(0).getPsdFacility() != 1) {
-            mTextViewPSDFacility.setVisibility(View.GONE);
+        Resources res = getResources();
+
+        if (mOrderHistoryDetails.getOrderHistoryDetailsItem().get(0).getDeliveryType() == 1) {
+
+                String mDeliveryType = String.format(res.getString(R.string.order_history_delivery_type)
+                        ,"In-House Service" );
+                mTextViewDeliveryType.setText(mDeliveryType);
+                mTextViewDeliveryType.setVisibility(View.VISIBLE);
+
+        }else if (mOrderHistoryDetails.getOrderHistoryDetailsItem().get(0).getDeliveryType() == 2) {
+
+            String mDeliveryType = String.format(res.getString(R.string.order_history_delivery_type)
+                    ,"Pickup-Service-Drop" );
+            mTextViewDeliveryType.setText(mDeliveryType);
+            mTextViewDeliveryType.setVisibility(View.VISIBLE);
+
+        }else {
+            mTextViewDeliveryType.setVisibility(View.GONE);
         }
 
 

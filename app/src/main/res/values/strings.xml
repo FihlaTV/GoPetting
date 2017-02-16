@@ -172,7 +172,7 @@
     <string name="text_proceed_to_payment">Proceed to Payment</string>
     <string name="snackbar_appointment">Please add an address</string>
     <string name="hint_age_group">Choose Age</string>
-    <string name="order_history_pickup_drop">Includes Pickup - Service - Drop Facility</string>
+    <string name="order_history_delivery_type">Includes %1$s</string>
 
     <string-array name="string_array_age_group">
         <item>Choose Age</item>

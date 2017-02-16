@@ -73,11 +73,11 @@
 
 
                         <com.gopetting.android.views.TypefaceTextView
-                            android:id="@+id/tv_pickup_drop"
+                            android:id="@id/tv_delivery_type"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="left"
-                            android:text="@string/order_history_pickup_drop"
+                            android:text="@string/order_history_delivery_type"
                             android:textColor="@color/item_text_regular"
                             android:textSize="@dimen/text_size_medium"
                             app:customTypeface="@string/typeface_regular" />
